@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account - RideON</title>
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#b2bd14cf;
+  --gold:#c6c899;
+  --contrast:#33450d;
+}
+
+body{
+  font-family:'Lato',sans-serif;
+  background:var(--bg);
+  color:var(--contrast);
+}
+
+h1,h2,h3{font-family:'Cinzel',serif}
+
+.sidebar{
+  background:white;
+  border-radius:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.card{
+  background:white;
+  border-radius:18px;
+  padding:30px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.menu-item{
+  padding:10px 0;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.menu-item:hover{
+  color:#406008;
+}
+
+.active-tab{
+  color:#406008;
+  font-weight:600;
+}
+
+.gold-btn{
+  background:#406008;
+  color:white;
+  padding:8px 20px;
+  border-radius:9999px;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.gold-btn:hover{
+  opacity:0.9;
+}
+
+/* Toast */
+#toast{
+  position:fixed;
+  top:20px;
+  right:20px;
+  padding:12px 20px;
+  border-radius:10px;
+  color:white;
+  font-weight:600;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  opacity:0;
+  transform:translateY(20px);
+  transition:all 0.3s ease;
+}
+</style>
+</head>
+
+<body class="min-h-screen p-10">
+
+<div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar p-8 md:col-span-1 text-center">
+
+    <div class="w-24 h-24 mx-auto rounded-full bg-gray-200 flex items-center justify-center text-4xl mb-4">
+      👤
+    </div>
+
+    <h2 class="text-xl font-semibold" id="sidebarName">User</h2>
+    <p class="text-sm text-gray-600 mt-1" id="sidebarEmail"></p>
+
+    <div class="mt-8 border-t pt-6 text-left space-y-3">
+      <div class="menu-item active-tab" onclick="showSection('account')">Account</div>
+      <div class="menu-item" onclick="showSection('booking')">My Booking</div>
+      <div class="menu-item" onclick="showSection('transactions')">Transactions</div>
+    </div>
+
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="md:col-span-3 space-y-8">
+
+    <!-- ACCOUNT SECTION -->
+    <div id="accountSection" class="card">
+      <h2 class="text-3xl mb-6">Account Details</h2>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm mb-1">Full Name</label>
+          <input id="userName" class="w-full border rounded-lg p-3 bg-gray-100" disabled>
+        </div>
+
+        <div>
+          <label class="block text-sm mb-1">Birthdate</label>
+          <input type="date" id="userDOB" class="w-full border rounded-lg p-3">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-sm mb-1">Email Address</label>
+          <input id="userEmail" class="w-full border rounded-lg p-3 bg-gray-100" disabled>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <button id="saveBtn" onclick="saveProfile()" class="gold-btn">
+          Save Changes
+        </button>
+      </div>
+    </div>
+
+    <!-- BOOKING SECTION -->
+    <div id="bookingSection" class="card hidden">
+      <h2 class="text-3xl mb-6">My Booking</h2>
+      <div id="bookingContainer">
+        <p class="text-lg text-gray-600">Loading...</p>
+      </div>
+    </div>
+
+    <!-- TRANSACTION SECTION -->
+    <div id="transactionSection" class="card hidden">
+      <h2 class="text-3xl mb-6">Transactions</h2>
+      <div id="transactionContainer">
+        <p class="text-lg text-gray-600">Loading...</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const supabaseClient = supabase.createClient(
+  "https://ecuvhnvpajodymdibuwt.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+);
+
+let currentUser = null;
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const { data } = await supabaseClient.auth.getUser();
+
+  if (!data.user) {
+    window.location.href = "log.html";
+    return;
+  }
+
+  currentUser = data.user;
+
+  document.getElementById("sidebarName").textContent =
+    currentUser.user_metadata?.name || currentUser.email.split("@")[0];
+
+  document.getElementById("sidebarEmail").textContent =
+    currentUser.email;
+
+  document.getElementById("userName").value =
+    currentUser.user_metadata?.name || "";
+
+  document.getElementById("userEmail").value =
+    currentUser.email;
+
+  const { data: userData } = await supabaseClient
+    .from("users")
+    .select("dob")
+    .eq("id", currentUser.id)
+    .single();
+
+  if (userData?.dob) {
+    document.getElementById("userDOB").value = userData.dob;
+  }
+});
+
+function showSection(section){
+
+  document.getElementById("accountSection").classList.add("hidden");
+  document.getElementById("bookingSection").classList.add("hidden");
+  document.getElementById("transactionSection").classList.add("hidden");
+
+  document.querySelectorAll(".menu-item").forEach(item=>{
+    item.classList.remove("active-tab");
+  });
+
+  if(section === "account"){
+    document.getElementById("accountSection").classList.remove("hidden");
+    document.querySelectorAll(".menu-item")[0].classList.add("active-tab");
+  }
+
+  if(section === "booking"){
+    document.getElementById("bookingSection").classList.remove("hidden");
+    document.querySelectorAll(".menu-item")[1].classList.add("active-tab");
+    loadBooking();
+  }
+
+  if(section === "transactions"){
+    document.getElementById("transactionSection").classList.remove("hidden");
+    document.querySelectorAll(".menu-item")[2].classList.add("active-tab");
+    loadTransactions();
+  }
+}
+
+async function saveProfile(){
+
+  const dob = document.getElementById("userDOB").value;
+  const saveBtn = document.getElementById("saveBtn");
+
+  if(!dob){
+    showToast("Please select birthdate", true);
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("users")
+    .update({ dob: dob })
+    .eq("id", currentUser.id);
+
+  if(error){
+    showToast("Error saving changes", true);
+    return;
+  }
+
+ if (userData?.dob) {
+  document.getElementById("saveBtn").style.display = "none";
+}
+  showToast("Changes saved successfully!");
+}
+
+function showToast(message, isError=false){
+
+  const toast = document.getElementById("toast");
+
+  toast.textContent = message;
+  toast.style.backgroundColor = isError ? "#dc2626" : "#16a34a";
+
+  toast.style.opacity = "1";
+  toast.style.transform = "translateY(0)";
+
+  setTimeout(()=>{
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(20px)";
+  },3000);
+}
+
+async function loadBooking(){
+
+  const container = document.getElementById("bookingContainer");
+
+  const { data: booking } = await supabaseClient
+  .from("booking")
+  .select("*")
+  .eq("user_id", currentUser.id)
+  .eq("status", "paid")
+  .order("created_at", { ascending: false })
+  .maybeSingle();
+
+  if (!booking) {
+    container.innerHTML = `<p class="text-lg text-gray-600">No bookings currently.</p>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="grid md:grid-cols-3 gap-6">
+      <div>
+        <p class="text-sm text-gray-500">Car</p>
+        <p class="font-semibold text-lg">${booking.car_name}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Pickup Date</p>
+        <p class="font-semibold text-lg">${booking.pickup_date}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Total Paid</p>
+        <p class="font-semibold text-lg">₹ ${booking.total_price}</p>
+      </div>
+    </div>
+  `;
+  if(error){
+  container.innerHTML = "Error loading booking.";
+}
+}
+
+async function loadTransactions(){
+
+  const container = document.getElementById("transactionContainer");
+
+  const { data: bookings } = await supabaseClient
+  .from("booking")
+  .select("*")
+  .eq("user_id", currentUser.id)
+  .eq("status", "paid")
+  .order("created_at", { ascending: false });
+
+  if (!bookings || bookings.length === 0) {
+    container.innerHTML = `<p class="text-lg text-gray-600">No transactions yet.</p>`;
+    return;
+  }
+
+  container.innerHTML = "";
+
+  bookings.forEach(booking => {
+    container.innerHTML += `
+      <div class="border rounded-xl p-5 mb-4 shadow-sm">
+        <div class="flex justify-between">
+          <div>
+            <p class="text-sm text-gray-500">Car</p>
+            <p class="font-semibold text-lg">${booking.car_name}</p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500">Amount</p>
+            <p class="font-semibold text-lg">₹ ${booking.total_price}</p>
+          </div>
+        </div>
+        <div class="mt-4 text-sm text-gray-600">
+          <p><strong>Pickup Date:</strong> ${booking.pickup_date}</p>
+          <p><strong>Status:</strong> 
+            <span class="text-green-600 font-semibold">
+              ${booking.status}
+            </span>
+          </p>
+        </div>
+      </div>
+    `;
+  });
+}
+</script>
+
+</body>
+</html>

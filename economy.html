@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Economy Cars | RideON</title>
+
+  <!-- Tailwind -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #F7F7E8;       /* SAME as home.html */
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #114b72;
+      --plate-gold: #d4af37;
+    }
+
+    body {
+      font-family: Inter, ui-sans-serif;
+      background: var(--bg);
+      margin: 0;
+    }
+
+    /* Left filter panel */
+    .filter-panel {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+      width: 260px;
+    }
+
+    .filter-section+ .filter-section {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid #eee;
+    }
+
+    /* CAR CARD */
+    .car-card {
+      background: var(--card) !important;
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid #e8e8e8;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: 0.2s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .layout-grid {
+  align-items: flex-start;
+}
+
+    .car-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    .car-img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    /* COLLAPSING DETAILS */
+    .car-details {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height .28s ease, padding .18s ease;
+      padding: 0;
+    }
+
+    .car-details.open {
+      padding: 12px 12px 0 12px;
+      max-height: 400px;
+    }
+
+    /* PLATE */
+    .number-plate {
+      background: var(--plate-gold);
+      color: #1a1a1a;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-family: monospace;
+      letter-spacing: 1px;
+      display: inline-block;
+      margin-top: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    .book-btn {
+      background: var(--accent);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="py-4 px-6 bg-transparent">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center justify-between mb-4">
+       
+    <h1 style="font-family:'Cinzel';font-size:38px;">
+  <a href="home.html" class="hover:opacity-80">
+    <span class="text-green-900">Ride</span><span class="text-gray-600">ON</span>
+  </a>
+</h1>
+
+        <div class="hidden md:flex">
+          <button class="px-4 py-2 rounded-full bg-green-900 text-white">Login / Signup</button>
+        </div>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <input id="searchInput" type="text" placeholder="Search for a car..."
+        class="w-full rounded-lg p-4 border shadow-sm bg-white focus:ring-2 focus:ring-green-900 outline-none">
+    </div>
+  </header>
+  
+
+
+  <!-- MAIN -->
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <div class="flex layout-grid gap-8">
+
+      <!-- LEFT FILTERS -->
+      <aside class="filter-panel">
+        <h2 class="text-xl font-semibold">Filters</h2>
+        <p class="text-sm text-gray-500 mb-3">Fine-tune your search</p>
+
+        <!-- PRICE -->
+        <div class="filter-section">
+          <h3 class="font-medium mb-2">Max Price</h3>
+          <span id="priceLabel" class="text-green-700 font-semibold">₹1500</span>
+          <input id="priceRange" type="range" min="0" max="1500" value="1500" class="w-full mt-3">
+        </div>
+
+      <!--Date filter-->
+        <h3 class="mt-6 font-bold">Pickup Date</h3>
+        <input type="date" id="filterPickupDate" class="w-full border p-2 rounded mt-2">
+
+        <h3 class="mt-4 font-bold">Drop Date</h3>
+        <input type="date" id="filterDropDate" class="w-full border p-2 rounded mt-2">
+
+        <!--fuel filter-->
+        <h3 class="mt-6 font-bold">Fuel Type</h3>
+        <label><input type="checkbox" value="Petrol" class="fuelFilter"> Petrol</label><br>
+        <label><input type="checkbox" value="Petrol/CNG" class="fuelFilter"> Petrol/CNG</label><br>
+        <label><input type="checkbox" value="CNG" class="fuelFilter"> CNG</label>
+
+
+        <!--Transmission type-->
+        <h3 class="mt-6 font-bold">Transmission</h3>
+        <input type="checkbox" class="transFilter" value="Manual"> Manual
+<br>
+<input type="checkbox" class="transFilter" value="Automatic"> Automatic
+<br>
+
+
+
+        <!-- BRAND -->
+       <div class="filter-section">
+  <h3 class="mt-6 font-bold">Brand</h3>
+
+  <label>
+    <input type="checkbox" value="Maruti" class="brandFilter"> Maruti
+  </label><br>
+
+  <label>
+    <input type="checkbox" value="Tata" class="brandFilter"> Tata
+  </label><br>
+
+  <label>
+    <input type="checkbox" value="Mahindra" class="brandFilter"> Mahindra
+  </label><br>
+
+  <label>
+    <input type="checkbox" value="Toyota" class="brandFilter"> Toyota
+  </label>
+</div>
+
+
+      </aside>
+
+      <!-- CAR GRID -->
+      <section class="flex-1">
+        <div id="economyCars" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- ======= ORIGINAL CAR CARDS (NOT CHANGED) ======= -->
+        </div>
+      </section>
+    </div>
+  </main>
+<script>
+  
+document.addEventListener("DOMContentLoaded", () => {
+
+  const searchInput = document.getElementById("searchInput");
+  const priceRange = document.getElementById("priceRange");
+  const priceLabel = document.getElementById("priceLabel");
+
+  priceLabel.textContent = "₹" + priceRange.value;
+
+  function applyFilters() {
+
+    const selectedBrands = Array.from(document.querySelectorAll(".brandFilter:checked"))
+      .map(cb => cb.value);
+
+    const selectedFuels = Array.from(document.querySelectorAll(".fuelFilter:checked"))
+      .map(cb => cb.value);
+
+    const selectedTrans = Array.from(document.querySelectorAll(".transFilter:checked"))
+      .map(cb => cb.value);
+
+    const searchText = searchInput.value.toLowerCase();
+    const maxPrice = parseInt(priceRange.value);
+
+    const cards = document.querySelectorAll(".car-card");
+
+    cards.forEach(card => {
+
+      const brand = card.dataset.brand;
+      const fuel = card.dataset.fuel;
+      const transmission = card.dataset.transmission;
+      const name = card.dataset.name.toLowerCase();
+      const price = parseInt(card.dataset.price);
+
+      let show = true;
+
+      // SEARCH
+      if (!name.includes(searchText)) {
+        show = false;
+      }
+
+      // BRAND
+      if (selectedBrands.length > 0 && !selectedBrands.includes(brand)) {
+        show = false;
+      }
+
+      // FUEL
+      if (selectedFuels.length > 0 && !selectedFuels.includes(fuel)) {
+        show = false;
+      }
+
+      // TRANSMISSION
+      if (selectedTrans.length > 0 && !selectedTrans.includes(transmission)) {
+        show = false;
+      }
+
+      // PRICE
+      if (price > maxPrice) {
+        show = false;
+      }
+
+      card.style.display = show ? "" : "none";
+
+    });
+  }
+
+  // EVENTS
+  searchInput.addEventListener("input", applyFilters);
+
+  priceRange.addEventListener("input", () => {
+    priceLabel.textContent = "₹" + priceRange.value;
+    applyFilters();
+  });
+
+  document.querySelectorAll(".brandFilter").forEach(cb =>
+    cb.addEventListener("change", applyFilters)
+  );
+
+  document.querySelectorAll(".fuelFilter").forEach(cb =>
+    cb.addEventListener("change", applyFilters)
+  );
+
+  document.querySelectorAll(".transFilter").forEach(cb =>
+    cb.addEventListener("change", applyFilters)
+  );
+
+  // 🔥 VERY IMPORTANT
+  window.applyFilters = applyFilters;
+
+});
+</script>
+
+
+<script type="module" src="script.js"></script>
+<div
+  id="carModal"
+  class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-50"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden"
+  >
+    <!-- Close -->
+    <button
+      id="closeModal"
+      class="absolute top-4 right-4 text-gray-500 hover:text-black text-xl z-10"
+    >
+      ✕
+    </button>
+
+    <!-- Image -->
+    <div class="h-56 bg-gray-100 flex items-center justify-center">
+      <img
+        id="modalImage"
+        class="max-h-full object-contain"
+      />
+    </div>
+
+    <!-- Content -->
+    <div class="p-6 text-center space-y-2">
+      <h2 id="modalName" class="text-2xl font-bold"></h2>
+      <p id="modalBrand" class="text-gray-500"></p>
+
+      <p id="modalPrice" class="text-green-700 text-xl font-semibold"></p>
+
+      <div class="text-sm text-gray-700 space-y-1 mt-3">
+        <p><strong>Fuel:</strong> <span id="modalFuel"></span></p>
+        <p><strong>Transmission:</strong> <span id="modalTransmission"></span></p>
+        <p>
+          <strong>Status:</strong>
+          <span id="modalAvailability"></span>
+        </p>
+      </div>
+
+      <!-- Button -->
+      <button
+        id="modalBookBtn"
+        class="w-full mt-5 bg-black text-white py-3 rounded-xl hover:bg-gray-900 transition"
+      >
+        Book Now
+      </button>
+    
+    </div>
+
+  </div>
+</div>
+
+
+</body>
+</html>

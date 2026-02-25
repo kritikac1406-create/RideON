@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Luxury Car Rentals — White & Gold</title>
+
+  <!-- Tailwind + Fonts + FA -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    :root{
+      --bg:#b2bd14cf;      /* white background */
+      --gold:#c6c899;    /* gold accent */
+      --muted:#293918;   /* gray text */
+      --card:#dddfae;    /* card bg */
+      --contrast:#33450d;/* dark text */
+    }
+    html,body{height:100%}
+    body{
+      font-family:'Lato',sans-serif;
+      background:var(--bg);
+      color:var(--contrast);
+      margin:0;
+      overflow-x:hidden;
+    }
+    h1,h2,h3{font-family:'Cinzel',serif}
+    .gold-btn{background:var(--gold); color:#000; font-weight:600; border-radius:9999px; padding:10px 22px}
+    .gold-btn:hover{background:#406008}
+    a,nav a{color:var(--contrast)}
+   input:focus, button:focus {
+  outline:none;
+  box-shadow: 0 0 0 2px rgba(17,75,114,0.3);
+}
+    .muted{color:var(--muted)}
+    .card-bg{background:var(--card)}
+    nav{backdrop-filter: blur(6px)}
+    
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+ <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
+  <div class="w-full grid grid-cols-3 items-center px-4 py-4">
+  <!-- LEFT: LOGO -->
+  <div class="flex justify-start">
+    <div class="text-2xl font-bold" style="font-family:'Cinzel'">
+      Ride<span class="text-gray-600">ON</span>
+    </div>
+  </div>
+
+  <!-- CENTER: MENU -->
+  <div class="flex justify-center">
+    <ul class="hidden md:flex items-center space-x-8 text-lg">
+      <li><a href="#home" class="hover:text-gray-700">Home</a></li>
+      <li><a href="#fleet" class="hover:text-gray-700">Our Fleet</a></li>
+      <li><a href="#about" class="hover:text-gray-700">About</a></li>
+    </ul>
+  </div>
+
+  <!-- RIGHT: USER / LOGIN -->
+  <div class="flex justify-end items-center gap-4">
+
+    <div id="userBookings"></div>
+
+    <!-- LOGIN BUTTON -->
+    <div id="loginArea">
+      <a href="log.html"
+         class="font-semibold text-gray-700 hover:text-black">
+        <span id="navUserName">Login</span>
+      </a>
+    </div>
+
+    <!-- KEEP your userArea + adminArea dropdowns here -->
+  <div class="relative hidden" id="userArea">
+    <button id="userBtn"
+      class="flex items-center gap-2 text-gray-700 hover:text-black font-semibold">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="h-6 w-6"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor">
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5.121 17.804A4 4 0 019 16h6a4 4 0 013.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+      </svg>
+
+      <span id="usernameText" class="hidden md:inline">Account</span>
+      <i class="fas fa-chevron-down text-xs"></i>
+    </button>
+
+    <div id="userDropdown"
+      class="hidden absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-lg border z-50">
+
+      <p id="dropdownName" class="px-4 py-3 font-semibold border-b">
+        Hello, User
+      </p>
+
+      <a href="profile.html" id="profileLink"
+        class="block px-4 py-2 hover:bg-gray-100">
+        My Profile
+      </a>
+
+      <button onclick="logoutUser()"
+        class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- ADMIN DROPDOWN -->
+  <div class="relative hidden" id="adminArea">
+
+    <button id="adminBtn"
+      class="flex items-center gap-2 text-gray-700 hover:text-black font-semibold">
+
+      <i class="fas fa-user-shield"></i>
+      <span class="hidden md:inline">Admin</span>
+      <i class="fas fa-chevron-down text-xs"></i>
+    </button>
+
+    <div id="adminDropdown"
+      class="hidden absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-lg border z-50">
+
+      <a href="admin-dashboard.html"
+        class="block px-4 py-2 hover:bg-gray-100">
+       Dashboard
+      </a>
+
+      <a href="admin-users.html"
+        class="block px-4 py-2 hover:bg-gray-100">
+        User Management
+      </a>
+
+      <a href="admin-booking.html"
+   class="block px-4 py-2 hover:bg-gray-100">
+  Booking Management
+</a>
+
+      <button onclick="adminLogout()"
+        class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">
+        Logout
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<!-- LIVE TRACKING MAP SECTION — Small & Top -->
+<section id="trackingSection"
+         style="
+           display:none;
+           position:absolute;
+           top:90px;
+           right:40px;
+           z-index:50;
+           width:260px;
+           text-align:center;
+         ">
+
+  <!-- Close Tracking Map -->
+  <button id="closeTracking"
+          style="
+            position:absolute;
+            top:-10px;
+            right:-10px;
+            background:#dc2626;
+            color:white;
+            border:none;
+            width:26px;
+            height:26px;
+            border-radius:50%;
+            font-weight:bold;
+            cursor:pointer;
+            box-shadow:0 2px 6px rgba(0,0,0,0.3);
+          ">
+    ×
+  </button>
+
+  <p style="font-size:15px; margin-bottom:6px;">
+    Your car is currently moving.
+  </p>
+
+  <div id="homeMap"
+       style="
+         height:200px;
+         width:260px;
+         border-radius:12px;
+         overflow:hidden;
+         border:2px solid #ccc;
+         box-shadow:0 4px 12px rgba(0,0,0,0.15);
+       ">
+  </div>
+
+</section>
+  <!-- HERO -->
+  <section id="home" class="relative flex items-center justify-center text-center min-h-screen pt-20"
+           style="background-image:url('https://images.unsplash.com/photo-1605559424843-3a477d8e5f2b?auto=format&fit=crop&w=2000&q=80'); background-size:cover; background-position:center;">
+    <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255,255,255,0.9));"></div>
+    <div class="relative z-10 max-w-3xl px-4 py-24">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4" style="color:var(--contrast)">Turn Heads. Drive Legends.</h1>
+      <p class="muted text-lg md:text-xl mb-6">Experience modern luxury, performance, and comfort — all in one ride.</p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white text-center">
+    <h2 class="text-3xl md:text-4xl mb-10">Exclusive Offers</h2>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="relative w-full h-[420px] rounded-xl overflow-hidden">
+        <img src="offer/TATA.jpg" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+
+        <div class="absolute top-6 left-6 bg-transparent border-2 border-white px-4 py-3 rounded-xl text-left text-white">
+          <p class="text-xs">UP TO</p>
+          <p class="text-3xl font-extrabold">5%</p>
+          <p class="text-xl font-bold">DISCOUNT</p>
+        </div>
+
+        <div class="absolute bottom-6 left-6 text-left text-white">
+          <h3 class="text-2xl font-bold">Economy Cars</h3>
+          <p class="text-sm text-gray-200 mb-3">Affordable & efficient rentals.</p>
+          <a href="ecopop.html"
+   class="px-5 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-300 transition">
+   Explore Now
+</a>
+
+        </div>
+      </div>
+
+      <div class="relative w-full h-[420px] rounded-xl overflow-hidden">
+        <img src="offer/MER.jpg" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+
+        <div class="absolute top-6 left-6 bg-transparent border-2 border-white px-4 py-3 rounded-xl text-left text-white">
+          <p class="text-xs">UP TO</p>
+          <p class="text-3xl font-extrabold">10%</p>
+          <p class="text-xl font-bold">DISCOUNT</p>
+        </div>
+
+        <div class="absolute bottom-6 left-6 text-left text-white">
+          <h3 class="text-2xl font-bold">Luxury Cars</h3>
+          <p class="text-sm text-gray-200 mb-3">Experience premium comfort.</p>
+          <a href="offer/TATA.jpg" class="px-5 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-300 transition">Explore Now</a>
+        </div>
+      </div>
+
+      <div class="relative w-full h-[420px] rounded-xl overflow-hidden">
+        <img src="offer/ELEC.jpg" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+
+        <div class="absolute top-6 left-6 bg-transparent border-2 border-white px-4 py-3 rounded-xl text-left text-white">
+          <p class="text-xs">UP TO</p>
+          <p class="text-3xl font-extrabold">12%</p>
+          <p class="text-xl font-bold">DISCOUNT</p>
+        </div>
+
+        <div class="absolute bottom-6 left-6 text-left text-white">
+          <h3 class="text-2xl font-bold">EV Cars</h3>
+          <p class="text-sm text-gray-200 mb-3">Go green. Drive electric.</p>
+          <a href="c:\Users\Kritika v\Downloads\car rental site updated (1)\car rental site\elecpopup.html" class="px-5 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-300 transition">Explore Now</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+<section id="fleet" class="relative flex items-center justify-center text-center min-h-screen pt-20"
+         style="background-image:url('https://images.unsplash.com/photo-1605559424843-3a477d8e5f2b?auto=format&fit=crop&w=2000&q=80'); 
+                background-size:cover; 
+                background-position:center;">
+  
+  <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.9));"></div>
+
+  <div class="relative z-10 w-full">
+    <h2 class="text-3xl md:text-4xl mb-10">Explore Our Fleet</h2>
+
+    <div class="relative w-full max-w-4xl mx-auto overflow-hidden">
+
+      <div id="fleetSlider" class="flex transition-transform duration-700 ease-in-out">
+        
+        <!-- SLIDE 1 -->
+        <div class="flex-shrink-0 w-full flex flex-col items-center">
+          <div class="relative w-full h-[350px] rounded-xl overflow-hidden">
+            <img src="eco/ECONOMY1.jpg" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+            <div class="absolute bottom-6 left-6 text-left text-white">
+              <h3 class="text-3xl font-bold">Economy Cars</h3>
+              <p class="text-sm text-gray-200">Affordable & comfortable for every trip.</p>
+            </div>
+          </div>
+          <a href="economy.html" class="gold-btn mt-5 inline-block">Explore More</a>
+
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="flex-shrink-0 w-full flex flex-col items-center">
+          <div class="relative w-full h-[350px] rounded-xl overflow-hidden">
+            <img src="lux/bmw3.jpeg" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+            <div class="absolute bottom-6 left-6 text-left text-white">
+              <h3 class="text-3xl font-bold">Luxury Cars</h3>
+              <p class="text-sm text-gray-200">Premium comfort & elegant experience.</p>
+            </div>
+          </div>
+          <a href="luxury.html" class="gold-btn mt-5 inline-block">Explore More</a>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="flex-shrink-0 w-full flex flex-col items-center">
+          <div class="relative w-full h-[350px] rounded-xl overflow-hidden">
+            <img src="ecar/EV.jpg" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+            <div class="absolute bottom-6 left-6 text-left text-white">
+              <h3 class="text-3xl font-bold">Electric Cars</h3>
+              <p class="text-sm text-gray-200">Eco-friendly, silent & powerful.</p>
+            </div>
+          </div>
+          <a href="electric.html" class="gold-btn mt-5 inline-block">Explore More</a>
+        </div>
+
+      </div>
+
+      <!-- ARROWS -->
+      <button id="prev" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-black text-4xl font-bold">&#10094;</button>
+      <button id="next" class="absolute top-1/2 right-4 transform -translate-y-1/2 text-black text-4xl font-bold">&#10095;</button>
+
+    </div>
+  </div>
+</section>
+    
+
+  <!-- ABOUT -->
+  <section id="about" class="py-16 text-center bg-white">
+    <h2 class="text-3xl md:text-4xl mb-6" style="color:var(--contrast)">About Us</h2>
+
+    <p class="max-w-4xl mx-auto text-lg mb-6 muted">
+      At <span style="color:var(--gold); font-weight:600">Luxury Car Rentals</span>, we combine modern design with unrivaled service.
+      From efficient economy cars to head-turning luxury vehicles and next-gen electric models, our fleet is curated for memorable journeys.
+    </p>
+
+    <p class="max-w-4xl mx-auto text-lg mb-6 muted">
+      We maintain strict standards: every vehicle undergoes detailed maintenance and inspection, and our support team is available 24/7.
+      Seamless booking, transparent pricing, and door-to-door delivery are part of our promise.
+    </p>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+      <div class="card-bg border p-6 rounded-xl" style="border-color: rgba(212,175,55,0.08);">
+        <h3 class="text-xl font-semibold mb-2" style="color:var(--contrast)">Premium Fleet</h3>
+        <p class="muted">Handpicked cars kept in showroom condition.</p>
+      </div>
+      <div class="card-bg border p-6 rounded-xl" style="border-color: rgba(212,175,55,0.08);">
+        <h3 class="text-xl font-semibold mb-2" style="color:var(--contrast)">Trusted Service</h3>
+        <p class="muted">Concierge support and transparent policies.</p>
+      </div>
+      <div class="card-bg border p-6 rounded-xl" style="border-color: rgba(212,175,55,0.08);">
+        <h3 class="text-xl font-semibold mb-2" style="color:var(--contrast)">Smart Pricing</h3>
+        <p class="muted">Competitive rates for every type of trip.</p>
+      </div>
+    </div>
+  </section>
+<!-- LIVE TRACKING MAP SECTION -->
+
+
+
+  <!-- FOOTER -->
+  <footer class="py-8 text-center muted bg-white">
+    <div class="mb-4">
+      <h3 class="text-lg" style="color:var(--gold)">Follow Us</h3>
+      <div class="flex justify-center gap-6 mt-2 text-2xl muted">
+        <a href="#" class="hover:text-gray-700"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="hover:text-gray-700"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="hover:text-gray-700"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+    <p class="text-sm muted">&copy; 2025 Luxury Car Rentals. All Rights Reserved.</p>
+  </footer>
+  <!-- SCRIPTS -->
+  <script>
+    // fleet slider
+    const fleetSlider = document.getElementById('fleetSlider');
+    const next = document.getElementById('next');
+    const prev = document.getElementById('prev');
+    let index = 0;
+    function updateSlider(){ fleetSlider.style.transform = `translateX(-${index * 100}%)`; }
+    if(next) next.addEventListener('click', ()=>{ index = (index + 1) % fleetSlider.children.length; updateSlider(); });
+    if(prev) prev.addEventListener('click', ()=>{ index = (index - 1 + fleetSlider.children.length) % fleetSlider.children.length; updateSlider(); });
+ </script>
+<script>
+  // Show map ONLY if user returned from track.html
+  const showMap = localStorage.getItem("showTrackingMap");
+
+  if (showMap === "yes") {
+    document.getElementById("trackingSection").style.display = "block";
+  }
+// Close mini tracking map
+const closeBtn = document.getElementById("closeTracking");
+
+if (closeBtn) {
+  closeBtn.addEventListener("click", () => {
+    document.getElementById("trackingSection").style.display = "none";
+  });
+}
+
+  // Clear flag so map does not show again on refresh
+  localStorage.removeItem("showTrackingMap");
+
+</script>
+
+<script>
+// Initialize map only when container is visible
+let homeMap = null;
+let homeCarMarker = null;
+let homeRoute = null;
+
+function initHomeMap() {
+  if (homeMap !== null) return; // prevent duplicate init
+
+  homeMap = L.map("homeMap").setView([19.0760, 72.8777], 12);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19
+  }).addTo(homeMap);
+
+  const homeCarIcon = L.icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/744/744465.png",
+    iconSize: [55, 55],
+    iconAnchor: [27, 27]
+  });
+
+  homeCarMarker = L.marker([19.0760, 72.8777], { icon: homeCarIcon }).addTo(homeMap);
+  homeRoute = L.polyline([], { color: "blue", weight: 4 }).addTo(homeMap);
+}
+
+// Update map IF it is enabled
+setInterval(() => {
+  if (document.getElementById("trackingSection").style.display === "none") return;
+
+  initHomeMap();
+
+  const lat = parseFloat(localStorage.getItem("liveCarLat"));
+  const lng = parseFloat(localStorage.getItem("liveCarLng"));
+
+  if (!lat || !lng) return;
+
+  homeCarMarker.setLatLng([lat, lng]);
+  homeMap.panTo([lat, lng]);
+
+  homeRoute.setLatLngs([
+    [lat, lng],
+    [19.0760, 72.8777]
+  ]);
+}, 1000);
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ===== USER DATA =====
+  const userArea = document.getElementById("userArea");
+  const userBtn = document.getElementById("userBtn");
+  const userDropdown = document.getElementById("userDropdown");
+  const usernameText = document.getElementById("usernameText");
+  
+  const dropdownName = document.getElementById("dropdownName");
+
+
+  // ===== TOGGLE USER DROPDOWN =====
+  if (userBtn) {
+    userBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      userDropdown.classList.toggle("hidden");
+      adminDropdown.classList.add("hidden");
+    });
+  }
+
+  // ===== TOGGLE ADMIN DROPDOWN =====
+  if (adminBtn) {
+    adminBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      adminDropdown.classList.toggle("hidden");
+      userDropdown.classList.add("hidden");
+    });
+  }
+
+  // ===== GLOBAL CLICK (CLOSE BOTH) =====
+  document.addEventListener("click", (e) => {
+    if (userArea && !userArea.contains(e.target)) {
+      userDropdown.classList.add("hidden");
+    }
+    if (adminArea && !adminArea.contains(e.target)) {
+      adminDropdown.classList.add("hidden");
+    }
+  });
+
+});
+
+async function logoutUser() {
+  await supabaseClient.auth.signOut();
+  sessionStorage.clear();
+  window.location.href = "log.html";
+}
+
+function adminLogout() {
+  sessionStorage.clear();
+  window.location.href = "log.html";
+}
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* ================= SUPABASE ================= */
+const supabaseClient = supabase.createClient(
+  "https://ecuvhnvpajodymdibuwt.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+
+);
+
+/* ---------------- TAB SWITCH ---------------- */
+const tabLogin = document.getElementById("tabLogin");
+const tabRegister = document.getElementById("tabRegister");
+const loginBox = document.getElementById("loginBox");
+const registerBox = document.getElementById("registerBox");
+
+tabRegister.onclick = () => {
+  loginBox.classList.add("hidden");
+  registerBox.classList.remove("hidden");
+  tabRegister.classList.remove("text-gray-500");
+  tabRegister.style.borderBottom = "2px solid #114b72";
+  tabLogin.classList.add("text-gray-500");
+  tabLogin.style.borderBottom = "none";
+};
+
+tabLogin.onclick = () => {
+  registerBox.classList.add("hidden");
+  loginBox.classList.remove("hidden");
+  tabLogin.classList.remove("text-gray-500");
+  tabLogin.style.borderBottom = "2px solid #114b72";
+  tabRegister.classList.add("text-gray-500");
+  tabRegister.style.borderBottom = "none";
+};
+
+/* ---------------- PASSWORD TOGGLE ---------------- */
+function togglePass(id) {
+  const field = document.getElementById(id);
+  field.type = field.type === "password" ? "text" : "password";
+}
+
+/* ---------------- REGISTER ---------------- */
+async function registerUser() {
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!name || !email || !password) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  // STEP 1: Create Auth user with metadata
+  const { data, error } = await supabaseClient.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      data: {
+        name: name
+      }
+    }
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  if (!data.user) {
+    alert("Check your email to confirm account.");
+    return;
+  }
+
+  const userId = data.user.id;
+
+  // STEP 2: Check if user already exists in public.users
+  const { data: existingUser } = await supabaseClient
+    .from("users")
+    .select("id")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (!existingUser) {
+    // STEP 3: Insert into public.users
+    const { error: insertError } = await supabaseClient
+      .from("users")
+      .insert({
+        id: userId,
+        name: name,
+        email: email
+      });
+
+    if (insertError) {
+      console.log(insertError);
+      alert("Error saving user data");
+      return;
+    }
+  }
+
+  alert("Registration successful!");
+  window.location.href = "home.html";
+}
+
+/* ---------------- LOGIN ---------------- */
+async function loginUser() {
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPass").value.trim();
+
+  if (!email || !password) {
+    alert("Please fill all fields");
+    return;
+  }
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+  // Get name from users table
+  const { data: userData } = await supabaseClient
+    .from("users")
+    .select("name")
+    .eq("id", data.user.id)
+    .single();
+
+  if (userData) {
+    sessionStorage.setItem("userName", userData.name);
+  }
+  window.location.href = "home.html";
+}
+</script>
+<script>
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const { data, error } = await supabaseClient.auth.getUser();
+
+  if (!data.user) return;
+
+  const user = data.user;
+
+  // 🔥 Get Google full name
+  let displayName =
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    user.email.split("@")[0];
+
+  // Capitalize first letter
+  displayName =
+    displayName.charAt(0).toUpperCase() +
+    displayName.slice(1);
+
+  // 🔥 Update Navbar Text
+  const usernameText = document.getElementById("usernameText");
+  const dropdownName = document.getElementById("dropdownName");
+  const loginArea = document.getElementById("loginArea");
+  const userArea = document.getElementById("userArea");
+
+  if (usernameText) usernameText.textContent = displayName;
+  if (dropdownName) dropdownName.textContent = "Hello, " + displayName;
+
+  // Hide Login button and show user area
+  if (loginArea) loginArea.style.display = "none";
+  if (userArea) userArea.style.display = "block";
+
+});
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const { data } = await supabaseClient.auth.getUser();
+
+  if (!data.user) return;
+
+  const role = sessionStorage.getItem("role") || "user";
+
+  const adminArea = document.getElementById("adminArea");
+  const userArea = document.getElementById("userArea");
+  const loginArea = document.getElementById("loginArea");
+
+  loginArea.style.display = "none";
+
+  if (role === "admin") {
+    adminArea.style.display = "block";
+    userArea.style.display = "none";
+  } else {
+    userArea.style.display = "block";
+    adminArea.style.display = "none";
+  }
+
+});
+
+</script>
+
+
+
+
+
+
+
+
+<!-- Leaflet JS (keep this normal) -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</body>
+</html>

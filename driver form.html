@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Owner Car Registration</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0d0d0d;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #ffd700;
+    }
+
+    .form-container {
+      max-width: 700px;
+      margin: 50px auto;
+      background-color: #1a1a1a;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      text-align: center;
+      color: #ffd700;
+      margin-bottom: 30px;
+      font-size: 2rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #f5c518;
+    }
+
+    .required::after {
+      content: " *";
+      color: red;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      background-color: #111;
+      border: 1px solid #444;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #ffd700;
+      outline: none;
+      background-color: #1f1f1f;
+    }
+
+    input[type="file"] {
+      padding: 6px;
+      color: #fff;
+      background-color: transparent;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 15px;
+      font-size: 1.1rem;
+      background-color: #ffd700;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e6c200;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Register Your Car for Rent</h2>
+    <form id="ownerForm" enctype="multipart/form-data" novalidate>
+
+      <label for="ownerName" class="required">Owner Full Name</label>
+      <input type="text" id="ownerName" name="ownerName" required minlength="3">
+      <div class="error" id="ownerNameError"></div>
+
+      <label for="email" class="required">Email Address</label>
+      <input type="email" id="email" name="email" required>
+      <div class="error" id="emailError"></div>
+
+      <label for="phone" class="required">Phone Number</label>
+      <input type="tel" id="phone" name="phone" required pattern="^\d{10}$" placeholder="10 digit number">
+      <div class="error" id="phoneError"></div>
+
+      <label for="carModel" class="required">Car Model</label>
+      <input type="text" id="carModel" name="carModel" required>
+      <div class="error" id="carModelError"></div>
+
+      <label for="purchaseYear" class="required">Purchase Year</label>
+      <input type="number" id="purchaseYear" name="purchaseYear" required min="2000" max="2025">
+      <div class="error" id="purchaseYearError"></div>
+
+      <label for="registrationNumber" class="required">Vehicle Registration Number</label>
+      <input type="text" id="registrationNumber" name="registrationNumber" required minlength="6">
+      <div class="error" id="registrationError"></div>
+
+      <label for="carPhoto" class="required">Upload Car Photo</label>
+      <input type="file" id="carPhoto" name="carPhoto" accept="image/*" required>
+      <div class="error" id="carPhotoError"></div>
+
+      <label for="ownerID" class="required">Upload Owner ID Proof</label>
+      <input type="file" id="ownerID" name="ownerID" accept="image/*,application/pdf" required>
+      <div class="error" id="ownerIDError"></div>
+
+      <label for="bankDetails" class="required">Bank Account Details</label>
+      <textarea id="bankDetails" name="bankDetails" rows="3" required></textarea>
+      <div class="error" id="bankError"></div>
+
+      <label for="location" class="required">City for Renting</label>
+      <select id="location" name="location" required>
+        <option value="">-- Select City --</option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Pune">Pune</option>
+        <option value="Delhi">Delhi</option>
+        <option value="Bangalore">Bangalore</option>
+        <option value="Hyderabad">Hyderabad</option>
+        <option value="Chennai">Chennai</option>
+      </select>
+      <div class="error" id="locationError"></div>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("ownerForm").addEventListener("submit", function(event) {
+      let isValid = true;
+      document.querySelectorAll(".error").forEach(el => el.textContent = "");
+
+      const getField = id => document.getElementById(id);
+      const setError = (id, msg) => { getField(id).textContent = msg; isValid = false; };
+
+      const name = getField("ownerName");
+      const email = getField("email");
+      const phone = getField("phone");
+      const carModel = getField("carModel");
+      const year = getField("purchaseYear");
+      const regNum = getField("registrationNumber");
+      const carPhoto = getField("carPhoto");
+      const ownerID = getField("ownerID");
+      const bank = getField("bankDetails");
+      const location = getField("location");
+
+      if (name.value.length < 3) setError("ownerNameError", "Name must be at least 3 characters.");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) setError("emailError", "Invalid email.");
+      if (!/^\d{10}$/.test(phone.value)) setError("phoneError", "Phone must be 10 digits.");
+      if (!carModel.value.trim()) setError("carModelError", "Car model is required.");
+      if (year.value < 2000 || year.value > 2025) setError("purchaseYearError", "Enter a valid year.");
+      if (regNum.value.length < 6) setError("registrationError", "Min 6 characters required.");
+      if (!carPhoto.files.length) setError("carPhotoError", "Car photo is required.");
+      if (!ownerID.files.length) setError("ownerIDError", "ID proof is required.");
+      if (!bank.value.trim()) setError("bankError", "Bank details are required.");
+      if (!location.value) setError("locationError", "Select a city.");
+
+      if (!isValid) event.preventDefault();
+    });
+  </script>
+
+</body>
+</html>

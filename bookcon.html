@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Booking Confirmed | RideON</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-[#F7F7E8] min-h-screen flex items-center justify-center">
+   <!-- NAV -->
+ <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
+  <div class="w-full grid grid-cols-3 items-center px-4 py-4">
+  <!-- LEFT: LOGO -->
+  <div class="flex justify-start">
+    <div class="text-2xl font-bold" style="font-family:'Cinzel'">
+      Ride<span class="text-gray-600">ON</span>
+    </div>
+  </div>
+  </div>
+  </nav>
+
+<div class="bg-white p-10 rounded-2xl shadow-xl max-w-xl w-full text-center">
+
+  <h1 class="text-3xl font-bold mb-4" style="font-family:Cinzel">
+    Booking Confirmed 🎉
+  </h1>
+
+  <div id="content" class="text-left space-y-2 hidden">
+    <p><b>Car:</b> <span id="carName"></span></p>
+    <p><b>Name:</b> <span id="fullName"></span></p>
+    <p><b>Pickup:</b> <span id="pickup"></span></p>
+    <p><b>Drop:</b> <span id="drop"></span></p>
+    <p class="text-xl font-bold text-green-700">
+      Total: ₹<span id="amount"></span>
+    </p>
+  </div>
+
+  <p id="error" class="text-red-600 hidden">
+    ❌ No booking found
+  </p>
+<a href="payment.html"
+   class="inline-block mt-6 bg-green-700 hover:bg-green-800 transition transform hover:scale-105 text-white px-6 py-3 rounded-lg"
+>
+  Proceed to Payment →
+</a>
+
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const supabase = createClient(
+  "https://ecuvhnvpajodymdibuwt.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+);
+
+const bookingId = localStorage.getItem("bookingId");
+console.log("Booking ID:", bookingId);
+
+
+const content = document.getElementById("content");
+const error = document.getElementById("error");
+
+if (!bookingId) {
+  error.classList.remove("hidden");
+} else {
+  loadBooking();
+}
+async function loadBooking() {
+
+  const id = Number(bookingId);   // 🔥 convert to number
+
+  const { data, error: err } = await supabase
+    .from("booking")
+    .select("*")
+    .eq("id", id)
+    .single();  // 🔥 use single again
+
+  if (err || !data) {
+    error.classList.remove("hidden");
+    return;
+  }
+
+  const booking = data;
+
+  content.classList.remove("hidden");
+
+  document.getElementById("carName").textContent = booking.car_name;
+  document.getElementById("fullName").textContent = booking.full_name;
+ document.getElementById("pickup").innerHTML =
+  `${booking.pickup_date} ${booking.pickup_time}<br>
+   ${booking.pickup_address || "Location not available"}`;
+
+document.getElementById("drop").innerHTML =
+  `${booking.drop_date} ${booking.drop_time}<br>
+   ${booking.drop_address || "Location not available"}`;
+   document.getElementById("amount").textContent = booking.total_amount || 0;
+}
+
+</script>
+
+
+</body>
+</html>

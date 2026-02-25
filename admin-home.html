@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel | RideON</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    background: linear-gradient(135deg, #f7f7e8, #eef2f3);
+    font-family: 'Lato', sans-serif;
+  }
+</style>
+</head>
+
+<body class="min-h-screen">
+  
+
+  <!-- NAVBAR -->
+  <header class="bg-white/80 backdrop-blur-md shadow-sm px-10 py-4
+                 flex justify-between items-center fixed top-0 w-full z-50">
+
+    <!-- LOGO -->
+    <a href="admin-login.html"
+       class="text-3xl font-bold tracking-wide"
+       style="font-family:'Cinzel'">
+       <span class="text-green-900">Ride</span><span class="text-gray-600">ON</span>
+    </a>
+
+    <!-- ADMIN LOGIN -->
+    <a href="admin-login.html"
+       class="font-semibold text-[#114b72] hover:underline transition">
+      Admin Login
+    </a>
+  </header>
+
+  
+  <!-- CONTENT -->
+  <main class="min-h-screen flex items-center justify-center pt-28">
+
+    <div class="backdrop-blur-lg bg-white/70 border border-white/40 
+                shadow-2xl rounded-3xl p-10 w-full max-w-md text-center">
+
+      <h1 class="text-4xl font-bold mb-2" style="font-family:'Cinzel'">
+        Admin Panel
+      </h1>
+
+      <p class="text-gray-600 mb-8">
+        Choose where you want to go
+      </p>
+
+      <!-- DASHBOARD -->
+      <a href="admin-dashboard.html"
+         class="block mb-4 transform transition hover:scale-[1.02]">
+         
+        <div class="bg-[#114b72] text-white py-4 rounded-xl 
+                    font-semibold flex items-center justify-center gap-3
+                    shadow-lg hover:shadow-xl">
+          📊 <span>Admin Dashboard</span>
+        </div>
+      </a>
+
+      <!-- USERS -->
+      <a href="admin-users.html"
+         class="block transform transition hover:scale-[1.02]">
+        <div class="bg-[#0f3f5f] text-white py-4 rounded-xl 
+                    font-semibold flex items-center justify-center gap-3
+                    shadow-lg hover:shadow-xl">
+          👤 <span>Manage Users</span>
+        </div>
+      </a>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

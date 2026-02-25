@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Booking Confirmation | RideON</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  body {
+    background: linear-gradient(145deg, #e7ebc1, #f3f5da);
+    font-family: Inter, sans-serif;
+  }
+</style>
+</head>
+
+<body class="min-h-screen p-4">
+
+<!-- NAVBAR -->
+<nav class="fixed top-0 left-0 w-full bg-white shadow-md border-b z-50">
+  <div class="px-6 py-5 text-2xl font-bold">
+    Ride<span class="text-gray-600">ON</span>
+  </div>
+</nav>
+
+<!-- Main Container -->
+<div class="max-w-xl mx-auto mt-32">
+
+  <div class="bg-white p-10 rounded-2xl shadow-xl w-full">
+
+    <div class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-green-700">
+        Payment Successful 🎉
+      </h1>
+      <p class="text-gray-500 mt-1">
+        Your booking has been confirmed.
+      </p>
+    </div>
+
+    <div class="border rounded-lg p-5 space-y-3 bg-gray-50">
+
+      <p><strong>Transaction ID:</strong>
+        <span id="txnId"></span>
+      </p>
+
+      <p><strong>Booking ID:</strong>
+        <span id="bookingIdDisplay"></span>
+      </p>
+
+      <p><strong>Payment Method:</strong>
+        UPI
+      </p>
+
+      <p><strong>Payment Date:</strong>
+        <span id="paymentDate"></span>
+      </p>
+
+      <hr class="my-3">
+
+      <p><strong>Car:</strong> <span id="carName"></span></p>
+
+      <p><strong>Pickup:</strong><br>
+        <span id="pickup"></span>
+      </p>
+
+      <p><strong>Drop:</strong><br>
+        <span id="drop"></span>
+      </p>
+
+      <hr class="my-3">
+
+      <p class="text-xl font-bold text-green-700">
+        Amount Paid: ₹<span id="amount"></span>
+      </p>
+
+      <p>
+        Status:
+        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">
+          PAID
+        </span>
+      </p>
+
+    </div>
+
+    <div class="text-center mt-6 space-x-4">
+      <button onclick="window.print()"
+        class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-black transition">
+        Download Receipt
+      </button>
+
+      <button onclick="window.location.href='track.html'"
+        class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 transition">
+        Track Car
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const supabase = createClient(
+  "https://ecuvhnvpajodymdibuwt.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+
+);
+
+const bookingId = localStorage.getItem("bookingId");
+
+if (!bookingId) {
+  document.body.innerHTML =
+    "<h1 class='text-center text-3xl mt-40'>No Booking Found!</h1>";
+}
+
+async function loadBooking() {
+
+  const { data, error } = await supabase
+    .from("booking")
+    .select("*")
+    .eq("id", bookingId)
+    .single();
+
+  if (error || !data) {
+    document.body.innerHTML =
+      "<h1 class='text-center text-3xl mt-40'>Booking Not Found!</h1>";
+    return;
+  }
+
+  const txn = "UPI" + Math.floor(Math.random() * 1000000000);
+
+  document.getElementById("txnId").textContent = txn;
+  document.getElementById("bookingIdDisplay").textContent = data.id;
+  document.getElementById("paymentDate").textContent =
+    new Date().toLocaleString();
+
+  document.getElementById("carName").textContent = data.car_name;
+
+  document.getElementById("pickup").innerHTML =
+    `${data.pickup_date} at ${data.pickup_time}<br>
+     ${data.pickup_address || ""}`;
+
+  document.getElementById("drop").innerHTML =
+    `${data.drop_date} at ${data.drop_time}<br>
+     ${data.drop_address || ""}`;
+
+  document.getElementById("amount").textContent =
+    data.total_amount;
+}
+
+loadBooking();
+</script>
+
+</body>
+</html>

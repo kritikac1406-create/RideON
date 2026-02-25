@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RideON Exclusive Offer Page</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <style>
+    :root{
+      --bg:#eceed8cf;
+      --gold:#c6c899;
+      --muted:#273d10;
+      --card:#dddfae;
+      --contrast:#222f08;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:'Lato',sans-serif;
+      background:var(--bg);
+      color:var(--contrast);
+      overflow-x:hidden;
+    }
+
+    h1,h2,h3{
+      font-family:'Cinzel',serif;
+    }
+
+    nav{
+      backdrop-filter: blur(6px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(30px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    .fade-in {
+      opacity:0;
+      animation:fadeIn 1s ease-out forwards;
+    }
+
+    .swiper {
+      width:100%;
+      max-width:500px;
+    }
+
+    .swiper-slide {
+      width:500px;
+      height:300px;
+      border-radius:20px;
+      overflow:hidden;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ✅ NAVBAR (FIXED, CLICKABLE LOGO) -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-white bg-opacity-95 border-b">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+
+    <!-- LOGO -->
+    <a href="home.html" class="text-2xl font-bold" style="font-family:'Cinzel'">
+      Ride<span class="text-gray-600">ON</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ✅ SPACE FOR FIXED NAVBAR -->
+<div class="h-24"></div>
+
+<!-- CONTENT (UNCHANGED) -->
+
+<div class="fade-in text-center mt-10">
+  <h1 class="text-4xl font-bold">Economy Cars Exclusive Offers</h1>
+</div>
+
+<div class="flex justify-center mt-10 fade-in">
+  <div class="swiper mySwiper w-full max-w-[500px]">
+    <div class="swiper-wrapper">
+
+      <div class="swiper-slide">
+        <img src="c:\Users\Kritika v\Downloads\car rental site updated (1)\car rental site\execlusive\car.jpg"
+             class="w-full h-full object-cover rounded-2xl shadow-xl">
+      </div>
+
+      <div class="swiper-slide">
+        <img src="c:\Users\Kritika v\Downloads\car rental site updated (1)\car rental site\execlusive\car1.jpg"
+             class="w-full h-full object-cover rounded-2xl shadow-xl">
+      </div>
+
+      <div class="swiper-slide">
+        <img src="c:\Users\Kritika v\Downloads\car rental site updated (1)\car rental site\execlusive\car2.jpg"
+             class="w-full h-full object-cover rounded-2xl shadow-xl">
+      </div>
+
+    </div>
+    <div class="swiper-pagination mt-4"></div>
+  </div>
+</div>
+
+<div class="fade-in bg-green-900 text-white text-center py-10 text-4xl font-extrabold mt-6 shadow-lg">
+  SAVE UP TO 5% AND START YOUR WEEK STRONG!
+</div>
+
+<div class="fade-in text-center mt-10">
+  <h1 class="text-4xl font-bold">BOOK NOW TO SAVE UP TO 5% ON ECONOMY CARS</h1>
+</div>
+
+<!-- Step Cards -->
+<div class="fade-in grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto mt-10 px-4">
+
+  <!-- CARD 1 -->
+  <div class="bg-[#f6f6f6] rounded-2xl p-8 shadow-md">
+    <h3 class="text-xl font-bold mb-4"
+        style="font-family:'Cinzel'; color:#273d10;">
+      1. SELECT AN ECONOMY HUB
+    </h3>
+    <ul class="list-disc ml-5 space-y-2 text-[#273d10] leading-7">
+      <li>Available at RideON economy hubs across Mumbai</li>
+      <li>Wide availability of compact & fuel-efficient cars</li>
+      <li>Perfect for daily commute and city travel</li>
+    </ul>
+  </div>
+
+  <!-- CARD 2 -->
+  <div class="bg-[#f6f6f6] rounded-2xl p-8 shadow-md">
+    <h3 class="text-xl font-bold mb-4"
+        style="font-family:'Cinzel'; color:#273d10;">
+      2. CHOOSE FLEXIBLE RENTAL DATES
+    </h3>
+    <ul class="list-disc ml-5 space-y-2 text-[#273d10] leading-7">
+      <li>Reservations valid until January 30, 2026</li>
+      <li>Pickups allowed Sunday–Wednesday</li>
+      <li>Economy offer applies to 2–4 day rentals</li>
+      <li>Early bookings get extra savings</li>
+    </ul>
+  </div>
+
+  <!-- CARD 3 -->
+  <div class="bg-[#f6f6f6] rounded-2xl p-8 shadow-md">
+    <h3 class="text-xl font-bold mb-4"
+        style="font-family:'Cinzel'; color:#273d10;">
+      3. PICK YOUR ECONOMY DRIVE
+    </h3>
+    <ul class="list-disc ml-5 space-y-2 text-[#273d10] leading-7">
+      <li>Select from hatchbacks & compact sedans</li>
+      <li>Low fuel consumption & easy handling</li>
+      <li>Eligible vehicles marked “Economy Special”</li>
+    </ul>
+  </div>
+
+</div>
+ <!-- Terms -->
+<div class="fade-in max-w-6xl mx-auto mt-16 px-4 mb-20">
+  <h2 class="text-4xl font-bold text-center mb-4">TERMS AND CONDITIONS</h2>
+  <p class="leading-7 muted text-lg">
+    This economy car offer is valid for compact and fuel-efficient vehicles categorized under
+      <b>RideON Economy Specials</b>. Reservations must be made through this page to qualify for
+      the offer. The promotion applies to bookings made until
+      <b>January 30, 2026</b>, with pickups allowed until the same date.
+    <br /><br />
+    The luxury promo is valid for rentals with a duration of <b>2–4 days</b>, scheduled between <b>Sunday and Wednesday</b>, 
+    with mandatory return before Thursday of the same week. Discount applies exclusively to the daily base rental rate.
+    All additional charges such as taxes, premium service fees, insurance upgrades, charging fees, 
+    and optional extras (chauffeur service, performance add-ons, premium GPS, etc.) are not included.
+    <br /><br />
+    Vehicle reservations apply to the Mahindra XUV category rather than a specific model or trim. 
+    Availability of exact models may vary depending on location and demand. 
+    Prices shown already include the luxury discount where applicable.
+    <br /><br />
+    This offer cannot be combined with other promotional codes, corporate contracts, 
+    or multi-car rental deals. Offer valid only at authorized <b>RideON Luxury Hubs</b> across <b>Mumbai</b>.
+  </p>
+</div>
+
+
+</body>
+</html>

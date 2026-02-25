@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Car Booking | RideON</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<!-- Leaflet JS (MUST be before map code) -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Your booking logic -->
+<script type="module">
+  // your map code here
+</script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+
+
+<style>
+  :root{
+    --bg:#F7F7E8;
+    --card:#ffffff;
+    --accent:#114b72;
+    --gold:#d4af37;
+    --contrast:#33450d;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Lato', sans-serif;
+    color: var(--contrast);
+    margin: 0;
+    padding: 24px;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+
+  #map {
+    height: 340px;
+    border-radius: 10px;
+    margin-top: 12px;
+  }
+
+  .primary-btn {
+    background:var(--accent);
+    color:#fff;
+    padding:12px;
+    border-radius:10px;
+    font-weight:700;
+    width:100%;
+    text-align:center;
+  }
+
+  .car-img {
+    width:100%;
+    max-height:320px;
+    object-fit:cover;
+    border-radius:10px;
+  }
+
+  .number-plate {
+    background: var(--gold);
+    padding:6px 12px;
+    border-radius:999px;
+    font-family: monospace;
+    font-weight:700;
+    display:inline-block;
+    color:#111;
+    margin-top:8px;
+  }
+</style>
+</head>
+
+<body>
+   
+  <!-- NAV -->
+ <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
+  <div class="w-full grid grid-cols-3 items-center px-4 py-4">
+  <!-- LEFT: LOGO -->
+  <div class="flex justify-start">
+    <div class="text-2xl font-bold" style="font-family:'Cinzel'">
+      Ride<span class="text-gray-600">ON</span>
+    </div>
+  </div>
+  </div>
+  </nav>
+  <div style="height:90px;"></div>
+
+  <!-- Car preview -->
+  <div class="max-w-4xl mx-auto card mb-6">
+    <img id="carImg" class="car-img" alt="car image" onerror="this.style.display='none'">
+    <div class="mt-4">
+      <h2 id="carName" class="text-3xl font-bold"></h2>
+      <p id="carPrice" class="text-xl font-semibold text-green-700 mt-1"></p>
+      <div id="plateWrap" class="mt-2"></div>
+    </div>
+  </div>
+
+  <!-- Booking form -->
+  <div class="max-w-4xl mx-auto card">
+    <h2 class="text-2xl font-bold mb-4">Book This Car</h2>
+
+    <form id="bookingForm" class="space-y-5">
+
+      <div>
+        <label class="block mb-1">Full Name *</label>
+        <input id="fullName" type="text" required class="w-full border p-2 rounded">
+      </div>
+
+      <div>
+        <label class="block mb-1">Email *</label>
+        <input id="email" type="email" required class="w-full border p-2 rounded">
+      </div>
+
+      <div>
+        <label class="block mb-1">Phone *</label>
+        <input id="phone" type="tel" pattern="[0-9]{10}" required class="w-full border p-2 rounded">
+      </div>
+
+      <!-- LICENSE NUMBER -->
+      <div>
+        <label class="block mb-1">Driving License Number *</label>
+        <input id="licenseNumber" 
+               type="text" 
+               required
+               placeholder="Example: MH12 3456789"
+               pattern="[A-Z]{2}[0-9]{2} [0-9]{7}"
+               class="w-full border p-2 rounded">
+        <p class="text-sm text-gray-500">Format: <b>AA00 0000000</b> (Example: MH12 3456789)</p>
+      </div>
+      <div class="flex gap-4 mb-3">
+  <button type="button"
+          onclick="setSelecting('pickup')"
+          class="bg-green-600 text-white px-4 py-2 rounded">
+    Select Pickup Location
+  </button>
+
+  <button type="button"
+          onclick="setSelecting('drop')"
+          class="bg-blue-600 text-white px-4 py-2 rounded">
+    Select Drop Location
+  </button>
+</div>
+
+<p><strong>Pickup:</strong> <span id="pickupDisplay"></span></p>
+<p><strong>Drop:</strong> <span id="dropDisplay"></span></p>
+
+    
+
+      <!-- Selected address display -->
+      <p id="selectedAddress"></p>
+
+      <!-- Map ONLY (search removed) -->
+      <div id="map" class="mt-4"></div>
+
+      <!-- hidden fields -->
+      <input id="pickupLat" type="hidden">
+      <input id="pickupLng" type="hidden">
+      <input id="pickupAddress" type="hidden">
+      <input id="dropAddress" type="hidden" />
+
+
+      <!-- Date/time -->
+      
+        <div>
+          <label class="block mb-1">Pickup Time *</label>
+          <select id="pickupTime" required class="w-full border p-2 rounded">
+            <option value="">--Select--</option>
+            <option>08:00am</option>
+            <option>10:00am</option>
+            <option>12:00pm</option>
+            <option>02:00pm</option>
+            <option>04:00pm</option>
+            <option>06:00pm</option>
+          </select>
+        </div>
+  
+        <div>
+          <label class="block mb-1">Drop Time *</label>
+          <select id="dropTime" required class="w-full border p-2 rounded">
+            <option value="">--Select--</option>
+            <option>08:00am</option>
+            <option>10:00am</option>
+            <option>12:00pm</option>
+            <option>02:00pm</option>
+            <option>04:00pm</option>
+            <option>06:00pm</option>
+          </select>
+        </div>
+    
+
+      <p class="text-xl font-bold">Total Amount:
+        <span id="totalAmount" class="text-green-700">₹0</span>
+      </p>
+
+
+      <!-- ================= IDENTITY SECTION ================= -->
+<div id="identitySection" class="mt-6">
+  <h3 class="text-lg font-semibold mb-2">
+    Identity Proof (Aadhar / PAN / License) – PDF only *
+  </h3>
+
+  <input 
+    type="file" 
+    id="identityProof"
+    accept="application/pdf"
+    class="w-full border p-2 rounded"
+    required
+  />
+
+  <p id="pdfSuccess" class="text-green-600 mt-2 hidden">
+    ✔ PDF uploaded successfully
+  </p>
+</div>
+
+
+<!-- ================= PHOTO SECTION ================= -->
+<div id="photoSection" class="mt-6">
+
+  <h3 class="text-lg font-semibold mb-2">
+    Capture Your Photo *
+  </h3>
+
+  <video 
+    id="video" 
+    autoplay 
+    playsinline 
+    class="w-64 rounded shadow mb-3">
+  </video>
+
+  <canvas id="canvas" class="hidden"></canvas>
+
+  <button 
+    type="button"
+    id="captureBtn"
+    class="bg-black text-white px-4 py-2 rounded mb-3">
+    Capture Photo
+  </button>
+
+  <img 
+  id="photoPreview" 
+  style="display:none; width:220px; margin-top:12px; border-radius:10px;"
+/>
+
+  <p id="photoSuccess" class="text-green-600 mt-2 hidden">
+    ✔ Photo captured successfully
+  </p>
+
+</div>
+
+
+      <button type="submit" class="primary-btn">Confirm Booking</button>
+    </form>
+  </div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+/* =======================
+   SUPABASE CONFIG
+======================= */
+const supabase = createClient(
+  "https://ecuvhnvpajodymdibuwt.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+);
+
+/* =======================
+   LOAD SELECTED CAR
+======================= */
+const carId = localStorage.getItem("selectedCarId");
+if (!carId) {
+  alert("No car selected");
+  window.location.href = "economy.html";
+}
+
+const carImgEl = document.getElementById("carImg");
+const carNameEl = document.getElementById("carName");
+const carPriceEl = document.getElementById("carPrice");
+const plateWrap = document.getElementById("plateWrap");
+
+let carData = null;
+
+// =======================
+// ELEMENT REFERENCES (IMPORTANT FIX)
+// =======================
+const bookingForm = document.getElementById("bookingForm");
+
+const dropAddress = document.getElementById("dropAddress");
+const fullName = document.getElementById("fullName");
+const email = document.getElementById("email");
+const phone = document.getElementById("phone");
+const licenseNumber = document.getElementById("licenseNumber");
+
+const pickupLat = document.getElementById("pickupLat");
+const pickupLng = document.getElementById("pickupLng");
+const pickupAddress = document.getElementById("pickupAddress");
+
+
+async function loadCar() {
+  const { data, error } = await supabase
+    .from("cars")
+    .select("*")
+    .eq("id", carId)
+    .single();
+
+  if (error || !data) {
+    alert("Failed to load car");
+    return;
+  }
+
+  carData = data;
+  carImgEl.src = data.image_url;
+  carNameEl.textContent = data.name;
+  carPriceEl.textContent = `₹${data.rent_per_hour} / hour`;
+  plateWrap.innerHTML = `<span class="number-plate">${data.brand}</span>`;
+}
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const captureBtn = document.getElementById("captureBtn");
+const photoPreview = document.getElementById("photoPreview");
+const identityProof = document.getElementById("identityProof");
+const pdfSuccess = document.getElementById("pdfSuccess");
+const photoSuccess = document.getElementById("photoSuccess");
+
+let stream;
+
+// ================= CAPTURE PHOTO =================
+let capturedImage = null;
+captureBtn.addEventListener("click", () => {
+
+  const ctx = canvas.getContext("2d");
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  ctx.drawImage(video, 0, 0);
+
+  capturedImage = canvas.toDataURL("image/png");
+
+  const photoPreview = document.getElementById("photoPreview");
+
+  photoPreview.src = capturedImage;
+  photoPreview.style.display = "block";
+});
+
+// ================= PDF VALIDATION =================
+identityProof.addEventListener("change", () => {
+  const file = identityProof.files[0];
+
+  if (!file) return;
+
+  if (file.type !== "application/pdf") {
+   showToast("Only PDF files are allowed!", "error");
+
+  
+    identityProof.value = "";
+    return;
+  }
+
+  pdfSuccess.classList.remove("hidden");
+});
+
+
+
+// 🔹 Start camera only when needed
+async function startCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = stream;
+    video.style.display = "block";
+  } catch (err) {
+    alert("Camera access denied!");
+  }
+}
+
+// 🔹 Stop camera
+function stopCamera() {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    video.srcObject = null;
+    video.style.display = "none";
+  }
+}
+
+captureBtn.addEventListener("click", async () => {
+
+  // If camera not started → start camera
+  if (!stream) {
+    await startCamera();
+    captureBtn.textContent = "Take Photo";
+    return;
+  }
+
+  // If camera already running → capture photo
+  const ctx = canvas.getContext("2d");
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  ctx.drawImage(video, 0, 0);
+
+ capturedImage = canvas.toDataURL("image/png");
+
+const photoPreview = document.getElementById("photoPreview");
+
+photoPreview.src = capturedImage;
+photoPreview.style.display = "block";
+  // Stop camera after capture
+  stopCamera();
+
+  // Change button text back
+  captureBtn.textContent = "Capture Photo";
+});
+
+
+loadCar();
+
+/* =======================
+   MUMBAI MAP
+======================= */
+
+// Mumbai coordinates
+const mumbaiBounds = [
+  [18.89, 72.77],  // South-West
+  [19.27, 72.99]   // North-East
+];
+
+const map = L.map("map", {
+  maxBounds: mumbaiBounds,
+  maxBoundsViscosity: 1.0
+}).setView([19.0760, 72.8777], 12);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+
+let pickupMarker;
+let dropMarker;
+let selecting = "pickup";
+
+window.setSelecting = function(type){
+  selecting = type;
+}
+
+map.on("click", async (e) => {
+
+  const { lat, lng } = e.latlng;
+
+  if (selecting === "pickup") {
+    if (pickupMarker) map.removeLayer(pickupMarker);
+    pickupMarker = L.marker([lat,lng], {color:'green'}).addTo(map);
+    pickupLat.value = lat;
+    pickupLng.value = lng;
+  } else {
+    if (dropMarker) map.removeLayer(dropMarker);
+    dropMarker = L.marker([lat,lng], {color:'red'}).addTo(map);
+  }
+
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+  );
+  const data = await res.json();
+
+ if (selecting === "pickup") {
+  pickupAddress.value = data.display_name;
+  document.getElementById("pickupDisplay").textContent = data.display_name;
+} else {
+  dropAddress.value = data.display_name;   // 🔥 ADD THIS LINE
+  document.getElementById("dropDisplay").textContent = data.display_name;
+}
+});
+/* =======================
+   PRICE CALCULATION (TIME ONLY)
+======================= */
+
+const pickupTime = document.getElementById("pickupTime");
+const dropTime = document.getElementById("dropTime");
+const totalAmountEl = document.getElementById("totalAmount");
+
+function to24(time) {
+  const m = time.match(/(\d+):(\d+)(am|pm)/i);
+  if (!m) return null;
+
+  let h = parseInt(m[1]);
+  if (m[3].toLowerCase() === "pm" && h !== 12) h += 12;
+  if (m[3].toLowerCase() === "am" && h === 12) h = 0;
+
+  return `${h.toString().padStart(2,"0")}:${m[2]}`;
+}
+// Get selected dates stored from economy page
+const selectedPickupDate = localStorage.getItem("pickupDate");
+const selectedDropDate = localStorage.getItem("dropDate");
+
+function calculateTotal() {
+  if (!carData) return;
+  if (!pickupTime.value || !dropTime.value) return;
+  if (!selectedPickupDate || !selectedDropDate) return;
+
+  const start = new Date(`${selectedPickupDate}T${to24(pickupTime.value)}`);
+  const end = new Date(`${selectedDropDate}T${to24(dropTime.value)}`);
+
+  if (end <= start) {
+    totalAmountEl.textContent = "₹0";
+    return;
+  }
+
+  const hours = Math.ceil((end - start) / (1000 * 60 * 60));
+
+  totalAmountEl.textContent =
+    `₹${hours * carData.rent_per_hour}`;
+}
+[pickupTime, dropTime].forEach(el =>
+  el.addEventListener("change", calculateTotal)
+);
+
+/* =======================
+   FORM SUBMIT (FIXED)
+======================= */
+bookingForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const { data: authData } = await supabase.auth.getUser();
+
+  if (!authData.user) {
+    showToast("Please login first", "error");
+    return;
+  }
+
+  const user = authData.user;
+
+  // =====================
+  // Upload PDF
+  // =====================
+  const file = identityProof.files[0];
+  const fileName = `proof_${Date.now()}.pdf`;
+
+  const { error: uploadError } =
+    await supabase.storage.from("documents").upload(fileName, file);
+
+  if (uploadError) {
+    showToast("PDF upload failed: " + uploadError.message, "error");
+    return;
+  }
+
+  // =====================
+  // Upload Photo
+  // =====================
+  const blob = await (await fetch(capturedImage)).blob();
+  const imageName = `face_${Date.now()}.png`;
+
+  const { error: imgError } =
+    await supabase.storage.from("documents").upload(imageName, blob);
+
+  if (imgError) {
+    showToast("Photo upload failed: " + imgError.message, "error");
+    return;
+  }
+
+  // =====================
+  // INSERT INTO DATABASE
+  // =====================
+  const bookingData = {
+    car_id: carData.id,
+    car_name: carData.name,
+    full_name: fullName.value,
+    email: email.value,
+    phone: phone.value,
+    license_number: licenseNumber.value,
+
+    pickup_date: selectedPickupDate,
+    pickup_time: pickupTime.value,
+
+    drop_date: selectedDropDate,
+    drop_time: dropTime.value,
+
+    pickup_address: pickupAddress.value || null,
+    drop_address: dropAddress.value || null,
+
+    total_amount: parseFloat(
+      totalAmountEl.textContent.replace("₹", "")
+    ),
+
+    status: "confirmed",
+
+    identity_url: fileName,
+    photo_url: imageName,
+
+    user_email: user.email,
+    user_id: user.id
+  };
+
+  console.log("Sending to DB:", bookingData);
+
+  const { data, error } = await supabase
+    .from("booking")
+    .insert([bookingData])
+    .select()
+    .single();
+
+  if (error) {
+    console.error("INSERT ERROR:", error);
+    showToast(error.message, "error");
+    return;
+  }
+
+  localStorage.setItem("bookingId", data.id);
+
+  showToast("Booking successful!", "success");
+
+  setTimeout(() => {
+    window.location.href = "bookcon.html";
+  }, 2000);
+});
+
+function showToast(message, type = "success") {
+  const toast = document.createElement("div");
+
+  toast.textContent = message;
+
+  toast.style.position = "fixed";
+  toast.style.bottom = "30px";
+  toast.style.right = "30px";
+  toast.style.padding = "14px 20px";
+  toast.style.borderRadius = "10px";
+  toast.style.color = "white";
+  toast.style.fontWeight = "600";
+  toast.style.zIndex = "9999";
+  toast.style.boxShadow = "0 6px 18px rgba(0,0,0,0.2)";
+  toast.style.transition = "opacity 0.4s ease";
+
+  if (type === "error") {
+    toast.style.background = "#dc2626"; // red
+  } else {
+    toast.style.background = "#16a34a"; // green
+  }
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+
+
+</script>
+<div id="toast"
+     class="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-3 rounded shadow-lg hidden">
+  Booking Confirmed Successfully!
+</div>
+
+
+</body>
+</html>

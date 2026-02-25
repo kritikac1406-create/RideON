@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Users | RideON</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background: #f7f8e8;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen">
+
+ <!-- NAVBAR -->
+<header class="bg-white shadow px-10 py-4 flex justify-between items-center fixed top-0 w-full z-50">
+
+  <a href="log.html"
+     class="text-3xl font-bold"
+     style="font-family:'Cinzel'">
+   <div class="text-2xl font-bold" style="font-family:'Cinzel'">Ride<span class="text-gray-600">ON</span></div>
+  </a>
+
+
+    <div class="flex gap-4">
+      <a href="admin-dashboard.html" class="font-medium text-gray-700">
+        Dashboard
+      </a>
+      <button onclick="adminLogout()" class="text-red-600 font-semibold">
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- 🔒 ADMIN CONTENT -->
+  <main
+    id="adminContent"
+    class="max-w-6xl mx-auto p-6"
+    style="display:none;"
+  >
+    <h2 class="text-2xl font-bold mb-6">All Users</h2>
+
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-6 py-4">#</th>
+            <th class="px-6 py-4">Name</th>
+            <th class="px-6 py-4">Email</th>
+            <th class="px-6 py-4">Joined</th>
+          </tr>
+        </thead>
+
+        <tbody id="userTable">
+          <tr>
+            <td colspan="4" class="text-center py-6 text-gray-500">
+              Loading users...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <script>
+    const supabaseClient = supabase.createClient(
+      "https://ecuvhnvpajodymdibuwt.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+
+    );
+
+    // 🔐 PROTECT PAGE
+    async function protectAdminUsers() {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+
+      if (!user) {
+        window.location.replace("admin-login.html");
+        return;
+      }
+
+      const { data: admin } = await supabaseClient
+        .from("admins")
+        .select("id")
+        .eq("id", user.id)
+        .single();
+
+      if (!admin) {
+        await supabaseClient.auth.signOut();
+        window.location.replace("admin-login.html");
+        return;
+      }
+
+      document.getElementById("adminContent").style.display = "block";
+      loadUsers();
+    }
+
+    // 👥 LOAD USERS
+    async function loadUsers() {
+      const table = document.getElementById("userTable");
+
+      const { data: users, error } = await supabaseClient
+        .from("users")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error || !users || users.length === 0) {
+        table.innerHTML = `
+          <tr>
+            <td colspan="4" class="text-center py-6 text-gray-500">
+              No users found
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      table.innerHTML = "";
+
+      users.forEach((u, index) => {
+        table.innerHTML += `
+          <tr class="border-t hover:bg-gray-50">
+            <td class="px-6 py-4">${index + 1}</td>
+            <td class="px-6 py-4">${u.name || "-"}</td>
+            <td class="px-6 py-4">${u.email}</td>
+            <td class="px-6 py-4">
+              ${new Date(u.created_at).toLocaleDateString()}
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // 🚪 LOGOUT
+    async function adminLogout() {
+      await supabaseClient.auth.signOut();
+      window.location.replace("admin-login.html");
+    }
+
+    protectAdminUsers();
+  </script>
+
+</body>
+</html>

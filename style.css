@@ -1,0 +1,210 @@
+CSS OLD CODE
+
+
+/* Google Font for elegant look */
+
+
+/* Animate a background gradient */
+body {
+  
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  
+}
+
+/* Animated Gradient Background with Pseudo Element */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(270deg, #fceabb, #f8b500, #e0f7fa, #a1c4fd);
+  background-size: 800% 800%;
+  z-index: -1;
+  animation: moveGradient 20s ease infinite;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+@keyframes moveGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+header {
+  background: rgba(0, 123, 255, 0.85);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  animation: fadeInDown 1s ease;
+}
+
+.container {
+  padding: 25px;
+  max-width: 600px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+  animation: fadeIn 1s ease;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  background-color: #f0faff;
+  transition: border-color 0.3s;
+}
+
+select:focus {
+  outline: none;
+  border-color: #0056b3;
+}
+
+#car-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  animation: fadeInUp 1s ease;
+}
+
+#car-display img {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 20px;
+  animation: zoomIn 0.5s ease;
+}
+
+#car-details {
+  background: #f1f9ff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease;
+}
+
+#car-details p {
+  margin: 10px 0;
+}
+
+button {
+  padding: 12px 26px;
+  background: linear-gradient(to right, #28a745, #218838);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(33, 136, 56, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animated-header {
+  background: linear-gradient(to right, #007bff, #00c6ff);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.main-heading {
+  font-size: 36px;
+  font-weight: 700;
+  animation: slideIn 1.2s ease-out forwards;
+  display: inline-block;
+  opacity: 0;
+}
+
+.sub-heading {
+  font-size: 18px;
+  font-weight: 400;
+  opacity: 0;
+  animation: fadeIn 2s ease-out 1.2s forwards;
+  display: inline-block;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

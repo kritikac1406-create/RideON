@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Dashboard | RideON</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+  body{
+    background:#F7F7E8;
+    font-family:'Lato', sans-serif;
+  }
+  h1,h2,h3{
+    font-family:'Cinzel', serif;
+  }
+  .accent{ color:#114b72; }
+</style>
+</head>
+
+<body>
+
+<!-- 🔐 AUTH GUARD (SESSION BASED) -->
+<script>
+  if (!sessionStorage.getItem("authToken")) {
+    window.location.replace("log.html");
+  }
+</script>
+
+<!-- NAVBAR -->
+<header class="bg-white shadow px-6 py-4 flex justify-between items-center">
+  <h1 class="text-2xl font-bold accent cursor-pointer"
+      onclick="window.location.href='home.html'">
+    Ride<span class="text-gray-500">ON</span>
+  </h1>
+
+  <nav class="flex gap-6 items-center">
+    <a href="home.html" class="font-semibold text-gray-700">Home</a>
+    <a href="track.html" class="font-semibold text-gray-700">Track Ride</a>
+    <button onclick="logout()" class="text-red-600 font-semibold">Logout</button>
+  </nav>
+</header>
+
+<!-- MAIN -->
+<main class="max-w-6xl mx-auto p-6">
+
+  <!-- PAGE TITLE -->
+  <h2 class="text-3xl font-bold mb-6">My Dashboard</h2>
+
+  <!-- PROFILE CARD -->
+  <section class="bg-white p-6 rounded-2xl shadow mb-8">
+    <h3 class="text-xl font-bold mb-3">Profile Information</h3>
+    <p id="userInfo" class="text-gray-700 leading-7"></p>
+  </section>
+
+  <!-- BOOKINGS -->
+  <section class="bg-white p-6 rounded-2xl shadow">
+    <h3 class="text-xl font-bold mb-4">My Bookings</h3>
+    <div id="bookingList" class="space-y-4"></div>
+  </section>
+
+</main>
+
+<script>
+/* ================= USER INFO ================= */
+const userName = localStorage.getItem("username") || "RideON User";
+const booking= JSON.parse(localStorage.getItem("bookings")) || [];
+
+
+document.getElementById("userInfo").innerHTML = `
+  <b>Name:</b> ${userName}<br>
+  <b>Email:</b> ${userEmail}
+`;
+
+/* ================= BOOKINGS ================= */
+const bookingList = document.getElementById("bookingList");
+const bookings = JSON.parse(sessionStorage.getItem("bookings")) || [];
+
+if (bookings.length === 0) {
+  bookingList.innerHTML = `
+    <p class="text-gray-600">No bookings found.</p>
+  `;
+} else {
+  bookingList.innerHTML = bookings.map(b => `
+    <!-- FLIPKART STYLE CARD -->
+    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-600">
+
+      <div class="flex justify-between items-start">
+        <div>
+          <h3 class="text-xl font-bold mb-1">${b.carName}</h3>
+
+          <p class="text-sm text-gray-600 mb-2">
+            Booking ID:
+            <span class="font-semibold">${b.bookingID}</span>
+          </p>
+
+          <p class="text-gray-700 leading-6">
+            📍 Pickup: <b>${b.pickupDate} at ${b.pickupTime}</b><br>
+            📍 Drop: <b>${b.dropDate} at ${b.dropTime}</b>
+          </p>
+        </div>
+
+        <div class="text-right">
+          <p class="text-xl font-bold text-green-700">
+            ₹${b.totalAmount}
+          </p>
+
+          <span class="inline-block mt-2 px-3 py-1 text-sm rounded-full
+                       bg-green-100 text-green-700 font-semibold">
+            Confirmed
+          </span>
+        </div>
+      </div>
+
+      <div class="mt-4 text-sm font-semibold">
+        <a href="track.html" class="text-blue-600 hover:underline">
+          Track Ride
+        </a>
+      </div>
+
+    </div>
+  `).join("");
+}
+
+/* ================= LOGOUT ================= */
+function logout(){
+  sessionStorage.clear();
+  window.location.replace("home.html");
+}
+</script>
+
+</body>
+</html>

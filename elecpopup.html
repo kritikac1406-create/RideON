@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+      :root{
+      --bg:#d7dbb6cf;
+      --gold:#c6c899;
+      --muted:#273d10;
+      --card:#dddfae;
+      --contrast:#222f08;
+    }
+
+
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:'Lato',sans-serif;
+    background:var(--bg);
+    color:var(--contrast);
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3{
+    font-family:'Cinzel',serif;
+  }
+
+  .gold-btn{
+    background:var(--gold);
+    color:#000;
+    font-weight:600;
+    border-radius:9999px;
+    padding:10px 22px;
+    transition:.3s;
+  }
+
+  .gold-btn:hover{
+    background:#aab055;
+  }
+
+  .muted{
+    color:var(--muted);
+  }
+
+  .card-bg{
+    background:var(--card);
+  }
+
+  nav{
+    backdrop-filter: blur(6px);
+  }
+
+  :focus{
+    outline:none;
+    box-shadow:0 0 0 3px rgba(122, 183, 16, 0.12);
+  }
+</style>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RideON Exclusive Offer Page</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- Animation Code -->
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 1s ease-out forwards;
+    }
+
+    /* Slider container size */
+    .swiper {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .swiper-slide {
+      background-position: center;
+      background-size: cover;
+      width: 500px;
+      height: 300px;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body class="font-sans">
+
+   <!-- ✅ NAVBAR (FIXED, CLICKABLE LOGO) -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-white bg-opacity-95 border-b">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+
+    <!-- LOGO -->
+    <a href="home.html" class="text-2xl font-bold" style="font-family:'Cinzel'">
+      Ride<span class="text-gray-600">ON</span>
+    </a>
+  </div>
+</nav>
+
+<div class="h-24"></div>
+    <!-- Top Heading Above Slider -->
+<div class="fade-in text-center mt-10">
+  <h1 class="text-4xl font-bold">Electric Cars Exclusive Offers</h1>
+</div>
+
+
+  <!-- 3D Slider Section (NO WHITE CARD) -->
+<div class="flex justify-center mt-10 fade-in">
+
+  <!-- Slider -->
+  <div class="swiper mySwiper w-full max-w-[500px]">
+    <div class="swiper-wrapper">
+
+      <!-- CAR IMAGES -->
+      <div class="swiper-slide">
+        <img src="c:\Users\Kritika v\Downloads\car rental site updated (1)\car rental site\execlusive\tataev.jpg" class="w-full h-full object-cover rounded-2xl shadow-xl">
+      </div>
+
+      <div class="swiper-slide">
+        <img src="c:\Users\Kritika v\Downloads\car rental site updated (1)\car rental site\execlusive\tatanexev.jpg" class="w-full h-full object-cover rounded-2xl shadow-xl">
+      </div>
+
+      <div class="swiper-slide">
+        <img src="c:\Users\Kritika v\Downloads\car rental site updated (1)\car rental site\execlusive\kiaev.jpg" class="w-full h-full object-cover rounded-2xl shadow-xl">
+      </div>
+
+    </div>
+
+    <!-- Pagination -->
+    <div class="swiper-pagination mt-4"></div>
+  </div>
+
+</div>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Slider Config -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      effect: "coverflow",
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: "auto",
+      loop: true,
+      coverflowEffect: {
+        rotate: 0,
+        stretch: 0,
+        depth: 200,
+        modifier: 2,
+        slideShadows: true,
+      },
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+    });
+  </script>
+
+
+  <!-- Offer Banner -->
+  <div class="fade-in bg-green-900 text-white text-center py-10 text-4xl font-extrabold mt-6 shadow-lg">
+    SAVE UP TO 12% AND START YOUR WEEK STRONG!
+  </div>
+
+  <!-- Heading -->
+  <div class="fade-in text-center mt-10">
+    <h1 class="text-4xl font-bold">BOOK NOW TO SAVE UP TO 12% ON ELECTRIC CARS</h1>
+  </div>
+
+ <!-- Step Cards (MATCH ECO/LUX UI) -->
+<div class="fade-in grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mt-10 px-4">
+
+  <!-- CARD 1 -->
+  <div class="bg-[#f6f6f6] rounded-2xl p-8 shadow-md">
+    <h3 class="text-xl font-bold mb-4"
+        style="font-family:'Cinzel'; color:#273d10;">
+      1. SELECT AN EV PICKUP HUB
+    </h3>
+    <ul class="list-disc ml-5 space-y-2 text-[#273d10] leading-7">
+      <li>Available at certified RideON EV hubs across Mumbai</li>
+      <li>Fast-charging stations at selected locations</li>
+      <li>Includes Tata Nexon EV, MG ZS EV, BYD Atto 3, Kia EV6</li>
+    </ul>
+  </div>
+
+  <!-- CARD 2 -->
+  <div class="bg-[#f6f6f6] rounded-2xl p-8 shadow-md">
+    <h3 class="text-xl font-bold mb-4"
+        style="font-family:'Cinzel'; color:#273d10;">
+      2. SELECT YOUR GREEN DRIVE DATES
+    </h3>
+    <ul class="list-disc ml-5 space-y-2 text-[#273d10] leading-7">
+      <li>Offer valid until January 30, 2026</li>
+      <li>Pickups allowed Sunday–Wednesday</li>
+      <li>Minimum rental duration: 2 days</li>
+      <li>100% electric, emission-free travel</li>
+    </ul>
+  </div>
+
+  <!-- CARD 3 -->
+  <div class="bg-[#f6f6f6] rounded-2xl p-8 shadow-md">
+    <h3 class="text-xl font-bold mb-4"
+        style="font-family:'Cinzel'; color:#273d10;">
+      3. ADD EV-EXCLUSIVE BENEFITS
+    </h3>
+    <ul class="list-disc ml-5 space-y-2 text-[#273d10] leading-7">
+      <li>Free access to RideON partner charging stations</li>
+      <li>Optional fast-charging add-on for long trips</li>
+      <li>Eligible vehicles marked “EV Special Offer”</li>
+    </ul>
+  </div>
+
+</div>
+
+  <!-- Terms -->
+<div class="fade-in max-w-6xl mx-auto mt-16 px-4 mb-20">
+  <h2 class="text-4xl font-bold text-center mb-4">TERMS AND CONDITIONS</h2>
+  <p class="leading-7 muted text-lg">
+    This Electric Vehicle exclusive offer is valid only for EV models available under RideON’s approved fleet, 
+    including Tata Nexon EV, MG ZS EV, BYD Atto 3, and Kia EV6. To redeem this promotion, customers must 
+    complete their booking directly through this offer page. Only bookings made until 
+    <b>January 30, 2026</b> qualify for the discount.
+    <br><br>
+    The promotional EV rate applies to rentals with a duration of <b>2–4 days</b>, with pickups scheduled 
+    between <b>Sunday and Wednesday</b> and returns completed before Thursday of the same week. 
+    Discounts apply to the daily base rate only.
+    <br><br>
+    Charging costs, fast-charging upgrades, battery protection packages, taxes, service fees, 
+    and optional add-ons such as GPS, child seats, or extended insurance are not included.
+    <br><br>
+    Reservations apply to vehicle groups rather than a specific EV model or trim. While RideON strives to 
+    accommodate model preferences, availability may vary based on fleet capacity and demand.
+    <br><br>
+    This offer cannot be combined with corporate contracts, cashback programs, or any other promotional codes. 
+    Valid only at participating <b>RideON Electric Vehicle Hubs</b> within <b>Mumbai</b>.
+  </p>
+</div>
+
+</body>
+</html>

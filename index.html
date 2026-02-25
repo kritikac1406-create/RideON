@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta charset="UTF-8">
+  <title>Luxury Car Rentals</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+     /* Gradient animation */
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animated-gradient {
+      background: linear-gradient(-45deg, #0f0f0f, #1a1a1a, #121212, #1c1c1c);
+      background-size: 400% 400%;
+      animation: gradientShift 10s ease infinite;
+    }
+    :root {
+      --gold: #FFD700;
+    }
+
+    .gold-text {
+      color: var(--gold);
+    }
+
+    .gold-border {
+      border-color: var(--gold);
+    }
+
+    .gold-bg {
+      background-color: var(--gold);
+    }
+
+    @keyframes elegantFadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in-soft {
+      opacity: 0;
+      animation: elegantFadeUp 1s ease-out forwards;
+    }
+
+    .fade-delay-0 { animation-delay: 0s; }
+    .fade-delay-1 { animation-delay: 0.2s; }
+    .fade-delay-2 { animation-delay: 0.4s; }
+    .fade-delay-3 { animation-delay: 0.6s; }
+  </style>
+</head>
+<body class="bg-black text-[var(--gold)] font-sans">
+ 
+  <!-- Heading -->
+  <div class="text-center mt-10">
+    <h1 class="text-4xl font-bold italic gold-text fade-in-soft fade-delay-0">Turn Heads. Drive Legends.</h1>
+  </div>
+  <div class="flex items-center justify-between w-full px-4 py-2 bg-black text-white">
+  <!-- Left Side: Logo or Brand Name -->
+   <div class="text-center mt-10">
+    <h1 class="text-2xl font-bold italic gold-text fade-in-soft fade-delay-0">TOTALDRIVEs.</h1>
+  </div>
+
+    <!-- Search Bar -->
+  <div class="flex justify-center mt-6 fade-in-soft fade-delay-1">
+    <input id="searchInput" type="text" placeholder="Search cars..." class="px-4 py-2 w-72 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--gold)] text-black" />
+  </div>
+
+ 
+  <!-- Right Side: Navigation Links -->
+  <div class="flex space-x-4 text-gold font-medium">
+    <a href="owner.html" class="hover:underline hover:text-yellow-400 transition">Owners</a>
+    <a href="driver form.html" class="hover:underline hover:text-yellow-400 transition">Drivers</a>
+
+  </div>
+</div>
+
+  
+  <!-- Filters -->
+  <div class="flex justify-center gap-4 mt-10 fade-in-soft fade-delay-1">
+    <select id="brandFilter" class="p-2 rounded-lg bg-black gold-border border-2 text-[var(--gold)]">
+      <option value="">All Brands</option>
+      <option value="BMW">BMW</option>
+      <option value="Mercedes">Mercedes</option>
+      <option value="Audi">Audi</option>
+    </select>
+
+    <select id="priceFilter" class="p-2 rounded-lg bg-black gold-border border-2 text-[var(--gold)]">
+      <option value="">All Prices</option>
+      <option value="low">Below ₹9,000</option>
+      <option value="mid">₹9,000 - ₹12,000</option>
+      <option value="high">Above ₹12,000</option>
+
+    </select>
+    <select id="sortPrice" class="p-2 rounded-lg bg-black gold-border border-2 text-[var(--gold)]">
+  <option value="">Sort by Price</option>
+  <option value="asc">Price: Low to High</option>
+  <option value="desc">Price: High to Low</option>
+</select>
+  </div>
+   <div id="carContainer" class="flex flex-wrap justify-center gap-6 mt-10 px-4">
+<!-- mercedes -->
+  
+
+      <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="MERCEDES" data-price="10000">
+  <img src="images/MERCEDES BENZ.avif" alt="MERCEDES BENZ" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">MERCEDES BENZ<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹15,000<br>
+    4hrs 40kms – ₹10,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+ <!-- Cards -->
+ 
+      <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="MERCEDES" data-price="12000">
+  <img src="images/mercedes.avif" alt="MERCEDES" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">MERCEDES GLS350<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹10,000<br>
+    4hrs 40kms – ₹9,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+<!--cards-->
+    <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="MERCEDES" data-price="12000">
+  <img src="images/mercedes.avif" alt="MERCEDES" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">MERCEDES GLS350<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹10,000<br>
+    4hrs 40kms – ₹9,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+<!--cards--> 
+   <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="MERCEDES" data-price="10000">
+  <img src="images/mercedes e class.jpeg" alt="MERCEDES E class" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">MERCEDES E CLASS<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹10,000<br>
+    4hrs 40kms – ₹9,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+<!--cards-->
+    <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="MERCEDES" data-price="12000">
+  <img src="images/mercedes 2018.jpg" alt="MERCEDES" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">MERCEDES 2018<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹10,000<br>
+    4hrs 40kms – ₹8,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+
+
+
+<!--BMW-->
+  <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="BMW" data-price="15000">
+  <img src="images/BMW.avif" alt="BMW " 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">BMW<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹15,000<br>
+    4hrs 40kms – ₹10,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+<!--cards-->
+   <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="BMW" data-price="15000">
+  <img src="images/bmw1.jpg" alt="BMW1" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">BMW 1 SERIES<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹10,000<br>
+    4hrs 40kms – ₹8,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+<!--cards-->
+   <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="BMW" data-price="15000">
+  <img src="images/bmw2.avif" alt="BMW2" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">BMW 2 SERIES<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹12,000<br>
+    4hrs 40kms – ₹10,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+<!--cards-->
+   <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="BMW" data-price="15000">
+  <img src="images/bmw2.avif" alt="BMW2" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">BMW 2 SERIES<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹12,000<br>
+    4hrs 40kms – ₹10,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+<!--cards-->
+   <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="BMW" data-price="15000">
+  <img src="images/bmw3.jpeg" alt="BMW3" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">BMW 3 SERIES<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹12,000<br>
+    4hrs 40kms – ₹10,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+<!--cards-->
+   <div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="BMW" data-price="15000">
+  <img src="images/bmw5.avif" alt="BMW5" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" /> 
+  <h2 class="font-bold text-lg gold-text">BMW 5 SERIES<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹12,000<br>
+    4hrs 40kms – ₹10,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+
+
+
+<div class="car-card bg-black border-2 gold-border rounded-2xl shadow-xl w-64 p-6 text-center hover:scale-105 transition-all duration-300 fade-in-soft fade-delay-2" 
+     data-brand="AUDI" data-price="9000">
+  <img src="images/audi.webp" alt="AUDI" 
+       class="mx-auto mb-4 h-24 object-contain cursor-pointer transition-transform duration-500" 
+       onclick="toggleDetails(this)" />
+       
+  <h2 class="font-bold text-lg gold-text">AUDI<br>(SIGNATURE EDITION)</h2>
+  <p class="mt-4 text-sm leading-6">
+    8hrs 80kms – ₹10,000<br>
+    4hrs 40kms – ₹9,000
+  </p>
+  <!-- Hidden Details -->
+  <div class="extra-details hidden mt-3 text-xs text-gray-300 transition-opacity duration-300 opacity-0">
+    <hr class="border-gray-600 my-2">
+    <p><strong>Engine:</strong> TwinPower Turbo</p>
+    <p><strong>Fuel:</strong> Petrol</p>
+    <p><strong>Seating:</strong> 5 Adults</p>
+    <button class="mt-3 px-4 py-1 bg-[var(--gold)] text-black font-semibold rounded hover:bg-yellow-400 transition">Rent Now</button>
+  </div>
+</div>
+
+
+
+
+   
+  
+
+
+
+
+
+
+<script>  <!-- ✅ Unified Filter Script -->
+ 
+  // Toggle extra car details
+  function toggleDetails(imgElement) {
+    const details = imgElement.parentElement.querySelector('.extra-details');
+    const isHidden = details.classList.contains('hidden');
+    document.querySelectorAll('.extra-details').forEach(el => {
+      el.classList.add('hidden');
+      el.classList.remove('opacity-100');
+      el.classList.add('opacity-0');
+    });
+    if (isHidden) {
+      details.classList.remove('hidden');
+      setTimeout(() => details.classList.add('opacity-100'), 10);
+      details.classList.remove('opacity-0');
+    }
+  }
+
+
+
+  const brandFilter = document.getElementById('brandFilter');
+  const priceFilter = document.getElementById('priceFilter');
+  const searchInput = document.getElementById('searchInput');
+  const carCards = document.querySelectorAll('.car-card');
+
+  function applyFilters() {
+    const selectedBrand = brandFilter.value.toLowerCase();
+    const selectedPrice = priceFilter.value;
+    const searchText = searchInput.value.toLowerCase();
+
+    carCards.forEach(card => {
+      const brand = card.getAttribute('data-brand').toLowerCase();
+      const price = parseInt(card.getAttribute('data-price'));
+      const carName = card.querySelector('h2').innerText.toLowerCase();
+
+      let matchesBrand = !selectedBrand || brand.includes(selectedBrand);
+      let matchesPrice = !selectedPrice ||
+        (selectedPrice === 'low' && price < 9000) ||
+        (selectedPrice === 'mid' && price >= 9000 && price <= 12000) ||
+        (selectedPrice === 'high' && price > 12000);
+
+      let matchesSearch = carName.includes(searchText);
+
+      if (matchesBrand && matchesPrice && matchesSearch) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  brandFilter.addEventListener('change', applyFilters);
+  priceFilter.addEventListener('change', applyFilters);
+  searchInput.addEventListener('input', applyFilters);
+
+
+  const brandFilter = document.getElementById('brandFilter');
+  const priceFilter = document.getElementById('priceFilter');
+  const sortPrice = document.getElementById('sortPrice');
+  const searchInput = document.getElementById('searchInput');
+  const carContainer = document.querySelector('.grid'); // make sure your cards are inside a .grid div
+  let carCards = Array.from(document.querySelectorAll('.car-card'));
+
+  function filterAndSortCars() {
+    const selectedBrand = brandFilter.value.toUpperCase();
+    const selectedPrice = priceFilter.value;
+    const selectedSort = sortPrice.value;
+    const searchText = searchInput.value.toLowerCase();
+
+    // Filter
+    let filteredCars = carCards.filter(card => {
+      const brand = card.dataset.brand.toUpperCase();
+      const price = parseInt(card.dataset.price);
+      const name = card.querySelector('h2').innerText.toLowerCase();
+
+      let priceMatch = false;
+      if (!selectedPrice) priceMatch = true;
+      else if (selectedPrice === 'low') priceMatch = price < 9000;
+      else if (selectedPrice === 'mid') priceMatch = price >= 9000 && price <= 12000;
+      else if (selectedPrice === 'high') priceMatch = price > 12000;
+
+      const matchesBrand = !selectedBrand || brand === selectedBrand;
+      const matchesSearch = !searchText || name.includes(searchText);
+
+      return matchesBrand && priceMatch && matchesSearch;
+    });
+
+    // Sort
+    if (selectedSort === 'asc') {
+      filteredCars.sort((a, b) => parseInt(a.dataset.price) - parseInt(b.dataset.price));
+    } else if (selectedSort === 'desc') {
+      filteredCars.sort((a, b) => parseInt(b.dataset.price) - parseInt(a.dataset.price));
+    }
+
+    // Render
+    carContainer.innerHTML = ''; // Clear container
+    filteredCars.forEach(card => carContainer.appendChild(card));
+  }
+
+  brandFilter.addEventListener('change', filterAndSortCars);
+  priceFilter.addEventListener('change', filterAndSortCars);
+  sortPrice.addEventListener('change', filterAndSortCars);
+  searchInput.addEventListener('input', filterAndSortCars);
+
+
+
+
+  
+
+</script>
+
+
+</body>
+</html>
