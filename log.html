@@ -13,256 +13,226 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
-  html, body {
-  height: 100%;
-  overflow-y: scroll;
-}
-  body {
-    background:#F7F7E8;
-    font-family:'Lato',sans-serif;
-  }
-  h1,h2 {
-  font-family:'Cinzel', serif;
-  font-display: swap;
-}
-  .accent { color:#114b72; }
-  .btn-main {
-    background:#114b72;
-    color:white;
-    padding:12px;
-    border-radius:10px;
-    font-weight:700;
-  }
-  body {
-  font-family: 'Lato', sans-serif;
-  visibility: hidden;
+body{
+background:#F7F7E8;
+font-family:'Lato',sans-serif;
+opacity:0;
+transition:.25s;
 }
 
-body.fonts-loaded {
-  visibility: visible;
+body.fonts-loaded{
+opacity:1;
+}
+
+.brandFont{
+font-family:'Cinzel',serif;
+}
+
+.btn-main{
+background:#114b72;
+color:white;
+padding:12px;
+border-radius:10px;
+font-weight:700;
 }
 </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
-<!-- ===== NAVBAR ===== -->
-<header class="bg-white shadow px-6 py-4 flex items-center">
-  
-  <a href="home.html"
-     class="text-2xl font-bold"
-     style="font-family: 'Cinzel', serif;">
-     
-      <div class="text-2xl font-bold" style="font-family:'Cinzel'">Ride<span class="text-gray-600">ON</span></div>
-    
-  </a>
 
+<!-- NAVBAR -->
+<header class="bg-white shadow px-6 py-4">
+<a href="javascript:void(0)" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" class="text-2xl brandFont font-bold">Ride<span class="text-gray-600">ON</span></a>
 </header>
 
-
-
+<!-- LOGIN CARD -->
 <div class="flex-grow flex items-center justify-center p-6 bg-gradient-to-br from-[#f7f7e8] to-[#e6ecf2]">
-  <div class="backdrop-blur-lg bg-white/80 w-full max-w-md p-8 rounded-3xl shadow-2xl transition-all duration-300">
 
-    <h2 class="text-3xl font-bold text-center mb-2">Welcome to RideON</h2>
-    <p class="text-center text-gray-600 mb-6">
-      Login or create your account
-    </p>
+<div class="bg-white/80 backdrop-blur-lg w-full max-w-md p-8 rounded-3xl shadow-2xl">
 
-    <!-- ROLE SELECT -->
-    <div class="flex justify-center mb-6">
-      <div class="bg-gray-100 p-1 rounded-full flex gap-2">
-        <button id="userModeBtn"
-          class="px-5 py-2 rounded-full bg-[#114b72] text-white text-sm font-semibold transition">
-          User
-        </button>
+<h2 class="text-3xl brandFont text-center mb-2">Welcome to RideON</h2>
+<p class="text-center text-gray-600 mb-6">Login or create your account</p>
 
-        <button id="adminModeBtn"
-          class="px-5 py-2 rounded-full text-gray-600 text-sm font-semibold transition">
-          Admin
-        </button>
-      </div>
-    </div>
-
-    <!-- TABS -->
-    <div class="flex justify-center gap-8 mb-6 text-sm font-semibold">
-      <button id="tabLogin" class="border-b-2 border-[#114b72] pb-1">Login</button>
-      <button id="tabRegister" class="text-gray-400 pb-1">Register</button>
-    </div>
-
-    <!-- LOGIN -->
-    <div id="loginBox">
-      <input id="loginEmail" type="email" placeholder="Email"
-        class="w-full border p-3 rounded-lg mb-4 focus:ring-2 focus:ring-[#114b72] outline-none">
-
-      <div class="relative mb-4">
-        <input id="loginPass" type="password" placeholder="Password"
-          class="w-full border p-3 rounded-lg pr-10 focus:ring-2 focus:ring-[#114b72] outline-none">
-        <span onclick="togglePass('loginPass')"
-          class="absolute right-3 top-3 cursor-pointer text-gray-500">👁</span>
-      </div>
-
-      <button onclick="loginUser()"
-        class="w-full bg-[#114b72] hover:bg-[#0d3d5c] text-white p-3 rounded-lg font-semibold transition">
-        Login
-      </button>
-
-      <!-- Divider -->
-      <div class="flex items-center my-6">
-        <hr class="flex-grow border-gray-300">
-        <span class="px-3 text-gray-400 text-sm">OR</span>
-        <hr class="flex-grow border-gray-300">
-      </div>
-
-      <!-- Google -->
-      <button onclick="googleLogin()"
-        class="w-full border flex items-center justify-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition">
-        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5">
-        Continue with Google
-      </button>
-    </div>
-
-    <!-- REGISTER -->
-    <div id="registerBox" class="hidden">
-      <input id="name" type="text" placeholder="Full Name"
-        class="w-full border p-3 rounded-lg mb-3 focus:ring-2 focus:ring-[#114b72] outline-none">
-
-      <input id="email" type="email" placeholder="Email"
-        class="w-full border p-3 rounded-lg mb-3 focus:ring-2 focus:ring-[#114b72] outline-none">
-
-      <input id="password" type="password" placeholder="Password"
-        class="w-full border p-3 rounded-lg mb-4 focus:ring-2 focus:ring-[#114b72] outline-none">
-
-      <button onclick="registerUser()"
-        class="w-full bg-[#114b72] hover:bg-[#0d3d5c] text-white p-3 rounded-lg font-semibold transition">
-        Create Account
-      </button>
-    </div>
-
-  </div>
+<!-- ROLE -->
+<div class="flex justify-center mb-6">
+<div class="bg-gray-100 p-1 rounded-full flex gap-2">
+<button id="userModeBtn" class="px-5 py-2 rounded-full bg-[#114b72] text-white text-sm font-semibold">User</button>
+<button id="adminModeBtn" class="px-5 py-2 rounded-full text-gray-600 text-sm font-semibold">Admin</button>
 </div>
+</div>
+
+<!-- TABS -->
+<div class="flex justify-center gap-8 mb-6 text-sm font-semibold">
+<button id="tabLogin" class="border-b-2 border-[#114b72] pb-1">Login</button>
+<button id="tabRegister" class="text-gray-400 pb-1">Register</button>
+</div>
+
+<!-- LOGIN -->
+<div id="loginBox">
+<input id="loginEmail" type="email" placeholder="Email"
+class="w-full border p-3 rounded-lg mb-4 focus:ring-2 focus:ring-[#114b72] outline-none">
+
+<div class="relative mb-4">
+<input id="loginPass" type="password" placeholder="Password"
+class="w-full border p-3 rounded-lg pr-10 focus:ring-2 focus:ring-[#114b72] outline-none">
+<span onclick="togglePass('loginPass')" class="absolute right-3 top-3 cursor-pointer">👁</span>
+</div>
+
+<button onclick="loginUser()" class="w-full btn-main hover:bg-[#0d3d5c]">
+Login
+</button>
+
+<div class="flex items-center my-6">
+<hr class="flex-grow">
+<span class="px-3 text-gray-400 text-sm">OR</span>
+<hr class="flex-grow">
+</div>
+
+<button onclick="googleLogin()"
+class="w-full border flex items-center justify-center gap-3 p-3 rounded-lg hover:bg-gray-50">
+<img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5">
+Continue with Google
+</button>
+
+</div>
+
+<!-- REGISTER -->
+<div id="registerBox" class="hidden">
+<input id="name" placeholder="Full Name"
+class="w-full border p-3 rounded-lg mb-3 focus:ring-2 focus:ring-[#114b72] outline-none">
+
+<input id="email" type="email" placeholder="Email"
+class="w-full border p-3 rounded-lg mb-3 focus:ring-2 focus:ring-[#114b72] outline-none">
+
+<input id="password" type="password" placeholder="Password"
+class="w-full border p-3 rounded-lg mb-4 focus:ring-2 focus:ring-[#114b72] outline-none">
+
+<button onclick="registerUser()" class="w-full btn-main hover:bg-[#0d3d5c]">
+Create Account
+</button>
+</div>
+
+</div>
+</div>
+
 <script>
-/* ================= SUPABASE ================= */
+document.fonts.ready.then(()=>document.body.classList.add("fonts-loaded"))
+
 const supabaseClient = supabase.createClient(
-  "https://ecuvhnvpajodymdibuwt.supabase.co",
-   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+"https://ecuvhnvpajodymdibuwt.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+)
 
-);
+let loginMode="user"
 
-let loginMode = "user";
-/* ---------------- TAB SWITCH ---------------- */
-document.addEventListener("DOMContentLoaded", function () {
-
-  const userBtn = document.getElementById("userModeBtn");
-  const adminBtn = document.getElementById("adminModeBtn");
-
-  userBtn.addEventListener("click", () => {
-    loginMode = "user";
-
-    userBtn.classList.add("bg-[#114b72]", "text-white");
-    adminBtn.classList.remove("bg-[#114b72]", "text-white");
-
-    adminBtn.classList.add("text-gray-600");
-  });
-
-  adminBtn.addEventListener("click", () => {
-    loginMode = "admin";
-
-    adminBtn.classList.add("bg-[#114b72]", "text-white");
-    userBtn.classList.remove("bg-[#114b72]", "text-white");
-
-    userBtn.classList.add("text-gray-600");
-  });
-
-});
-
-/* ---------------- PASSWORD TOGGLE ---------------- */
-function togglePass(id) {
-  const field = document.getElementById(id);
-  field.type = field.type === "password" ? "text" : "password";
+/* ROLE SWITCH */
+userModeBtn.onclick=()=>{
+loginMode="user"
+userModeBtn.classList.add("bg-[#114b72]","text-white")
+adminModeBtn.classList.remove("bg-[#114b72]","text-white")
 }
 
-/* ---------------- REGISTER ---------------- */
-async function registerUser() {
+adminModeBtn.onclick=()=>{
+loginMode="admin"
+adminModeBtn.classList.add("bg-[#114b72]","text-white")
+userModeBtn.classList.remove("bg-[#114b72]","text-white")
+}
 
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+/* TAB SWITCH */
+tabLogin.onclick=()=>{
+loginBox.classList.remove("hidden")
+registerBox.classList.add("hidden")
+tabLogin.classList.add("border-b-2","border-[#114b72]")
+tabRegister.classList.remove("border-b-2")
+}
 
-  if (!name || !email || !password) {
-    alert("Fill all fields");
-    return;
-  }
+tabRegister.onclick=()=>{
+loginBox.classList.add("hidden")
+registerBox.classList.remove("hidden")
+tabRegister.classList.add("border-b-2","border-[#114b72]")
+tabLogin.classList.remove("border-b-2")
+}
 
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
+/* PASSWORD TOGGLE */
+function togglePass(id){
+const f=document.getElementById(id)
+f.type=f.type==="password"?"text":"password"
+}
+
+/* REGISTER */
+async function registerUser(){
+
+const name=document.getElementById("name").value.trim()
+const email=document.getElementById("email").value.trim()
+const password=document.getElementById("password").value.trim()
+
+if(!name||!email||!password){
+alert("Fill all fields")
+return
+}
+
+if(password.length<6){
+alert("Password must be at least 6 characters")
+return
+}
+
+const {error}=await supabaseClient.auth.signUp({
+email,
+password,
+options:{data:{name,role:loginMode}}
+})
+
+if(error){alert(error.message);return}
+
+// Mirror the new user to the public.users table so Admins can see them!
+if (data && data.user) {
+    const { error: insertError } = await supabaseClient.from("users").insert([{
+        id: data.user.id,
         name: name,
-        role: loginMode   // 🔥 save role
-      }
+        email: email,
+        role: loginMode
+    }]);
+    
+    if(insertError) {
+        console.error("Mirror to public.users failed: ", insertError);
+        alert("Registration succeeded (Auth), but failed to sync to Admin dashboard (SQL table). Please double check your public.users table RLS policies.");
+        return;
     }
-  });
-
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
-  alert("Registration successful!");
-}
-/*Login logic*/
-async function loginUser() {
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPass").value.trim();
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
-  const role = data.user.user_metadata.role || "user";
-  sessionStorage.setItem("role", role);
-
-  window.location.href = "home.html";
 }
 
-async function googleLogin() {
-  const { data, error } = await supabaseClient.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: window.location.origin + "/home.html"
-    }
-  });
-
-  if (error) {
-    alert(error.message);
-  }
+alert("Registration successful! They will now appear on the Admin Dashboard.")
 }
-</script>
-<script>
 
-async function googleLogin() {
-  const { error } = await supabaseClient.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      queryParams: {
-        prompt: "select_account"
-      },
-      redirectTo: window.location.origin + "/home.html"
-    }
-  });
+/* LOGIN */
+async function loginUser(){
 
-  if (error) alert(error.message);
+const email=document.getElementById("loginEmail").value.trim()
+const password=document.getElementById("loginPass").value.trim()
+
+const {data,error}=await supabaseClient.auth.signInWithPassword({
+email,password
+})
+
+if(error){alert(error.message);return}
+
+const role=data.user.user_metadata.role||"user"
+localStorage.setItem('userRole', role)
+
+if(role==="admin"){
+window.location.href="admin-home.html"
+}else{
+window.location.href="home.html"
 }
-document.fonts.ready.then(() => {
-  document.body.classList.add("fonts-loaded");
-});
+}
+
+/* GOOGLE LOGIN */
+async function googleLogin(){
+const {error}=await supabaseClient.auth.signInWithOAuth({
+provider:"google",
+options:{redirectTo:window.location.origin+"/home.html"}
+})
+if(error) alert(error.message)
+}
 
 </script>
 

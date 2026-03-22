@@ -100,6 +100,9 @@
   const pickupTime = document.getElementById('pickupTime');
   const dropDate = document.getElementById('dropDate');
   const dropTime = document.getElementById('dropTime');
+  
+  if (localStorage.getItem("pickupDate")) pickupDate.value = localStorage.getItem("pickupDate");
+  if (localStorage.getItem("dropDate")) dropDate.value = localStorage.getItem("dropDate");
 
   let carData = null;
   try { carData = JSON.parse(localStorage.getItem('selectedCar')); }
@@ -149,7 +152,7 @@
     }
 
     const hours = (end - start) / (1000 * 60 * 60);
-    const total = Math.round(hours * hourlyPrice);
+    const total = Math.ceil(hours) * hourlyPrice;
 
     totalAmountEl.textContent = "₹" + total;
     localStorage.setItem("totalAmount", total);

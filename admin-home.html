@@ -1,81 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Admin Panel | RideON</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Landing | RideON</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #b2bd14cf;
+      --gold: #c6c899;
+      --muted: #293918;
+      --card: #dddfae;
+      --contrast: #33450d;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--bg);
+      color: var(--contrast);
+      margin: 0;
+      overflow-x: hidden;
+      opacity: 0;
+      transition: 0.3s ease-in-out;
+    }
 
-<style>
-  body {
-    background: linear-gradient(135deg, #f7f7e8, #eef2f3);
-    font-family: 'Lato', sans-serif;
-  }
-</style>
+    body.ready {
+      opacity: 1;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Cinzel', serif
+    }
+
+    a,
+    nav a {
+      color: var(--contrast)
+    }
+
+    .muted {
+      color: var(--muted)
+    }
+
+    nav {
+      backdrop-filter: blur(6px)
+    }
+  </style>
 </head>
 
-<body class="min-h-screen">
-  
+<body>
 
-  <!-- NAVBAR -->
-  <header class="bg-white/80 backdrop-blur-md shadow-sm px-10 py-4
-                 flex justify-between items-center fixed top-0 w-full z-50">
+  <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
+    <div class="w-full grid grid-cols-3 items-center px-4 py-4">
 
-    <!-- LOGO -->
-    <a href="admin-login.html"
-       class="text-3xl font-bold tracking-wide"
-       style="font-family:'Cinzel'">
-       <span class="text-green-900">Ride</span><span class="text-gray-600">ON</span>
-    </a>
-
-    <!-- ADMIN LOGIN -->
-    <a href="admin-login.html"
-       class="font-semibold text-[#114b72] hover:underline transition">
-      Admin Login
-    </a>
-  </header>
-
-  
-  <!-- CONTENT -->
-  <main class="min-h-screen flex items-center justify-center pt-28">
-
-    <div class="backdrop-blur-lg bg-white/70 border border-white/40 
-                shadow-2xl rounded-3xl p-10 w-full max-w-md text-center">
-
-      <h1 class="text-4xl font-bold mb-2" style="font-family:'Cinzel'">
-        Admin Panel
-      </h1>
-
-      <p class="text-gray-600 mb-8">
-        Choose where you want to go
-      </p>
-
-      <!-- DASHBOARD -->
-      <a href="admin-dashboard.html"
-         class="block mb-4 transform transition hover:scale-[1.02]">
-         
-        <div class="bg-[#114b72] text-white py-4 rounded-xl 
-                    font-semibold flex items-center justify-center gap-3
-                    shadow-lg hover:shadow-xl">
-          📊 <span>Admin Dashboard</span>
+      <div class="flex justify-start items-center">
+        <div class="text-2xl font-bold" style="font-family:'Cinzel'">
+          Ride<span class="text-gray-600">ON</span> <span
+            class="text-xs text-red-600 ml-2 font-sans tracking-widest px-2 py-1 bg-red-100 rounded-md">ADMIN
+            PANEL</span>
         </div>
-      </a>
+      </div>
 
-      <!-- USERS -->
-      <a href="admin-users.html"
-         class="block transform transition hover:scale-[1.02]">
-        <div class="bg-[#0f3f5f] text-white py-4 rounded-xl 
-                    font-semibold flex items-center justify-center gap-3
-                    shadow-lg hover:shadow-xl">
-          👤 <span>Manage Users</span>
-        </div>
-      </a>
+      <div class="flex justify-center">
+        <ul class="hidden md:flex items-center space-x-8 text-lg font-bold">
+          <li><a href="offer.html" class="hover:text-[#114b72] transition">Offers</a></li>
+          <li><a href="admin-dashboard.html" class="hover:text-[#114b72] transition">Dashboard</a></li>
+          <li><a href="addcar.html" class="hover:text-[#114b72] transition">Add Cars</a></li>
+          <li><a href="admin-users.html" class="hover:text-[#114b72] transition">Users</a></li>
+        </ul>
+      </div>
 
+      <div class="flex justify-end items-center gap-4">
+        <button onclick="adminLogout()" class="text-red-600 font-bold hover:underline bg-red-50 px-4 py-2 rounded-lg">
+          Logout <i class="fas fa-sign-out-alt ml-1"></i>
+        </button>
+      </div>
     </div>
+  </nav>
 
-  </main>
+  <!-- HERO -->
+  <section class="relative flex items-center justify-center text-center min-h-screen pt-20"
+    style="background-image:url('https://images.unsplash.com/photo-1605559424843-3a477d8e5f2b?auto=format&fit=crop&w=2000&q=80'); background-size:cover; background-position:center;">
+    <div class="absolute inset-0"
+      style="background:linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255,255,255,0.9));"></div>
+    <div class="relative z-10 max-w-3xl px-4 py-24">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4" style="color:var(--contrast)">Welcome to Admin Portal</h1>
+      <p class="muted text-lg md:text-xl mb-6">Manage fleet inventory, bookings, users, and exclusive offers safely from
+        your control center.</p>
 
+      <div class="flex gap-4 justify-center mt-8">
+        <a href="admin-dashboard.html"
+          class="px-8 py-3 bg-[#114b72] text-black rounded-full font-bold shadow-lg hover:shadow-xl hover:bg-[#0d3b5a] transition">
+          View Dashboard
+        </a>
+        <a href="addcar.html"
+          class="px-8 py-3 bg-white text-[#114b72] border-2 border-[#114b72] rounded-full font-bold shadow-lg hover:bg-gray-50 transition">
+          Add New Car
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFERS DYNAMIC -->
+  <section id="offers" class="py-16 bg-white text-center">
+    <h2 class="text-3xl md:text-4xl mb-10">Exclusive Offers Management</h2>
+    <div id="dynamicOffersContainer" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="col-span-3 text-gray-500 py-10">Loading live offers from database...</div>
+    </div>
+  </section>
+
+  <footer class="py-12 bg-gray-50 text-center border-t border-gray-200">
+    <p class="text-sm text-gray-400 font-semibold uppercase tracking-widest">&copy; 2025 RideON Admin Systems</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseClient = supabase.createClient("https://ecuvhnvpajodymdibuwt.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g");
+
+    async function checkAdmin() {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+
+      if (!user) {
+        window.location.replace("log.html");
+        return;
+      }
+
+      const role = user.user_metadata?.role || "user";
+
+      if (role !== "admin") {
+        alert("Unauthorized access. Admin profile required.");
+        window.location.replace("home.html");
+        return;
+      }
+
+      document.body.classList.add("ready");
+    }
+
+    async function adminLogout() {
+      await supabaseClient.auth.signOut();
+      localStorage.removeItem('userRole');
+      window.location.replace("log.html");
+    }
+
+    async function loadDynamicOffers() {
+      const container = document.getElementById("dynamicOffersContainer");
+      if (!container) return;
+
+      const { data, error } = await supabaseClient.from("offers").select("*").order("created_at", { ascending: false });
+
+      if (error || !data || data.length === 0) {
+        container.innerHTML = `<div class="col-span-3 text-center text-gray-500 py-10">No special offers available right now.</div>`;
+        return;
+      }
+
+      container.innerHTML = "";
+      data.forEach(offer => {
+        let targetPage = "#";
+        if (offer.category === "economy") targetPage = "economy.html";
+        else if (offer.category === "luxury") targetPage = "luxury.html";
+        else if (offer.category === "electric") targetPage = "electric.html";
+
+        container.innerHTML += `
+        <div class="relative w-full h-[420px] rounded-xl overflow-hidden shadow-2xl">
+            <img src="${offer.image_url}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400?text=No+Image'">
+            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+            <div class="absolute top-6 left-6 bg-transparent border-2 border-white px-4 py-3 rounded-xl text-left text-white">
+                <p class="text-xs">UP TO</p>
+                <p class="text-3xl font-extrabold">${offer.discount || 0}%</p>
+                <p class="text-xl font-bold">DISCOUNT</p>
+            </div>
+            <div class="absolute bottom-6 left-6 text-left text-white w-[80%]">
+                <h3 class="text-2xl font-bold">${offer.title}</h3>
+                <p class="text-sm text-gray-200 mb-3">${offer.description || ''}</p>
+                <a href="${targetPage}" class="px-5 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-300 transition inline-block">Explore Now</a>
+            </div>
+        </div>`;
+      });
+    }
+
+    checkAdmin().then(() => {
+      loadDynamicOffers();
+    });
+  </script>
 </body>
+
 </html>

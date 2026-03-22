@@ -201,13 +201,20 @@
     }
 
     const diffHours = (end - start) / (1000 * 60 * 60);
-    const total = Math.round(diffHours * (hourlyPrice || 0));
+    const total = Math.ceil(diffHours) * (hourlyPrice || 0);
     document.getElementById("totalAmount").innerText = "₹" + total;
     localStorage.setItem("totalAmount", total);
   }
 
+  const pDateEl = document.getElementById("pickupDate");
+  const dDateEl = document.getElementById("dropDate");
+  if (localStorage.getItem("pickupDate")) pDateEl.value = localStorage.getItem("pickupDate");
+  if (localStorage.getItem("dropDate")) dDateEl.value = localStorage.getItem("dropDate");
+
   document.querySelectorAll("#pickupDate,#pickupTime,#dropDate,#dropTime")
           .forEach(i => i.addEventListener("change", calculateTotal));
+
+  calculateTotal();
 
   // ------------------------
   //  ORIGINAL VALIDATION (exact behavior)

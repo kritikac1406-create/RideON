@@ -1,301 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Electric Cars | RideON</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Electric Cars | RideON</title>
 
-  <!-- Tailwind -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-  <style>
-    :root {
-      --bg: #F7F7E8;       /* SAME as home.html */
-      --card: #ffffff;
-      --muted: #6b7280;
-      --accent: #114b72;
-      --plate-gold: #d4af37;
-    }
+<style>
+:root{
+--bg:#F7F7E8;
+--card:#ffffff;
+--accent:#114b72;
+}
 
-    body {
-      font-family: Inter, ui-sans-serif;
-      background: var(--bg);
-      margin: 0;
-    }
+body{
+font-family:Inter;
+background:var(--bg);
+margin:0;
+}
 
-    /* Left filter panel */
-    .filter-panel {
-      background: var(--card);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-      width: 260px;
-    }
+.filter-panel{
+background:#fff;
+padding:20px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,.06);
+width:260px;
+}
 
-    .filter-section+ .filter-section {
-      margin-top: 18px;
-      padding-top: 18px;
-      border-top: 1px solid #eee;
-    }
-  </style>
+.car-card{
+background:#fff;
+border-radius:14px;
+padding:14px;
+border:1px solid #e8e8e8;
+box-shadow:0 4px 12px rgba(0,0,0,.08);
+transition:.25s;
+cursor:pointer;
+display:flex;
+flex-direction:column;
+}
+
+.car-card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 30px rgba(0,0,0,.12);
+}
+
+.car-img{
+height:160px;
+width:100%;
+object-fit:cover;
+border-radius:10px;
+margin-bottom:10px;
+}
+</style>
 </head>
 
 <body>
 
+<header class="py-4 px-6">
+<div class="max-w-7xl mx-auto">
+<input id="searchInput" placeholder="Search electric car..."
+class="w-full rounded-lg p-4 border shadow bg-white">
+</div>
+</header>
 
-  <!-- HEADER -->
-  <header class="py-4 px-6 bg-transparent">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex items-center justify-between mb-4">
+<main class="max-w-7xl mx-auto px-6 py-8">
+<div class="flex gap-8">
 
-        <h1 style="font-family:'Cinzel';font-size:38px;">
-  <a href="home.html" class="hover:opacity-80">
-    <span class="text-green-900">Ride</span><span class="text-gray-600">ON</span>
-  </a>
-</h1>
+<!-- FILTER PANEL -->
+<aside class="filter-panel self-start" style="align-self: flex-start; height: max-content;">
 
-        <div class="hidden md:flex">
-          <button class="px-4 py-2 rounded-full bg-green-900 text-white">Login / Signup</button>
-        </div>
-      </div>
+<h3 class="font-bold">Max Price ₹<span id="priceLabel">2000</span></h3>
+<input id="priceRange" type="range" min="0" max="2000" value="2000" class="w-full">
 
-      <!-- SEARCH BAR -->
-      <input id="searchInput" type="text" placeholder="Search for a car..."
-        class="w-full rounded-lg p-4 border shadow-sm bg-white focus:ring-2 focus:ring-green-900 outline-none">
-    </div>
-  </header>
-  
+<h3 class="mt-5 font-bold">Pickup Date</h3>
+<input type="date" id="filterPickupDate" class="border p-2 w-full rounded">
 
+<h3 class="mt-4 font-bold">Drop Date</h3>
+<input type="date" id="filterDropDate" class="border p-2 w-full rounded">
 
-  <!-- MAIN -->
-  <main class="max-w-7xl mx-auto px-6 py-8">
-    <div class="flex layout-grid gap-8">
+<h3 class="mt-5 font-bold">Transmission</h3>
+<label><input type="checkbox" class="transFilter" value="Automatic"> Automatic</label>
 
-      <!-- LEFT FILTERS -->
-      <aside class="filter-panel">
-        <h2 class="text-xl font-semibold">Filters</h2>
-        <p class="text-sm text-gray-500 mb-3">Fine-tune your search</p>
+<h3 class="mt-5 font-bold">Brand</h3>
+<label><input type="checkbox" class="brandFilter" value="Tata"> Tata</label><br>
+<label><input type="checkbox" class="brandFilter" value="MG"> MG</label><br>
+<label><input type="checkbox" class="brandFilter" value="Mahindra"> Mahindra</label>
 
-        <!-- PRICE -->
-        <div class="filter-section">
-          <h3 class="font-medium mb-2">Max Price</h3>
-          <span id="priceLabel" class="text-green-700 font-semibold">₹1500</span>
-          <input id="priceRange" type="range" min="0" max="1500" value="1500" class="w-full mt-3">
-        </div>
+</aside>
 
-        <!-- BRAND -->
-        <div class="filter-section">
-          <h3 class="font-medium mb-3">Brand</h3>
+<!-- CAR GRID -->
+<section id="electricCars"
+class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 flex-1">
+</section>
 
-          <label class="flex items-center gap-3 mb-2"><input type="checkbox" class="brandFilter" value="maruti">Maruti</label>
-          <label class="flex items-center gap-3 mb-2"><input type="checkbox" class="brandFilter" value="tata">Tata</label>
-          <label class="flex items-center gap-3 mb-2"><input type="checkbox" class="brandFilter" value="mahindra">Mahindra</label>
-          <label class="flex items-center gap-3"><input type="checkbox" class="brandFilter" value="toyota">Toyota</label>
-        </div>
-      </aside>
+</div>
+</main>
 
-      <!-- CAR GRID -->
-      <section class="flex-1">
-       <div id="electricCars" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-          <!-- ======= ORIGINAL CAR CARDS (NOT CHANGED) ======= -->
-        </div>
-      </section>
-    </div>
-  </main>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* FILTER LOGIC */
-const searchInput = document.getElementById("searchInput");
-const priceRange = document.getElementById("priceRange");
-const priceLabel = document.getElementById("priceLabel");
-const brandFilters = document.querySelectorAll(".brandFilter");
-const carCards = document.querySelectorAll(".car-card");
+const supabaseClient = supabase.createClient("https://ecuvhnvpajodymdibuwt.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g");
 
-priceLabel.textContent = "₹" + priceRange.value;
+document.addEventListener("DOMContentLoaded",function(){
 
-searchInput.addEventListener("input", applyFilters);
-priceRange.addEventListener("input", () => {
-  priceLabel.textContent = "₹" + priceRange.value;
-  applyFilters();
-});
-brandFilters.forEach(cb => cb.addEventListener("change", applyFilters));
+const search=document.getElementById("searchInput")
+const price=document.getElementById("priceRange")
+const priceLabel=document.getElementById("priceLabel")
+const pickup=document.getElementById("filterPickupDate")
+const drop=document.getElementById("filterDropDate")
+
+priceLabel.innerText=price.value
 
 function applyFilters() {
-  const q = searchInput.value.toLowerCase();
-  const max = parseInt(priceRange.value);
-  const brands = [...brandFilters].filter(c => c.checked).map(c => c.value);
+    const getChecked = sel => Array.from(document.querySelectorAll(sel + ":checked")).map(cb => cb.value.toLowerCase().trim());
+    const brands = getChecked(".brandFilter");
+    const fuels = getChecked(".fuelFilter");
+    const trans = getChecked(".transFilter");
+    const q = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
+    const max = parseInt(document.getElementById("priceRange")?.value || "999999");
+    const pickup = document.getElementById("filterPickupDate")?.value;
+    const drop = document.getElementById("filterDropDate")?.value;
 
-  carCards.forEach(card => {
-    const name = card.dataset.name.toLowerCase();
-    const brand = card.dataset.brand;
-    const price = parseInt(card.dataset.price);
+    document.querySelectorAll(".car-card").forEach(card => {
+        let show = true;
+        const name = (card.dataset.name || "").toLowerCase();
+        const brand = (card.dataset.brand || "").toLowerCase();
+        const fuel = (card.dataset.fuel || "").toLowerCase();
+        const t = (card.dataset.transmission || "").toLowerCase();
+        const cost = parseInt(card.dataset.price || "0");
+        const from = card.dataset.availablefrom;
+        const to = card.dataset.availableto;
 
-    const ok = name.includes(q) && price <= max && (brands.length === 0 || brands.includes(brand));
+        if (q && !name.includes(q)) show = false;
+        
+        // Use .some() securely handles compound definitions like "PETROL/CNG" matching a "Petrol" checkbox
+        if (brands.length > 0 && !brands.some(b => brand.includes(b))) show = false;
+        if (fuels.length > 0 && !fuels.some(f => fuel.includes(f))) show = false;
+        if (trans.length > 0 && !trans.some(tr => t.includes(tr))) show = false;
+        
+        if (cost > max) show = false;
+        if (pickup && from && pickup < from) show = false;
+        if (drop && to && drop > to) show = false;
 
-    card.style.display = ok ? "flex" : "none";
-
-    if (!ok) card.querySelector(".car-details").classList.remove("open");
-  });
+        card.style.display = show ? "" : "none";
+    });
 }
 
-/* COLLAPSE DETAILS */
-function cardClicked(e, card) {
-  if (e.target.closest(".book-btn")) return;
-  const d = card.querySelector(".car-details");
-  const open = d.classList.contains("open");
+// Ensure the updated filter is available globally for the DOM listeners
 
-  document.querySelectorAll(".car-details.open").forEach(x => {
-    if (x !== d) x.classList.remove("open");
-  });
+// Ensure the updated filter is available globally for the DOM listeners
+window.applyFilters = applyFilters;
 
-  if (open) d.classList.remove("open");
-  else d.classList.add("open");
-}
+// REBIND EVENT LISTENERS Wiped out during V8 Patches
+(function bindFilters() {
+    const searchInp = document.getElementById("searchInput");
+    if (searchInp) searchInp.addEventListener("input", applyFilters);
 
-/* ⭐ FIXED BOOK NOW — passes correct image */
-function bookNow(e, btn) {
-  e.stopPropagation();
+    const prcRng = document.getElementById("priceRange");
+    const prcLbl = document.getElementById("priceLabel");
+    if (prcRng) prcRng.addEventListener("input", () => {
+        if (prcLbl) prcLbl.textContent = "₹" + prcRng.value;
+        applyFilters();
+    });
 
-  const card = btn.closest(".car-card");
-  let imgSrc = card.querySelector(".car-img").getAttribute("src");
+    const pkpInp = document.getElementById("filterPickupDate");
+    if (pkpInp) pkpInp.addEventListener("change", applyFilters);
 
-  // FIX WINDOWS PATHS → ALWAYS eco/filename.jpg
-  if (imgSrc.includes("\\") || /^[A-Za-z]:/.test(imgSrc) || imgSrc.startsWith("file:///")) {
-    imgSrc = imgSrc.split("\\").pop().split("/").pop();
-    imgSrc = "eco/" + imgSrc;
+    const drpInp = document.getElementById("filterDropDate");
+    if (drpInp) drpInp.addEventListener("change", applyFilters);
+
+    document.querySelectorAll(".brandFilter").forEach(cb => cb.addEventListener("change", applyFilters));
+    document.querySelectorAll(".fuelFilter").forEach(cb => cb.addEventListener("change", applyFilters));
+    document.querySelectorAll(".transFilter").forEach(cb => cb.addEventListener("change", applyFilters));
+})();
+
+
+  // Enforce today as the minimum date allowed
+  const pickupInput = document.getElementById("filterPickupDate");
+  const dropInput = document.getElementById("filterDropDate");
+  const todayStr = new Date().toISOString().split("T")[0];
+  if(pickupInput && dropInput) {
+      pickupInput.min = todayStr;
+      dropInput.min = todayStr;
+
+      pickupInput.addEventListener("change", () => {
+        dropInput.min = pickupInput.value;
+      });
   }
 
-  const carData = {
-    name: card.dataset.name,
-    price: card.dataset.price,
-    img: imgSrc,
-    brand: card.dataset.brand,
-    numberPlate: card.dataset.plate
+  window.initiateBooking = function(carId, carName, carPrice, carImage) {
+    const pickup = pickupInput ? pickupInput.value : "";
+    const drop = dropInput ? dropInput.value : "";
+    
+    if (!pickup || !drop) {
+      alert("⚠️ Please select both Pickup and Drop dates in the left filter panel first!");
+      return;
+    }
+    
+    if (new Date(drop) < new Date(pickup)) {
+      alert("⚠️ Drop date cannot be before the Pickup date!");
+      return;
+    }
+    
+    localStorage.setItem('pickupDate', pickup);
+    localStorage.setItem('dropDate', drop);
+    localStorage.setItem('selectedCarId', carId);
+    localStorage.setItem('selectedCarName', carName);
+    localStorage.setItem('selectedCarPrice', carPrice);
+    localStorage.setItem('selectedCarImage', carImage);
+    
+    window.location.href = "booking.html";
   };
 
-  localStorage.setItem("selectedCar", JSON.stringify(carData));
-  window.location.href = "booking.html";
-}
+  async function loadDynamicCars() {
+      const container = document.getElementById("electricCars");
+      container.innerHTML = `<div class="col-span-3 text-center text-gray-500 py-10">Loading live electric fleet...</div>`;
+      
+      // Removed availability eq(true) since their table might not have it yet.
+      const { data, error } = await supabaseClient.from("cars").select("*").eq("category", "electric").order("created_at", { ascending: false });
+      
+      if (error) {
+          console.error(error);
+          container.innerHTML = `<div class="col-span-3 text-center text-red-500">Error loading fleet.</div>`;
+          return;
+      }
+      if (!data || data.length === 0) {
+          container.innerHTML = `<div class="col-span-3 text-center text-gray-500">No electric cars available yet.</div>`;
+          return;
+      }
+      
+      
+      
+      
+      
+      
+      
+      container.innerHTML = "";
+      container.innerHTML = "";
+      data.forEach(car => {
+          container.innerHTML += `
+          <div class="car-card min-w-0 bg-white rounded-3xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-gray-100 flex flex-col group relative transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-4 w-full h-full"
+               data-name="${car.name || ''}" 
+               data-brand="${car.brand || ''}" 
+               data-fuel="${car.fuel_type || ''}" 
+               data-transmission="${car.transmission || ''}" 
+               data-price="${car.rent_per_hour || 0}">
 
-applyFilters();
-</script>
+             <!-- Image Box -->
+             <div class="w-full relative overflow-hidden group-hover:opacity-95 transition-opacity mb-4 bg-transparent border-none flex items-end justify-center" style="height: 180px;">
+                <img src="${car.image_url}" class="w-full h-full object-contain relative z-10 transform group-hover:scale-105 transition-transform duration-500 ease-out p-1" style="object-position: center bottom;" onerror="this.src='https://via.placeholder.com/400x200?text=No+Image'">
+             </div>
 
-<script type="module" src="script.js"></script>
-<div
-  id="carModal"
-  class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-50"
->
-  <div
-    class="bg-white rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden"
-  >
-    <!-- Close -->
-    <button
-      id="closeModal"
-      class="absolute top-4 right-4 text-gray-500 hover:text-black text-xl z-10"
-    >
-      ✕
-    </button>
+             <!-- Car Name -->
+             <h3 class="text-xl font-extrabold text-gray-900 mb-4 tracking-tight leading-tight w-full" style="font-family: 'Cinzel', serif;">${car.name}</h3>
 
-    <!-- Image -->
-    <div class="h-56 bg-gray-100 flex items-center justify-center">
-      <img
-        id="modalImage"
-        class="max-h-full object-contain"
-      />
-    </div>
+             <!-- Specs Row -->
+             <div class="flex flex-wrap items-center gap-3 mb-6">
+                <!-- Fuel -->
+                <div class="flex items-center gap-2 text-gray-700 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100 flex-shrink-0">
+                   <div class="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center border border-blue-100 text-blue-600 shadow-sm flex-shrink-0">
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                   </div>
+                   <span class="font-bold uppercase tracking-wider" style="font-size: 11px;">${car.fuel_type || 'Petrol'}</span>
+                </div>
+                
+                <!-- Transmission -->
+                <div class="flex items-center gap-2 text-gray-700 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100 flex-shrink-0">
+                   <div class="w-6 h-6 rounded-full bg-purple-50 flex items-center justify-center border border-purple-100 text-purple-600 shadow-sm flex-shrink-0">
+                      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287-.947c.886.539 2.042.06 2.287.947 1.561-.379 2.6-1.561 2.978 0a1.532 1.532 0 01-2.287-.947c1.372.836-.734-2.942-2.106-2.106a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 012.287.947zM10 13a3 3 0 100-6 3 3 0 000 6z"></path></svg>
+                   </div>
+                   <span class="font-bold uppercase tracking-wider" style="font-size: 11px;">${car.transmission || 'Auto'}</span>
+                </div>
+             </div>
 
-    <!-- Content -->
-    <div class="p-6 text-center space-y-2">
-      <h2 id="modalName" class="text-2xl font-bold"></h2>
-      <p id="modalBrand" class="text-gray-500"></p>
+             <!-- Locked Bottom Wrapper (Pushes everything below strictly to the bottom line regardless of Title lengths) -->
+             <div class="mt-auto w-full pt-4">
+                 <!-- Divider -->
+                 <div class="w-full h-px bg-gray-100 mb-5"></div>
 
-      <p id="modalPrice" class="text-green-700 text-xl font-semibold"></p>
+                 <!-- Bottom Row -->
+                 <div class="flex justify-between items-center w-full">
+                    <p class="text-[26px] font-black leading-none uppercase text-[#114b72] flex items-baseline tracking-tight">
+                       ₹${car.rent_per_hour}<span class="font-bold text-gray-400 ml-1.5 tracking-widest text-[#888]" style="font-size: 12px;"> / hr</span>
+                    </p>
 
-      <div class="text-sm text-gray-700 space-y-1 mt-3">
-        <p><strong>Fuel:</strong> <span id="modalFuel"></span></p>
-        <p><strong>Transmission:</strong> <span id="modalTransmission"></span></p>
-        <p>
-          <strong>Status:</strong>
-          <span id="modalAvailability"></span>
-        </p>
-      </div>
-
-      <!-- Button -->
-      <button
-        id="modalBookBtn"
-        class="w-full mt-5 bg-black text-white py-3 rounded-xl hover:bg-gray-900 transition"
-      >
-        Book Now
-      </button>
-    </div>
-  </div>
-</div>
-<script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-const supabase = createClient(
-  "https://ecuvhnvpajodymdibuwt.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
-
-);
-
-const carGrid = document.getElementById("carGrid");
-
-async function loadElectricCars() {
-  const { data: cars, error } = await supabase
-    .from("cars")
-    .select("*")
-    .eq("category", "electric")
-    .eq("availability", true);
-
-  if (error) {
-    console.error(error);
-    return;
+                    <button onclick="initiateBooking('${car.id}', '${car.name.replace(/'/g, "&apos;")}', '${car.rent_per_hour}', '${car.image_url}')" 
+                       class="px-7 py-3 rounded-lg font-black uppercase tracking-[0.1em] transition-all text-white shadow hover:shadow-xl hover:-translate-y-1 flex-shrink-0" 
+                       style="background-color: #114b72; font-size: 12px;">
+                       Book
+                    </button>
+                 </div>
+             </div>
+          </div>`;
+      });
+      if (window.applyFilters) window.applyFilters();
   }
-
-  carGrid.innerHTML = "";
-
-  cars.forEach(car => {
-    const card = document.createElement("div");
-    card.className = "car-card";
-    card.dataset.name = car.name;
-    card.dataset.brand = car.brand;
-    card.dataset.price = car.rent_per_hour;
-
-    card.innerHTML = `
-      <img src="${car.image_url}" class="car-img" onclick='openCarModal(${JSON.stringify(car)})' />
-
-      <h3 class="text-xl font-bold">${car.name}</h3>
-      <p class="text-gray-500">${car.brand}</p>
-      <p class="text-green-700 font-semibold">₹${car.rent_per_hour} / hour</p>
-
-      <div class="car-details">
-        <p><strong>Fuel:</strong> ${car.fuel}</p>
-        <p><strong>Transmission:</strong> ${car.transmission}</p>
-        <p><strong>Status:</strong> ${car.availability ? "Available" : "Booked"}</p>
-
-        <button class="book-btn mt-3"
-          onclick="selectCar('${car.id}')">
-          Book Now
-        </button>
-      </div>
-    `;
-
-    card.onclick = (e) => cardClicked(e, card);
-    carGrid.appendChild(card);
-  });
-}
-
-window.selectCar = function (carId) {
-  localStorage.setItem("selectedCarId", carId);
-  window.location.href = "booking.html";
-};
-
-loadElectricCars();
+  
+  loadDynamicCars();
+})
 </script>
-
 
 </body>
 </html>

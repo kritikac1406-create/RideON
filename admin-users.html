@@ -20,10 +20,10 @@
  <!-- NAVBAR -->
 <header class="bg-white shadow px-10 py-4 flex justify-between items-center fixed top-0 w-full z-50">
 
-  <a href="log.html"
+  <a href="javascript:void(0)" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'"
      class="text-3xl font-bold"
      style="font-family:'Cinzel'">
-   <div class="text-2xl font-bold" style="font-family:'Cinzel'">Ride<span class="text-gray-600">ON</span></div>
+   <a href="javascript:void(0)" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'"><div class="text-2xl font-bold" style="font-family:'Cinzel'">Ride<span class="text-gray-600">ON</span></div></a>
   </a>
 
 
@@ -82,19 +82,15 @@
       const { data: { user } } = await supabaseClient.auth.getUser();
 
       if (!user) {
-        window.location.replace("admin-login.html");
+        window.location.replace("log.html");
         return;
       }
 
-      const { data: admin } = await supabaseClient
-        .from("admins")
-        .select("id")
-        .eq("id", user.id)
-        .single();
+      const role = user.user_metadata?.role || "user";
 
-      if (!admin) {
-        await supabaseClient.auth.signOut();
-        window.location.replace("admin-login.html");
+      if (role !== "admin") {
+        alert("Unauthorized access. Admin only.");
+        window.location.replace("home.html");
         return;
       }
 
@@ -111,11 +107,24 @@
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (error || !users || users.length === 0) {
+      if (error) {
+        console.error("Supabase Error:", error);
+        table.innerHTML = `
+          <tr>
+            <td colspan="4" class="text-center py-6 text-red-500 font-bold">
+              Database Error: ${error.message}<br><br>
+              <span class="text-sm font-normal text-gray-600">Ensure your public.users table has a RLS policy allowing Admins to SELECT!</span>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      if (!users || users.length === 0) {
         table.innerHTML = `
           <tr>
             <td colspan="4" class="text-center py-6 text-gray-500">
-              No users found
+              No users found perfectly matches the public.users database. Create a new user account to see them here!
             </td>
           </tr>
         `;
@@ -141,7 +150,8 @@
     // 🚪 LOGOUT
     async function adminLogout() {
       await supabaseClient.auth.signOut();
-      window.location.replace("admin-login.html");
+localStorage.removeItem('userRole');
+      window.location.replace("log.html");
     }
 
     protectAdminUsers();
