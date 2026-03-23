@@ -557,6 +557,9 @@
         });
       }
 
+      const adminBtn = document.getElementById("adminBtn");
+const adminDropdown = document.getElementById("adminDropdown");
+const adminArea = document.getElementById("adminArea");
       // ===== TOGGLE ADMIN DROPDOWN =====
       if (adminBtn) {
         adminBtn.addEventListener("click", (e) => {
@@ -593,209 +596,18 @@
 
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
-    /* ================= SUPABASE ================= */
-    const supabaseClient = supabase.createClient(
-      "https://ecuvhnvpajodymdibuwt.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+<script>
+const supabaseClient = supabase.createClient(
+  "https://ecuvhnvpajodymdibuwt.supabase.co",
+     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
 
-    );
+);
+</script>
 
-    /* ---------------- TAB SWITCH ---------------- */
-    const tabLogin = document.getElementById("tabLogin");
-    const tabRegister = document.getElementById("tabRegister");
-    const loginBox = document.getElementById("loginBox");
-    const registerBox = document.getElementById("registerBox");
-
-    tabRegister.onclick = () => {
-      loginBox.classList.add("hidden");
-      registerBox.classList.remove("hidden");
-      tabRegister.classList.remove("text-gray-500");
-      tabRegister.style.borderBottom = "2px solid #114b72";
-      tabLogin.classList.add("text-gray-500");
-      tabLogin.style.borderBottom = "none";
-    };
-
-    tabLogin.onclick = () => {
-      registerBox.classList.add("hidden");
-      loginBox.classList.remove("hidden");
-      tabLogin.classList.remove("text-gray-500");
-      tabLogin.style.borderBottom = "2px solid #114b72";
-      tabRegister.classList.add("text-gray-500");
-      tabRegister.style.borderBottom = "none";
-    };
-
-    /* ---------------- PASSWORD TOGGLE ---------------- */
-    function togglePass(id) {
-      const field = document.getElementById(id);
-      field.type = field.type === "password" ? "text" : "password";
-    }
-
-    /* ---------------- REGISTER ---------------- */
-    async function registerUser() {
-
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-
-      if (!name || !email || !password) {
-        alert("Please fill all fields");
-        return;
-      }
-
-      // STEP 1: Create Auth user with metadata
-      const { data, error } = await supabaseClient.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-          data: {
-            name: name
-          }
-        }
-      });
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      if (!data.user) {
-        alert("Check your email to confirm account.");
-        return;
-      }
-
-      const userId = data.user.id;
-
-      // STEP 2: Check if user already exists in public.users
-      const { data: existingUser } = await supabaseClient
-        .from("users")
-        .select("id")
-        .eq("id", userId)
-        .maybeSingle();
-
-      if (!existingUser) {
-        // STEP 3: Insert into public.users
-        const { error: insertError } = await supabaseClient
-          .from("users")
-          .insert({
-            id: userId,
-            name: name,
-            email: email
-          });
-
-        if (insertError) {
-          console.log(insertError);
-          alert("Error saving user data");
-          return;
-        }
-      }
-
-      alert("Registration successful!");
-      window.location.href = "home.html";
-    }
-
-    /* ---------------- LOGIN ---------------- */
-    async function loginUser() {
-
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPass").value.trim();
-
-      if (!email || !password) {
-        alert("Please fill all fields");
-        return;
-      }
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-      // Get name from users table
-      const { data: userData } = await supabaseClient
-        .from("users")
-        .select("name")
-        .eq("id", data.user.id)
-        .single();
-
-      if (userData) {
-        sessionStorage.setItem("userName", userData.name);
-      }
-      window.location.href = "home.html";
-    }
-  </script>
-  <script>
-
-
-    document.addEventListener("DOMContentLoaded", async () => {
-
-      const { data, error } = await supabaseClient.auth.getUser();
-
-      if (!data.user) return;
-
-      const user = data.user;
-
-      // ðŸ”¥ Get Google full name
-      let displayName =
-        user.user_metadata?.full_name ||
-        user.user_metadata?.name ||
-        user.email.split("@")[0];
-
-      // Capitalize first letter
-      displayName =
-        displayName.charAt(0).toUpperCase() +
-        displayName.slice(1);
-
-      // ðŸ”¥ Update Navbar Text
-      const usernameText = document.getElementById("usernameText");
-      const dropdownName = document.getElementById("dropdownName");
-      const loginArea = document.getElementById("loginArea");
-      const userArea = document.getElementById("userArea");
-
-      if (usernameText) usernameText.textContent = displayName;
-      if (dropdownName) dropdownName.textContent = "Hello, " + displayName;
-
-      // Hide Login button and show user area
-      if (loginArea) loginArea.style.display = "none";
-      if (userArea) userArea.style.display = "block";
-
-    });
-
-
-    document.addEventListener("DOMContentLoaded", async () => {
-
-      const { data } = await supabaseClient.auth.getUser();
-
-      if (!data.user) return;
-
-      const role = sessionStorage.getItem("role") || "user";
-
-      const adminArea = document.getElementById("adminArea");
-      const userArea = document.getElementById("userArea");
-      const loginArea = document.getElementById("loginArea");
-
-      loginArea.style.display = "none";
-
-      if (role === "admin") {
-        adminArea.style.display = "block";
-        userArea.style.display = "none";
-      } else {
-        userArea.style.display = "block";
-        adminArea.style.display = "none";
-      }
-
-    });
-
-  </script>
-
-  <!-- Leaflet JS (keep this normal) -->
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script id="dynamic-loader">
     async function loadDynamicOffers() {
       const container = document.getElementById("dynamicOffersContainer");
@@ -814,42 +626,28 @@
 
         let html = '';
         data.forEach(offer => {
-          // Link sanitization directly from DB Category
-          let link = '#';
-          if (offer.category === 'economy') link = 'economy.html';
-          else if (offer.category === 'luxury') link = 'luxury.html';
-          else if (offer.category === 'electric') link = 'electric.html';
-
           html += `
-             <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 transform transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl group cursor-pointer flex flex-col" onclick="window.location.href='${link}'">
-               
-               <!-- Top Image Section -->
-               <div class="relative w-full overflow-hidden flex-shrink-0" style="height: 190px;">
-                 <img src="${offer.image_url}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
-                 
-                 <!-- Top Left Discount Badge -->
-                 <div class="absolute top-4 left-4 bg-white bg-opacity-95 px-4 py-2 rounded-xl text-left shadow-lg flex items-center gap-1 border border-white border-opacity-60">
-                   <span class="text-xl font-black text-gray-900">${offer.discount || offer.discount_percent || 0}%</span>
-                   <span class="text-xs font-bold tracking-widest uppercase text-gray-500 mt-1">Off</span>
-                 </div>
-               </div>
-               
-               <!-- Bottom Content Section -->
-               <div class="p-6 flex flex-col flex-grow relative bg-white z-10 text-center md:text-left">
-                 <p class="text-xs font-bold tracking-widest mb-2 uppercase" style="color: #d4af37;">${offer.category || 'Special Offer'}</p>
-                 <h3 class="text-2xl font-bold mb-3 text-gray-900 leading-tight" style="font-family:'Cinzel', serif;">${offer.title}</h3>
-                 <p class="text-sm text-gray-500 mb-6 font-light flex-grow" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${offer.description || 'Premium selection for your next journey'}</p>
-                 
-                 <!-- Bottom Explore Button Row -->
-                 <div class="flex items-center justify-between mt-auto pt-5 border-t border-gray-100">
-                    <span class="font-bold text-sm tracking-wide text-gray-800 transition-colors">Explore ${(offer.category || 'Now').charAt(0).toUpperCase() + (offer.category || 'Now').slice(1)}</span>
-                    <div class="w-10 h-10 rounded-full text-white flex items-center justify-center shadow-md transform group-hover:translate-x-2 transition-all duration-300"  style="background-color: #293918;";">
-                      <i class="fa-solid fa-arrow-right text-sm"></i>
-                    </div>
-                 </div>
-               </div>
+<div onclick="openOffer('${offer.category}')"
+     class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 
+     transform transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl 
+     group cursor-pointer flex flex-col">
 
-             </div>`;
+  <!-- Top Image -->
+  <div class="relative w-full overflow-hidden" style="height:190px;">
+    <img src="${offer.image_url}" class="w-full h-full object-cover">
+
+    <div class="absolute top-4 left-4 bg-white px-3 py-1 rounded">
+      ${offer.discount || 10}% OFF
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="p-5">
+    <h3 class="text-xl font-bold">${offer.title}</h3>
+    <p class="text-gray-500">${offer.description}</p>
+  </div>
+
+</div>`;
         });
         container.innerHTML = html;
       } catch (err) {
@@ -929,6 +727,12 @@
   <script>
     // Speedometer animation removed.
   </script>
+  <script>
+function openOffer(category){
+  localStorage.setItem("offerCategory", category);
+  window.location.href = "offer-cars.html";
+}
+</script>
 
 </body>
 

@@ -89,6 +89,10 @@
                 <label class="block text-sm text-gray-600 mb-1 font-bold">Rent Per Hour (₹)</label>
                 <input id="carPrice" type="number" placeholder="e.g. 1500" class="border p-3 rounded w-full bg-gray-50 border-gray-300 outline-none">
             </div>
+        <div class="mt-2">
+  <label class="block text-sm font-bold mb-1">Add to Offer?</label>
+  <input type="checkbox" id="carOffer"> Yes (Offer Car)
+</div>
         </div>
 
         <div class="mt-6 border-t pt-4">
@@ -184,6 +188,7 @@ async function addCar() {
     const transmission = document.getElementById("carTransmission").value;
     const type = document.getElementById("carType").value;
     const price = document.getElementById("carPrice").value;
+    const isOffer = document.getElementById("carOffer").checked;
     
     const fileInput = document.getElementById("carImageFile");
     const file = fileInput.files[0];
@@ -216,15 +221,15 @@ async function addCar() {
 
     // 3. Insert into Database Table 'cars'
     const { error } = await supabaseClient.from("cars").insert([{
-        name: name,
-        brand: brand,
-        fuel_type: fuel,
-        transmission: transmission,
-        category: type,
-        rent_per_hour: parseInt(price),
-        image_url: imageUrl
-    }]);
-
+  name: name,
+  brand: brand,
+  fuel_type: fuel,
+  transmission: transmission,
+  category: type,
+  rent_per_hour: parseInt(price),
+  image_url: imageUrl,
+  is_offer: isOffer   
+}]);
     if (error) {
         alert("Database Error!\\nWe successfully uploaded the image, but Supabase rejected saving the car details.\\n\\nThis ALWAYS means your 'cars' table does not match exactly what Javascript sent! \\n\\nPlease ensure your 'cars' table has strictly these Columns:\\nname (text), brand (text), fuel_type (text), transmission (text), category (text), rent_per_hour (int8/number), image_url (text). \\n\\nSupabase Error: " + error.message);
         console.error(error);

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offer Cars | RideON</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+ body { background:#f5f1e8; } 
+ @keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeInUp 1s ease-out forwards;
+}
+.fade-card {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: cardFade 0.8s ease forwards;
+}
+
+@keyframes cardFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+</head>
+
+<body class="bg-[#f5f1e8] pt-24">
+    <!-- NAVBAR -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
+
+  <div class="w-full grid grid-cols-3 items-center px-4 py-4">
+
+    <!-- LOGO (CLICKABLE) -->
+    <div class="flex justify-start items-center">
+      <a href="home.html">
+        <div class="text-2xl font-bold cursor-pointer"
+             style="font-family:'Cinzel'">
+          Ride<span class="text-gray-600">ON</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="flex justify-center"></div>
+
+  </div>
+
+</nav>
+<div class="w-full text-center mt-10 mb-6">
+  <h2 class="text-5xl font-serif text-green-900 fade-in">
+    Exclusively Only on <span class="text-green-900">RIDEON</span>
+  </h2>
+</div>
+<div id="carContainer" class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const supabaseClient = supabase.createClient(
+  "https://ecuvhnvpajodymdibuwt.supabase.co",
+     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+
+);
+
+async function loadOfferCars(){
+
+  const category = localStorage.getItem("offerCategory");
+
+const { data: cars, error } = await supabaseClient
+  .from("cars")
+  .select("*")
+  .eq("is_offer", true)
+  .ilike("category", category);   // ✅ FILTER HERE
+  const container = document.getElementById("carContainer");
+
+  if(!cars || cars.length === 0){
+    container.innerHTML = "No offer cars available";
+    return;
+  }
+
+  container.innerHTML = "";
+
+  cars.forEach((car, index) => {
+
+  const original = car.rent_per_hour;
+  const discount = 10;
+  const finalPrice = Math.round(original - (original * discount / 100));
+
+  container.innerHTML += `
+<div class="min-w-0 bg-white rounded-3xl overflow-hidden 
+            shadow-[0_2px_12px_rgba(0,0,0,0.06)] 
+            border border-gray-100 flex flex-col 
+            group relative transition-all duration-300 
+            hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] 
+            p-4 w-full h-full fade-card"
+     style="animation-delay:${index * 0.1}s">
+
+  <!-- IMAGE -->
+  <div class="w-full relative overflow-hidden flex items-end justify-center mb-4" style="height: 180px;">
+    <img src="${car.image_url}" 
+         class="w-full h-full object-contain transform group-hover:scale-105 transition duration-500">
+    
+    <!-- OFFER BADGE -->
+    <div class="absolute top-2 left-2 bg-yellow-400 px-2 py-1 text-xs rounded shadow font-bold">
+      10% OFF
+    </div>
+  </div>
+
+  <!-- NAME -->
+  <h3 class="text-xl font-extrabold text-gray-900 mb-4 tracking-tight">
+    ${car.name}
+  </h3>
+
+  <!-- SPECS -->
+  <div class="flex flex-wrap items-center gap-3 mb-6">
+
+    <!-- FUEL -->
+    <div class="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg border">
+      <div class="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+        ⚡
+      </div>
+      <span class="text-xs font-bold uppercase">
+        ${car.fuel_type || 'Petrol'}
+      </span>
+    </div>
+
+    <!-- TRANSMISSION -->
+    <div class="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg border">
+      <div class="w-6 h-6 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
+        ⚙️
+      </div>
+      <span class="text-xs font-bold uppercase">
+        ${car.transmission || 'Manual'}
+      </span>
+    </div>
+
+  </div>
+
+  <!-- PRICE SECTION -->
+  <div class="mt-auto w-full pt-4">
+
+    <div class="w-full h-px bg-gray-100 mb-4"></div>
+
+    <div class="flex justify-between items-center">
+
+      <div>
+        <p class="text-gray-400 line-through text-sm">
+          ₹${original}
+        </p>
+
+        <p class="text-[22px] font-black text-[#293918]">
+          ₹${finalPrice} <span class="text-xs text-gray-500">/ hr</span>
+        </p>
+      </div>
+
+      <button onclick="bookCar('${car.id}', ${finalPrice})"
+        class="px-6 py-2 rounded-lg font-bold text-white 
+               bg-[#293918] hover:bg-[#0c3653] 
+               transition-all shadow hover:-translate-y-1">
+  Book
+</button>
+    </div>
+  </div>
+
+</div>
+`;
+});
+}
+function bookCar(id, price){
+  localStorage.setItem("selectedCarId", id);
+  localStorage.setItem("selectedCarPrice", price); // ⭐ IMPORTANT
+  window.location.href = "booking.html";
+}loadOfferCars();
+</script>
+
+</body>
+</html>

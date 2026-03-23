@@ -444,7 +444,11 @@ async function loadCar() {
   carData = data;
   document.getElementById("carImg").src = data.image_url;
   document.getElementById("carName").textContent = data.name;
-  document.getElementById("carPrice").textContent = `₹${data.rent_per_hour} / hour`;
+const storedPrice = localStorage.getItem("selectedCarPrice");
+
+const finalPrice = storedPrice ? storedPrice : data.rent_per_hour;
+
+document.getElementById("carPrice").textContent = `₹${finalPrice} / hour`;
   document.getElementById("plateWrap").innerHTML = `<span class="number-plate">${data.brand}</span>`;
 }
 loadCar();
@@ -708,7 +712,10 @@ function calculateTotal() {
 
   if (end <= start) { document.getElementById("totalAmount").textContent = "₹0"; return; }
   const hours = Math.ceil((end - start) / (1000 * 60 * 60));
-  document.getElementById("totalAmount").textContent = `₹${hours * carData.rent_per_hour}`;
+  const storedPrice = localStorage.getItem("selectedCarPrice");
+const pricePerHour = storedPrice ? parseInt(storedPrice) : carData.rent_per_hour;
+
+document.getElementById("totalAmount").textContent = `₹${hours * pricePerHour}`;
 }
 
 ["pickupDate","dropDate","pickupTime","dropTime"].forEach(id =>
