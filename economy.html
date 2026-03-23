@@ -16,6 +16,17 @@ body{background:#F7F7E8;font-family:Inter}
 </head>
 
 <body>
+     <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
+    <div class="w-full grid grid-cols-3 items-center px-4 py-4">
+      <div class="flex justify-start">
+        <a href="javascript:void(0)" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'"><div class="text-2xl font-bold" style="font-family:'Cinzel'">
+          Ride<span class="text-gray-600">ON</span>
+        </div></a>
+      </div>
+    </div>
+  </nav>
+  <div style="height:90px;"></div>
+
 
 <header class="p-6">
 <input id="searchInput" placeholder="Search car..."
@@ -27,8 +38,9 @@ class="w-full p-3 rounded-lg border shadow">
 <!-- FILTER -->
 <aside class="filter-panel self-start" style="align-self: flex-start; height: max-content;">
 
-<h3 class="font-bold">Max Price ₹<span id="priceLabel">1500</span></h3>
+<h3 class="font-bold">Max Price<span id="priceLabel">1500</span></h3>
 <input id="priceRange" type="range" min="0" max="1500" value="1500" class="w-full">
+
 
 <h3 class="mt-4 font-bold">Pickup</h3>
 <input type="date" id="filterPickupDate" class="border p-2 w-full rounded">
@@ -46,7 +58,8 @@ class="w-full p-3 rounded-lg border shadow">
 
 <h3 class="mt-4 font-bold">Brand</h3>
 <label><input type="checkbox" class="brandFilter" value="Maruti"> Maruti</label><br>
-<label><input type="checkbox" class="brandFilter" value="Tata"> Tata</label>
+<label><input type="checkbox" class="brandFilter" value="Tata"> Tata</label><br>
+<label><input type="checkbox" class="brandFilter" value="Hyundai"> Hyundai</label>
 
 </aside>
 
@@ -234,13 +247,13 @@ window.applyFilters = applyFilters;
 
                  <!-- Bottom Row -->
                  <div class="flex justify-between items-center w-full">
-                    <p class="text-[26px] font-black leading-none uppercase text-[#114b72] flex items-baseline tracking-tight">
+                    <p class="text-[26px] font-black leading-none uppercase text-[#293918] flex items-baseline tracking-tight">
                        ₹${car.rent_per_hour}<span class="font-bold text-gray-400 ml-1.5 tracking-widest text-[#888]" style="font-size: 12px;"> / hr</span>
                     </p>
 
                     <button onclick="initiateBooking('${car.id}', '${car.name.replace(/'/g, "&apos;")}', '${car.rent_per_hour}', '${car.image_url}')" 
                        class="px-7 py-3 rounded-lg font-black uppercase tracking-[0.1em] transition-all text-white shadow hover:shadow-xl hover:-translate-y-1 flex-shrink-0" 
-                       style="background-color: #114b72; font-size: 12px;">
+                       style="background-color: #293918; font-size: 12px;">
                        Book
                     </button>
                  </div>

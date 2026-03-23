@@ -176,15 +176,24 @@
 
   <!-- NAV -->
   <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
-    <div class="w-full grid grid-cols-3 items-center px-4 py-4">
-      <div class="flex justify-start">
-        <a href="javascript:void(0)" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'"><div class="text-2xl font-bold" style="font-family:'Cinzel'">
+
+  <div class="w-full grid grid-cols-3 items-center px-4 py-4">
+
+    <!-- LOGO (CLICKABLE) -->
+    <div class="flex justify-start items-center">
+      <a href="home.html">
+        <div class="text-2xl font-bold cursor-pointer"
+             style="font-family:'Cinzel'">
           Ride<span class="text-gray-600">ON</span>
-        </div></a>
-      </div>
+        </div>
+      </a>
     </div>
-  </nav>
-  <div style="height:90px;"></div>
+
+    <div class="flex justify-center"></div>
+
+  </div>
+
+</nav>
 
   <!-- Premium Split Layout Module -->
   <main class="max-w-[1400px] mx-auto px-4 lg:px-8 py-10 flex flex-col lg:flex-row gap-10">
@@ -212,8 +221,8 @@
            </div>
            
            <div class="bg-gradient-to-br from-[#EEF4FF] to-[#F8FAFF] rounded-2xl p-6 border border-[#D1E0FF] flex flex-col shadow-inner">
-              <span class="text-[#114b72] font-black uppercase tracking-[0.15em] text-[10px] mb-2 opacity-80">Estimated Total</span>
-              <span id="totalAmount" class="text-[42px] font-black text-[#114b72] leading-none drop-shadow-sm">₹0</span>
+              <span class="text-[#293918] font-black uppercase tracking-[0.15em] text-[10px] mb-2 opacity-80">Estimated Total</span>
+              <span id="totalAmount" class="text-[42px] font-black text-[#293918] leading-none drop-shadow-sm">₹0</span>
            </div>
         </div>
       </div>
@@ -344,18 +353,18 @@
            
            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <!-- Upload PDF -->
-              <div class="bg-gray-50/50 border-2 border-dashed border-gray-300 p-8 rounded-2xl relative hover:border-[#114b72] hover:bg-[#114b72]/5 transition-all group overflow-hidden">
+              <div class="bg-gray-50/50 border-2 border-dashed border-gray-300 p-8 rounded-2xl relative hover:border-[#293918] hover:bg-[#293918]/5 transition-all group overflow-hidden">
                  <div class="flex flex-col items-center justify-center text-center h-full relative z-10">
                     <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform">
-                       <svg class="w-6 h-6 text-[#114b72]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                       <svg class="w-6 h-6 text-[#293918]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                     </div>
                     <label for="identityProof" class="cursor-pointer font-black text-gray-900 text-sm mb-1 uppercase tracking-widest">Identity File <span class="text-red-500">*</span></label>
                     <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-2">Aadhar / PAN / License</p>
-                    <span class="text-[10px] font-black tracking-widest text-[#114b72] bg-[#114b72]/10 px-2 py-0.5 rounded">.PDF ONLY</span>
+                    <span class="text-[10px] font-black tracking-widest text-[#293918] bg-[#293918]/10 px-2 py-0.5 rounded">.PDF ONLY</span>
                     <input type="file" id="identityProof" accept="application/pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" required />
                  </div>
                  <!-- Success Override Overlay -->
-                 <div id="pdfSuccess" class="absolute inset-0 bg-[#114b72] text-white flex flex-col items-center justify-center hidden z-20">
+                 <div id="pdfSuccess" class="absolute inset-0 bg-[#293918] text-white flex flex-col items-center justify-center hidden z-20">
                     <svg class="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                     <span class="font-black text-xs tracking-widest uppercase">Verified File Valid</span>
                  </div>
@@ -369,10 +378,10 @@
                      <img id="photoPreview" class="absolute inset-0 w-full h-full object-cover z-10 transform scale-x-[-1]" style="display:none;" />
                  </div>
                  <canvas id="canvas" class="hidden"></canvas>
-                 <button type="button" id="captureBtn" class="bg-gray-900 hover:bg-black text-white px-8 py-3 rounded-xl font-black uppercase tracking-widest text-xs shadow-xl transition-all hover:scale-105 active:scale-95 z-10 focus:ring-4 focus:ring-gray-300">Run Identity Script</button>
+                 <button type="button" id="captureBtn" class="bg-gray-900 hover:bg-black text-white px-8 py-3 rounded-xl font-green uppercase tracking-widest text-xs shadow-xl transition-all hover:scale-105 active:scale-95 z-10 focus:ring-4 focus:ring-gray-300">Run Identity Script</button>
                  
                  <!-- Success Override Overlay -->
-                 <div id="photoSuccess" class="absolute inset-0 bg-[#114b72] text-white flex flex-col items-center justify-center hidden z-20">
+                 <div id="photoSuccess" class="absolute inset-0 bg-[#2939182] text-white flex flex-col items-center justify-center hidden z-20">
                     <div class="relative w-[140px] aspect-[4/4] rounded-full overflow-hidden border-4 border-white shadow-xl mb-4">
                        <img id="photoPreviewSuccess" class="w-full h-full object-cover transform scale-x-[-1]" />
                     </div>
@@ -383,7 +392,7 @@
 
            <!-- Submission Layer -->
            <div class="pt-8">
-              <button type="submit" class="w-full bg-[#114b72] hover:bg-[#0c3653] text-white py-6 rounded-2xl font-black text-xl tracking-[0.2em] uppercase shadow-[0_12px_24px_rgba(17,75,114,0.3)] hover:shadow-[0_16px_32px_rgba(17,75,114,0.4)] transition-all hover:-translate-y-1">
+              <button type="submit" class="w-full bg-[#293918] hover:bg-[#0c3653] text-white py-6 rounded-2xl font-black text-xl tracking-[0.2em] uppercase shadow-[0_12px_24px_rgba(17,75,114,0.3)] hover:shadow-[0_16px_32px_rgba(17,75,114,0.4)] transition-all hover:-translate-y-1">
                  Process Ride Request
               </button>
            </div>

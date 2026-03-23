@@ -10,20 +10,29 @@
 <body class="bg-[#F7F7E8] min-h-screen flex items-center justify-center">
    <!-- NAV -->
  <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
+
   <div class="w-full grid grid-cols-3 items-center px-4 py-4">
-  <!-- LEFT: LOGO -->
-  <div class="flex justify-start">
-    <a href="javascript:void(0)" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'"><div class="text-2xl font-bold" style="font-family:'Cinzel'">
-      Ride<span class="text-gray-600">ON</span>
-    </div></a>
+
+    <!-- LOGO (CLICKABLE) -->
+    <div class="flex justify-start items-center">
+      <a href="booking.html">
+        <div class="text-2xl font-bold cursor-pointer"
+             style="font-family:'Cinzel'">
+          Ride<span class="text-gray-600">ON</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="flex justify-center"></div>
+
   </div>
-  </div>
-  </nav>
+
+</nav>
 
 <div class="bg-white p-10 rounded-2xl shadow-xl max-w-xl w-full text-center">
 
-  <h1 class="text-3xl font-bold mb-4" style="font-family:Cinzel">
-    Booking Confirmed 🎉
+  <h1 class="text-3xl text-green-900 mb-4" style="font-family:Cinzel">
+    Booking Confirmed 
   </h1>
 
   <div id="content" class="text-left space-y-2 hidden">
@@ -31,7 +40,7 @@
     <p><b>Name:</b> <span id="fullName"></span></p>
     <p><b>Pickup:</b> <span id="pickup"></span></p>
     <p><b>Drop:</b> <span id="drop"></span></p>
-    <p class="text-xl font-bold text-green-700">
+    <p class="text-xl font-bold text-blacks-700">
       Total: ₹<span id="amount"></span>
     </p>
   </div>
@@ -40,7 +49,7 @@
     ❌ No booking found
   </p>
 <a href="payment.html"
-   class="inline-block mt-6 bg-green-700 hover:bg-green-800 transition transform hover:scale-105 text-white px-6 py-3 rounded-lg"
+   class="inline-block mt-6 bg-green-800 hover:bg-green-900 transition transform hover:scale-105 text-white px-6 py-3 rounded-lg"
 >
   Proceed to Payment →
 </a>

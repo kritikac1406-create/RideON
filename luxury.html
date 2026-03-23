@@ -56,6 +56,17 @@ margin-bottom:10px;
 </head>
 
 <body>
+    
+     <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
+    <div class="w-full grid grid-cols-3 items-center px-4 py-4">
+      <div class="flex justify-start">
+        <a href="javascript:void(0)" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'"><div class="text-2xl font-bold" style="font-family:'Cinzel'">
+          Ride<span class="text-gray-600">ON</span>
+        </div></a>
+      </div>
+    </div>
+  </nav>
+  <div style="height:90px;"></div>
 
 <header class="py-4 px-6">
 <div class="max-w-7xl mx-auto">
@@ -88,9 +99,9 @@ class="w-full rounded-lg p-4 border shadow bg-white">
 <label><input type="checkbox" class="transFilter" value="Automatic"> Automatic</label>
 
 <h3 class="mt-5 font-bold">Brand</h3>
-<label><input type="checkbox" class="brandFilter" value="Toyota"> Toyota</label><br>
+<label><input type="checkbox" class="brandFilter" value="Jaguar"> Jaguar</label><br>
 <label><input type="checkbox" class="brandFilter" value="BMW"> BMW</label><br>
-<label><input type="checkbox" class="brandFilter" value="Mercedes"> Mercedes</label>
+<label><input type="checkbox" class="brandFilter" value="Audi"> Audi</label>
 
 </aside>
 
@@ -284,13 +295,13 @@ window.applyFilters = applyFilters;
 
                  <!-- Bottom Row -->
                  <div class="flex justify-between items-center w-full">
-                    <p class="text-[26px] font-black leading-none uppercase text-[#114b72] flex items-baseline tracking-tight">
+                    <p class="text-[26px] font-black leading-none uppercase text-[#293918] flex items-baseline tracking-tight">
                        ₹${car.rent_per_hour}<span class="font-bold text-gray-400 ml-1.5 tracking-widest text-[#888]" style="font-size: 12px;"> / hr</span>
                     </p>
 
                     <button onclick="initiateBooking('${car.id}', '${car.name.replace(/'/g, "&apos;")}', '${car.rent_per_hour}', '${car.image_url}')" 
                        class="px-7 py-3 rounded-lg font-black uppercase tracking-[0.1em] transition-all text-white shadow hover:shadow-xl hover:-translate-y-1 flex-shrink-0" 
-                       style="background-color: #114b72; font-size: 12px;">
+                       style="background-color: #293918; font-size: 12px;">
                        Book
                     </button>
                  </div>

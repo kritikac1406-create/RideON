@@ -10,11 +10,8 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <style>
-body{
-  margin:0;
-  background: linear-gradient(135deg, #f3f6f9, #e7eef5);
-  font-family: Inter, sans-serif;
-}
+body { background:#f5f1e8; }
+
 #map{
   height: 380px;
   border-radius: 20px;
@@ -24,26 +21,39 @@ body{
 
 <body class="min-h-screen">
 
-<!-- ================= NAVBAR ================= -->
-<header class="bg-white shadow-sm py-6 px-10">
-  <h1 style="font-family:'Cinzel'; font-size:34px;">
-    <h1 style="font-family:'Cinzel';font-size:38px;">
-  <a href="home.html" class="hover:opacity-80">
-    <span class="text-green-900">Ride</span><span class="text-gray-600">ON</span>
-  </a>
-  </h1>
-</header>
+<!-- NAV -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
 
+  <div class="w-full grid grid-cols-3 items-center px-4 py-4">
 
-<!-- ================= MAIN CONTENT ================= -->
+    <!-- LOGO (CLICKABLE) -->
+    <div class="flex justify-start items-center">
+      <a href="home.html">
+        <div class="text-2xl font-bold cursor-pointer"
+             style="font-family:'Cinzel'">
+          Ride<span class="text-gray-600">ON</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="flex justify-center"></div>
+
+  </div>
+
+</nav>
+
+<div class="h-20"></div>
+
+<!-- MAIN -->
 <div class="flex justify-center py-14">
 
   <div class="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-10">
 
     <!-- HEADER -->
     <div class="flex justify-between items-center mb-8">
+      
       <div>
-        <h2 class="text-3xl font-bold text-gray-800">
+        <h2 class="text-3xl font-bold text-green-900">
           Track Your Ride
         </h2>
         <p class="text-gray-500 text-sm">
@@ -53,7 +63,7 @@ body{
 
       <div id="rideStatus"
            class="bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold">
-        Checking schedule...
+        Loading...
       </div>
     </div>
 
@@ -64,14 +74,12 @@ body{
     <div class="flex items-center gap-8">
 
       <div class="bg-gray-100 p-5 rounded-2xl shadow-sm">
-        <img id="carImage"
-             class="w-28 h-20 object-contain">
+        <img id="carImage" class="w-28 h-20 object-contain">
       </div>
 
       <div class="flex-1">
         <h3 id="carName"
-            class="text-2xl font-semibold text-gray-800">
-        </h3>
+            class="text-2xl font-semibold text-gray-800"></h3>
 
         <div class="mt-3 inline-block bg-yellow-400 px-4 py-1 rounded-full text-sm font-bold">
           <span id="numberPlate"></span>
@@ -85,6 +93,7 @@ body{
           </span>
         </p>
       </div>
+      
 
     </div>
 
@@ -92,22 +101,35 @@ body{
 
 </div>
 
-
-<!-- ================= SCRIPT ================= -->
+<!-- SCRIPT -->
 <script type="module">
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 const supabase = createClient(
   "https://ecuvhnvpajodymdibuwt.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
 
 );
 
-const bookingId = localStorage.getItem("bookingId");
+// ⚠️ TEMP FIX (change this if needed)
+let bookingId = localStorage.getItem("bookingId");
 
+// fallback if null
+if (!bookingId) {
+  console.log("No bookingId in localStorage, using test ID");
+  bookingId = 1; // 👈 put a valid booking ID from your DB
+}
+
+console.log("Using bookingId:", bookingId);
+
+// convert time
 function convertTo24(time){
+  if (!time) return "00:00";
+
   const match = time.match(/(\d+):(\d+)(am|pm)/i);
+  if (!match) return time;
+
   let h = parseInt(match[1]);
   const m = match[2];
   const mer = match[3].toLowerCase();
@@ -120,121 +142,116 @@ function convertTo24(time){
 
 async function loadData(){
 
-  const { data: booking } = await supabase
-    .from("booking")
-    .select("*")
-    .eq("id", bookingId)
-    .single();
+  try {
 
-  if(!booking){
-    alert("Booking not found");
-    return;
-  }
+    const { data: booking, error } = await supabase
+      .from("booking")
+      .select("*")
+      .eq("id", bookingId)
+      .single();
 
-  const { data: car } = await supabase
-    .from("cars")
-    .select("*")
-    .eq("id", booking.car_id)
-    .single();
+    if (error) {
+      console.error("Booking error:", error);
+      document.getElementById("rideStatus").textContent =
+        "Error loading booking ❌";
+      return;
+    }
 
-  document.getElementById("carName").textContent = car.name;
-  document.getElementById("carImage").src = car.image_url;
-  document.getElementById("numberPlate").textContent =
-    car.number_plate || car.brand;
+    if (!booking) {
+      document.getElementById("rideStatus").textContent =
+        "Booking not found ❌";
+      return;
+    }
 
-  // ===== PICKUP TIME LOGIC =====
+    console.log("Booking:", booking);
 
-  const pickupDateTime = new Date(
-    booking.pickup_date + "T" + convertTo24(booking.pickup_time)
-  );
+    const { data: car } = await supabase
+      .from("cars")
+      .select("*")
+      .eq("id", booking.car_id)
+      .single();
 
-  const now = new Date();
-  const diffMinutes = (pickupDateTime - now) / (1000 * 60);
+    document.getElementById("carName").textContent = car?.name || "Car";
+    document.getElementById("carImage").src = car?.image_url || "";
+    document.getElementById("numberPlate").textContent =
+      car?.number_plate || car?.brand || "NA";
 
-  // More than 30 mins away
-  if(diffMinutes > 30){
+    // ===== TIME LOGIC =====
+
+    if (!booking.pickup_date || !booking.pickup_time) {
+      document.getElementById("rideStatus").textContent =
+        "Pickup time missing ❌";
+      return;
+    }
+
+    const pickupDateTime = new Date(
+      booking.pickup_date + "T" + convertTo24(booking.pickup_time)
+    );
+
+    const scheduleTime = new Date(pickupDateTime);
+    scheduleTime.setMinutes(scheduleTime.getMinutes() - 30);
+
+    const now = new Date();
+
+    console.log("Pickup:", pickupDateTime);
+    console.log("Schedule:", scheduleTime);
+    console.log("Now:", now);
+
+    const formatted = scheduleTime.toLocaleString("en-IN", {
+      day: "numeric",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    // BEFORE 30 MIN
+    if(now < scheduleTime){
+      document.getElementById("rideStatus").textContent =
+        "Pickup will be scheduled at " + formatted;
+
+      document.getElementById("eta").textContent =
+        "Tracking starts 30 mins before pickup";
+      return;
+    }
+
+    // BETWEEN
+    if(now >= scheduleTime && now < pickupDateTime){
+      const diff = Math.ceil((pickupDateTime - now)/(1000*60));
+
+      document.getElementById("rideStatus").textContent =
+        "Driver will be assigned soon";
+
+      document.getElementById("eta").textContent =
+        diff + " mins to pickup";
+      return;
+    }
+
+    // AFTER → TRACK
     document.getElementById("rideStatus").textContent =
-      "Ride Scheduled";
-    document.getElementById("eta").textContent =
-      "Tracking starts 30 mins before pickup";
-    return;
-  }
+      "Driver on the way";
 
-  // Within 30 mins before pickup
-  if(diffMinutes > 0 && diffMinutes <= 30){
+    document.getElementById("map").classList.remove("hidden");
+
+    initMap();
+
+  } catch (err) {
+    console.error("Unexpected error:", err);
     document.getElementById("rideStatus").textContent =
-      "Driver will be assigned soon";
-    document.getElementById("eta").textContent =
-      Math.ceil(diffMinutes) + " mins to pickup";
-    return;
+      "Something went wrong ❌";
   }
-
-  // Pickup time reached → start tracking
-  document.getElementById("rideStatus").textContent =
-    "Driver on the way";
-
-  document.getElementById("map").classList.remove("hidden");
-
-  initMap();
 }
 
 function initMap(){
 
-  const pickupLat = 19.0760; // Mumbai center
+  const pickupLat = 19.0760;
   const pickupLng = 72.8777;
 
   const map = L.map("map").setView([pickupLat, pickupLng], 13);
 
-  L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-  ).addTo(map);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+    .addTo(map);
 
-  L.marker([pickupLat, pickupLng])
-    .addTo(map)
-    .bindPopup("Pickup Location")
-    .openPopup();
-
-  const carIcon = L.icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/744/744465.png",
-    iconSize: [40, 40],
-    iconAnchor: [20, 20]
-  });
-
-  let driverLat = pickupLat + 0.05;
-  let driverLng = pickupLng + 0.03;
-
-  const carMarker = L.marker([driverLat, driverLng], {
-    icon: carIcon
-  }).addTo(map);
-
-  const steps = 120;
-  let count = 0;
-
-  const latStep = (pickupLat - driverLat) / steps;
-  const lngStep = (pickupLng - driverLng) / steps;
-
-  const interval = setInterval(()=>{
-
-    if(count >= steps){
-      clearInterval(interval);
-      document.getElementById("rideStatus").textContent =
-        "Driver has arrived";
-      document.getElementById("eta").textContent = "Arrived";
-      return;
-    }
-
-    driverLat += latStep;
-    driverLng += lngStep;
-
-    carMarker.setLatLng([driverLat, driverLng]);
-
-    const minutesLeft = Math.ceil((steps - count) / 40);
-    document.getElementById("eta").textContent =
-      minutesLeft > 0 ? minutesLeft + " mins" : "Arrived";
-
-    count++;
-
-  }, 100);
+  L.marker([pickupLat, pickupLng]).addTo(map);
 
 }
 
