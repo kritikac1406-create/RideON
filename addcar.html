@@ -30,13 +30,37 @@
         <li><a href="admin-users.html" class="hover:text-[#114b72] transition">Users</a></li>
       </ul>
     </div>
-    <div class="flex justify-end items-center gap-4">
-      <button onclick="adminLogout()" class="text-red-600 font-bold hover:underline bg-red-50 px-4 py-2 rounded-lg">
-        Logout <i class="fas fa-sign-out-alt ml-1"></i>
+    <!-- Dropdown -->
+    <div class="flex justify-end items-center gap-4 relative" id="adminArea">
+      <button id="adminBtn" class="flex items-center gap-2 text-[#114b72] hover:text-black font-bold focus:outline-none">
+        <i class="fas fa-user-shield text-lg"></i>
+        <span id="adminNameDisplay" class="hidden md:inline">Admin</span>
+        <i class="fas fa-chevron-down text-xs"></i>
       </button>
+      <div id="adminDropdown" class="hidden absolute right-0 top-10 mt-2 w-48 bg-white rounded-xl shadow-lg border z-50 overflow-hidden">
+        <button onclick="adminLogout()" class="w-full text-left px-4 py-3 text-red-600 font-bold hover:bg-red-50 transition">
+          Logout <i class="fas fa-sign-out-alt float-right mt-1"></i>
+        </button>
+      </div>
     </div>
   </div>
  </nav>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const adminBtn = document.getElementById("adminBtn");
+      const adminDropdown = document.getElementById("adminDropdown");
+      if(adminBtn && adminDropdown){
+        adminBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          adminDropdown.classList.toggle("hidden");
+        });
+        document.addEventListener("click", (e) => {
+          if(!adminBtn.contains(e.target)) adminDropdown.classList.add("hidden");
+        });
+      }
+    });
+  </script>
 
  <main class="pt-28 max-w-6xl mx-auto px-4" id="adminContent" style="display:none;">
     <div class="flex justify-between items-center mb-8">
@@ -125,6 +149,13 @@ async function checkAdmin() {
     window.location.replace("home.html");
     return;
   }
+  
+  const adminNameDisplay = document.getElementById("adminNameDisplay");
+  if (adminNameDisplay) {
+    const displayName = user.user_metadata?.name || user.user_metadata?.full_name || "Admin";
+    adminNameDisplay.innerText = "Hello, " + displayName.split(" ")[0];
+  }
+  
   document.getElementById("adminContent").style.display = "block";
   loadCars();
 }
