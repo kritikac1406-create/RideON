@@ -25,7 +25,7 @@
   <header class="bg-white shadow px-10 py-4 flex justify-between items-center fixed top-0 w-full z-50">
 
     <a href="javascript:void(0)" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" class="text-3xl font-bold" style="font-family:'Cinzel'">
-      <a href="javascript:void(0)" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'"><div class="text-2xl font-bold" style="font-family:'Cinzel'">Ride<span class="text-gray-600">ON</span></div></a>
+      <div class="text-2xl font-bold" style="font-family:'Cinzel'">Ride<span class="text-gray-600">ON</span></div>
     </a>
 
     <div class="flex items-center gap-6 font-semibold">
@@ -33,12 +33,37 @@
         Users
       </a>
 
-      <button onclick="logoutAdmin()" class="text-red-600 hover:underline">
-        Logout
-      </button>
+      <!-- Dropdown -->
+      <div class="relative inline-block text-left" id="adminArea">
+        <button id="adminBtn" class="flex items-center gap-2 text-[#114b72] hover:text-black font-bold focus:outline-none">
+          <i class="fas fa-user-shield text-lg"></i>
+          <span id="adminNameDisplay" class="hidden md:inline">Admin</span>
+          <i class="fas fa-chevron-down text-xs"></i>
+        </button>
+        <div id="adminDropdown" class="hidden absolute right-0 top-10 mt-2 w-48 bg-white rounded-xl shadow-lg border z-50 overflow-hidden">
+          <button onclick="logoutAdmin()" class="w-full text-left px-4 py-3 text-red-600 font-bold hover:bg-red-50 transition">
+            Logout <i class="fas fa-sign-out-alt float-right mt-1"></i>
+          </button>
+        </div>
+      </div>
     </div>
-
   </header>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const adminBtn = document.getElementById("adminBtn");
+      const adminDropdown = document.getElementById("adminDropdown");
+      if(adminBtn && adminDropdown){
+        adminBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          adminDropdown.classList.toggle("hidden");
+        });
+        document.addEventListener("click", (e) => {
+          if(!adminBtn.contains(e.target)) adminDropdown.classList.add("hidden");
+        });
+      }
+    });
+  </script>
 
   <!-- CONTENT -->
   <main class="pt-28 px-10">
@@ -89,13 +114,12 @@
     );
 
     /* ================= ADMIN GUARD ================= */
-    /* ================= ADMIN GUARD ================= */
     async function checkAdmin() {
       // 1. Get the currently logged-in user
       const { data: authData } = await supabaseClient.auth.getUser();
 
       // 2. If nobody is logged in, kick them back to the main login page
-      if (!authData.user) {
+      if (!authData || !authData.user) {
         window.location.href = "log.html";
         return;
       }
@@ -107,6 +131,13 @@
       if (role !== "admin") {
         alert("You do not have permission to view the admin dashboard.");
         window.location.href = "home.html";
+        return;
+      }
+      
+      const adminNameDisplay = document.getElementById("adminNameDisplay");
+      if (adminNameDisplay) {
+        const displayName = authData.user.user_metadata?.name || authData.user.user_metadata?.full_name || "Admin";
+        adminNameDisplay.innerText = "Hello, " + displayName.split(" ")[0];
       }
     }
 
@@ -245,8 +276,8 @@
     /* ================= LOGOUT ================= */
     async function logoutAdmin() {
       await supabaseClient.auth.signOut();
-localStorage.removeItem('userRole');
-      window.location.href = "admin-login.html";
+      localStorage.removeItem('userRole');
+      window.location.href = "log.html";
     }
 
     /* ================= INIT ================= */
