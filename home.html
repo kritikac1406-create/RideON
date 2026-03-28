@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Luxury Car Rentals â€” White & Gold</title>
+  <title>Luxury Car Rentals – RideON</title>
 
   <!-- Tailwind + Fonts + FA -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -35,14 +35,12 @@
       overflow-x: hidden;
     }
 
-    /* headings */
     h1,
     h2,
     h3 {
       font-family: 'Cinzel', serif;
     }
 
-    /* buttons */
     .gold-btn {
       background: var(--gold);
       color: #000;
@@ -57,13 +55,11 @@
       transform: translateY(-2px);
     }
 
-    /* links */
     a,
     nav a {
       color: var(--contrast);
     }
 
-    /* focus */
     input:focus,
     button:focus {
       outline: none;
@@ -82,8 +78,7 @@
       backdrop-filter: blur(6px);
     }
 
-    /* ================= HERO ANIMATIONS ================= */
-
+    /* ── HERO ANIMATIONS ── */
     @keyframes fadeSlideLeft {
       0% {
         opacity: 0;
@@ -118,8 +113,7 @@
       animation-delay: 0.5s;
     }
 
-    /* ================= HERO CAR PREMIUM SIZE ================= */
-
+    /* ── HERO CAR ── */
     .hero-car-wrapper {
       position: relative;
       width: 100%;
@@ -134,13 +128,10 @@
       max-width: none;
       height: auto;
       object-fit: contain;
-
       transform: scale(1.5);
       transition: transform 0.7s ease;
-
       margin-left: -260px;
       margin-top: -70px;
-
       filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.5));
     }
 
@@ -148,8 +139,7 @@
       transform: scale(1.6);
     }
 
-    /* ================= OFFERS CARD HOVER ================= */
-
+    /* ── OFFER CARD ── */
     .offer-card img {
       transition: transform 0.6s ease;
     }
@@ -158,14 +148,12 @@
       transform: scale(1.08);
     }
 
-    /* ================= FLEET SLIDER ================= */
-
+    /* ── FLEET SLIDER ── */
     #fleetSlider {
       will-change: transform;
     }
 
-    /* ================= FOOTER ICON HOVER ================= */
-
+    /* ── FOOTER ICON ── */
     footer a i {
       transition: 0.3s;
     }
@@ -174,9 +162,8 @@
       transform: translateY(-4px) scale(1.1);
     }
 
-    /* ================= RESPONSIVE ================= */
-
-    @media (max-width: 1200px) {
+    /* ── RESPONSIVE ── */
+    @media (max-width:1200px) {
       .hero-car-img {
         width: 240%;
         margin-left: -140px;
@@ -185,7 +172,7 @@
       }
     }
 
-    @media (max-width: 900px) {
+    @media (max-width:900px) {
       .hero-car-img {
         width: 190%;
         margin-left: -60px;
@@ -194,7 +181,7 @@
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width:640px) {
       .hero-car-img {
         width: 150%;
         margin-left: 0;
@@ -207,9 +194,10 @@
 
 <body>
 
-  <!-- NAV -->
+  <!-- ═══════════════════════ NAV ═══════════════════════ -->
   <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
     <div class="w-full grid grid-cols-3 items-center px-4 py-4">
+
       <!-- LEFT: LOGO -->
       <div class="flex justify-start">
         <a href="javascript:void(0)"
@@ -229,139 +217,93 @@
         </ul>
       </div>
 
-      <!-- RIGHT: USER / LOGIN -->
+      <!-- RIGHT: AUTH AREA -->
       <div class="flex justify-end items-center gap-4">
 
         <div id="userBookings"></div>
 
-        <!-- LOGIN BUTTON -->
+        <!-- Login link (shown when logged out) -->
         <div id="loginArea">
           <a href="log.html" class="font-semibold text-gray-700 hover:text-black">
             <span id="navUserName">Login</span>
           </a>
         </div>
 
-        <!-- KEEP your userArea + adminArea dropdowns here -->
+        <!-- User dropdown -->
         <div class="relative hidden" id="userArea">
           <button id="userBtn" class="flex items-center gap-2 text-gray-700 hover:text-black font-semibold">
-
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M5.121 17.804A4 4 0 019 16h6a4 4 0 013.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-
             <span id="usernameText" class="hidden md:inline">Account</span>
             <i class="fas fa-chevron-down text-xs"></i>
           </button>
 
           <div id="userDropdown" class="hidden absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-lg border z-50">
-
-            <p id="dropdownName" class="px-4 py-3 font-semibold border-b">
-              Hello, User
-            </p>
-
-            <a href="profile.html" id="profileLink" class="block px-4 py-2 hover:bg-gray-100">
-              My Profile
-            </a>
-
-            <button onclick="logoutUser()" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">
-              Logout
-            </button>
+            <p id="dropdownName" class="px-4 py-3 font-semibold border-b">Hello, User</p>
+            <a href="profile.html" class="block px-4 py-2 hover:bg-gray-100">My Profile</a>
+            <button onclick="logoutUser()"
+              class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">Logout</button>
           </div>
         </div>
 
-        <!-- ADMIN DROPDOWN -->
+        <!-- Admin dropdown -->
         <div class="relative hidden" id="adminArea">
-
           <button id="adminBtn" class="flex items-center gap-2 text-gray-700 hover:text-black font-semibold">
-
             <i class="fas fa-user-shield"></i>
             <span class="hidden md:inline">Admin</span>
             <i class="fas fa-chevron-down text-xs"></i>
           </button>
 
           <div id="adminDropdown" class="hidden absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-lg border z-50">
-
-            <a href="admin-dashboard.html" class="block px-4 py-2 hover:bg-gray-100">
-              Dashboard
-            </a>
-
-            <a href="admin-users.html" class="block px-4 py-2 hover:bg-gray-100">
-              User Management
-            </a>
-
-            <a href="admin-booking.html" class="block px-4 py-2 hover:bg-gray-100">
-              Booking Management
-            </a>
-
-            <button onclick="adminLogout()" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">
-              Logout
-            </button>
+            <a href="admin-dashboard.html" class="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
+            <a href="admin-users.html" class="block px-4 py-2 hover:bg-gray-100">User Management</a>
+            <a href="admin-booking.html" class="block px-4 py-2 hover:bg-gray-100">Booking Management</a>
+            <button onclick="adminLogout()"
+              class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">Logout</button>
           </div>
         </div>
+
       </div>
     </div>
-    </div>
-    </div>
   </nav>
-  <!-- LIVE TRACKING MAP SECTION â€” Small & Top -->
-  <section id="trackingSection" style="
-           display:none;
-           position:absolute;
-           top:90px;
-           right:40px;
-           z-index:50;
-           width:260px;
-           text-align:center;
-         ">
 
-    <!-- Close Tracking Map -->
+  <!-- ═══════════════════════ LIVE TRACKING (small overlay) ═══════════════════════ -->
+  <section id="trackingSection" style="
+    display:none; position:absolute; top:90px; right:40px; z-index:50;
+    width:260px; text-align:center;">
+
     <button id="closeTracking" style="
-            position:absolute;
-            top:-10px;
-            right:-10px;
-            background:#dc2626;
-            color:white;
-            border:none;
-            width:26px;
-            height:26px;
-            border-radius:50%;
-            font-weight:bold;
-            cursor:pointer;
-            box-shadow:0 2px 6px rgba(0,0,0,0.3);
-          ">
-      Ã—
+      position:absolute; top:-10px; right:-10px;
+      background:#dc2626; color:white; border:none;
+      width:26px; height:26px; border-radius:50%;
+      font-weight:bold; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.3);">
+      ×
     </button>
 
-    <p style="font-size:15px; margin-bottom:6px;">
-      Your car is currently moving.
-    </p>
+    <p style="font-size:15px; margin-bottom:6px;">Your car is currently moving.</p>
 
     <div id="homeMap" style="
-         height:200px;
-         width:260px;
-         border-radius:12px;
-         overflow:hidden;
-         border:2px solid #ccc;
-         box-shadow:0 4px 12px rgba(0,0,0,0.15);
-       ">
+      height:200px; width:260px; border-radius:12px;
+      overflow:hidden; border:2px solid #ccc;
+      box-shadow:0 4px 12px rgba(0,0,0,0.15);">
     </div>
-
   </section>
-  <!-- HERO SPLIT LAYOUT WITH RESTORED GLOSSY BACKGROUND -->
-  <section id="home"
-    class="relative flex flex-col md:flex-row items-center justify-between min-h-screen pt-20 overflow-hidden"
-    style="background-image:url('https://images.unsplash.com/photo-1605559424843-3a477d8e5f2b?auto=format&fit=crop&w=2000&q=80'); background-size:cover; background-position:center;">
 
-    <!-- RESTORED GLOSSY OVERLAY -->
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
+  <section id="home"
+    class="relative flex flex-col md:flex-row items-center justify-between min-h-screen pt-20 overflow-hidden" style="background-image:url('https://images.unsplash.com/photo-1605559424843-3a477d8e5f2b?auto=format&fit=crop&w=2000&q=80');
+           background-size:cover; background-position:center;">
+
     <div class="absolute inset-0"
-      style="background:linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255,255,255,0.95)); z-index:0;"></div>
+      style="background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,255,255,0.95)); z-index:0;"></div>
 
     <!-- LEFT TEXT -->
     <div class="w-full md:w-1/2 flex flex-col justify-center px-10 md:px-20 py-20 z-10 anim-left">
       <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-sm"
-        style="color:var(--contrast); font-family: 'Cinzel', serif;">
+        style="color:var(--contrast); font-family:'Cinzel',serif;">
         Turn Heads.<br>Drive Legends.
       </h1>
       <p class="text-gray-700 text-lg md:text-2xl mb-10 max-w-lg leading-relaxed">
@@ -375,78 +317,69 @@
       </div>
     </div>
 
-    <!-- RIGHT CAR IMAGE (hero-removebg-preview.png) -->
+    <!-- RIGHT CAR -->
     <div id="heroCarContainer"
       class="w-full md:w-1/2 relative z-10 anim-right flex items-center justify-center pt-20 md:pt-0 overflow-visible pointer-events-none">
-
       <img src="hero/hero2-removebg-preview.png" alt="RideON Luxury Car"
         class="w-[150%] md:w-[180%] max-w-none h-auto object-contain transform -rotate-90 hover:-rotate-90 hover:scale-105 transition duration-700 pointer-events-auto drop-shadow-[0_25px_50px_rgba(0,0,0,0.45)]">
     </div>
   </section>
 
+  <!-- ═══════════════════════ OFFERS ═══════════════════════ -->
   <section class="py-16 bg-white text-center">
     <h2 class="text-3xl md:text-4xl mb-10">Exclusive Offers</h2>
-
     <div id="dynamicOffersContainer" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="col-span-3 text-gray-500 py-10">Loading live offers...</div>
     </div>
   </section>
 
-  <section id="fleet" class="relative flex items-center justify-center text-center min-h-screen pt-20" style="background-image:url('https://images.unsplash.com/photo-1605559424843-3a477d8e5f2b?auto=format&fit=crop&w=2000&q=80'); 
-                background-size:cover; 
-                background-position:center;">
+  <!-- ═══════════════════════ FLEET ═══════════════════════ -->
+  <section id="fleet" class="relative flex items-center justify-center text-center min-h-screen pt-20" style="background-image:url('https://images.unsplash.com/photo-1605559424843-3a477d8e5f2b?auto=format&fit=crop&w=2000&q=80');
+           background-size:cover; background-position:center;">
 
     <div class="absolute inset-0"
-      style="background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.9));"></div>
+      style="background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,255,255,0.9));"></div>
 
     <div class="relative z-10 w-full">
       <h2 class="text-3xl md:text-4xl mb-10">Explore Our Fleet</h2>
-
-
       <div id="dynamicFleetContainer" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6 text-left">
         <div class="col-span-4 text-center text-gray-500 py-10">Loading latest fleet...</div>
       </div>
     </div>
   </section>
 
-
-  <!-- ABOUT -->
+  <!-- ═══════════════════════ ABOUT ═══════════════════════ -->
   <section id="about" class="py-16 text-center bg-white">
     <h2 class="text-3xl md:text-4xl mb-6" style="color:var(--contrast)">About Us</h2>
 
     <p class="max-w-4xl mx-auto text-lg mb-6 muted">
       At <span style="color:var(--gold); font-weight:600">Luxury Car Rentals</span>, we combine modern design with
-      unrivaled service.
-      From efficient economy cars to head-turning luxury vehicles and next-gen electric models, our fleet is curated for
-      memorable journeys.
+      unrivaled service. From efficient economy cars to head-turning luxury vehicles and next-gen electric models,
+      our fleet is curated for memorable journeys.
     </p>
 
     <p class="max-w-4xl mx-auto text-lg mb-6 muted">
-      We maintain strict standards: every vehicle undergoes detailed maintenance and inspection, and our support team is
-      available 24/7.
-      Seamless booking, transparent pricing, and door-to-door delivery are part of our promise.
+      We maintain strict standards: every vehicle undergoes detailed maintenance and inspection, and our support team
+      is available 24/7. Seamless booking, transparent pricing, and door-to-door delivery are part of our promise.
     </p>
 
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-      <div class="card-bg border p-6 rounded-xl" style="border-color: rgba(212,175,55,0.08);">
+      <div class="card-bg border p-6 rounded-xl" style="border-color:rgba(212,175,55,0.08);">
         <h3 class="text-xl font-semibold mb-2" style="color:var(--contrast)">Premium Fleet</h3>
         <p class="muted">Handpicked cars kept in showroom condition.</p>
       </div>
-      <div class="card-bg border p-6 rounded-xl" style="border-color: rgba(212,175,55,0.08);">
+      <div class="card-bg border p-6 rounded-xl" style="border-color:rgba(212,175,55,0.08);">
         <h3 class="text-xl font-semibold mb-2" style="color:var(--contrast)">Trusted Service</h3>
         <p class="muted">Concierge support and transparent policies.</p>
       </div>
-      <div class="card-bg border p-6 rounded-xl" style="border-color: rgba(212,175,55,0.08);">
+      <div class="card-bg border p-6 rounded-xl" style="border-color:rgba(212,175,55,0.08);">
         <h3 class="text-xl font-semibold mb-2" style="color:var(--contrast)">Smart Pricing</h3>
         <p class="muted">Competitive rates for every type of trip.</p>
       </div>
     </div>
   </section>
-  <!-- LIVE TRACKING MAP SECTION -->
 
-
-
-  <!-- FOOTER -->
+  <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
   <footer class="py-8 text-center muted bg-white">
     <div class="mb-4">
       <h3 class="text-lg" style="color:var(--gold)">Follow Us</h3>
@@ -458,97 +391,89 @@
     </div>
     <p class="text-sm muted">&copy; 2025 Luxury Car Rentals. All Rights Reserved.</p>
   </footer>
-  <!-- SCRIPTS -->
-  <script>
-    // fleet slider
-    const fleetSlider = document.getElementById('fleetSlider');
-    const next = document.getElementById('next');
-    const prev = document.getElementById('prev');
-    let index = 0;
-    function updateSlider() { fleetSlider.style.transform = `translateX(-${index * 100}%)`; }
-    if (next) next.addEventListener('click', () => { index = (index + 1) % fleetSlider.children.length; updateSlider(); });
-    if (prev) prev.addEventListener('click', () => { index = (index - 1 + fleetSlider.children.length) % fleetSlider.children.length; updateSlider(); });
-  </script>
-  <script>
-    // Show map ONLY if user returned from track.html
-    const showMap = localStorage.getItem("showTrackingMap");
 
-    if (showMap === "yes") {
-      document.getElementById("trackingSection").style.display = "block";
-    }
-    // Close mini tracking map
-    const closeBtn = document.getElementById("closeTracking");
+  <!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
 
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        document.getElementById("trackingSection").style.display = "none";
-      });
-    }
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    // Clear flag so map does not show again on refresh
-    localStorage.removeItem("showTrackingMap");
-
-  </script>
+  <!-- Supabase — loaded ONCE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    // Initialize map only when container is visible
-    let homeMap = null;
-    let homeCarMarker = null;
-    let homeRoute = null;
+    // ── Single Supabase client (declared once, globally) ─────────────────────
+    const supabaseClient = supabase.createClient(
+      "https://ecuvhnvpajodymdibuwt.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+    );
 
-    function initHomeMap() {
-      if (homeMap !== null) return; // prevent duplicate init
-
-      homeMap = L.map("homeMap").setView([19.0760, 72.8777], 12);
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19
-      }).addTo(homeMap);
-
-      const homeCarIcon = L.icon({
-        iconUrl: "https://cdn-icons-png.flaticon.com/512/744/744465.png",
-        iconSize: [55, 55],
-        iconAnchor: [27, 27]
-      });
-
-      homeCarMarker = L.marker([19.0760, 72.8777], { icon: homeCarIcon }).addTo(homeMap);
-      homeRoute = L.polyline([], { color: "blue", weight: 4 }).addTo(homeMap);
-    }
-
-    // Update map IF it is enabled
-    setInterval(() => {
-      if (document.getElementById("trackingSection").style.display === "none") return;
-
-      initHomeMap();
-
-      const lat = parseFloat(localStorage.getItem("liveCarLat"));
-      const lng = parseFloat(localStorage.getItem("liveCarLng"));
-
-      if (!lat || !lng) return;
-
-      homeCarMarker.setLatLng([lat, lng]);
-      homeMap.panTo([lat, lng]);
-
-      homeRoute.setLatLngs([
-        [lat, lng],
-        [19.0760, 72.8777]
-      ]);
-    }, 1000);
-  </script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-
-      // ===== USER DATA =====
+    // ── Auth state listener ───────────────────────────────────────────────────
+    // FIX: removed all pendingGoogleRole logic from here (auth-callback.html handles it).
+    // FIX: removed duplicate supabaseClient declaration that was crashing the page.
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      const loginArea = document.getElementById("loginArea");
       const userArea = document.getElementById("userArea");
-      const userBtn = document.getElementById("userBtn");
-      const userDropdown = document.getElementById("userDropdown");
+      const adminArea = document.getElementById("adminArea");
+      const dropdownName = document.getElementById("dropdownName");
       const usernameText = document.getElementById("usernameText");
 
-      const dropdownName = document.getElementById("dropdownName");
+      if (session) {
+        const user = session.user;
+        const role = user.user_metadata?.role || "user";
+        localStorage.setItem("userRole", role);
 
+        if (loginArea) loginArea.classList.add("hidden");
 
-      // ===== TOGGLE USER DROPDOWN =====
+        if (role === "admin") {
+          if (adminArea) adminArea.classList.remove("hidden");
+          if (userArea) userArea.classList.add("hidden");
+        } else {
+          if (userArea) userArea.classList.remove("hidden");
+          if (adminArea) adminArea.classList.add("hidden");
+
+          const displayName =
+            user.user_metadata?.name ||
+            user.user_metadata?.full_name ||
+            "User";
+
+          if (dropdownName) dropdownName.innerText = "Hello, " + displayName;
+          if (usernameText) usernameText.innerText = displayName.split(" ")[0];
+        }
+      } else {
+        localStorage.removeItem("userRole");
+        if (loginArea) loginArea.classList.remove("hidden");
+        if (userArea) userArea.classList.add("hidden");
+        if (adminArea) adminArea.classList.add("hidden");
+        if (usernameText) usernameText.innerText = "Account";
+      }
+    });
+
+    // ── Logout helpers ────────────────────────────────────────────────────────
+    async function logoutUser() {
+      await supabaseClient.auth.signOut();
+      localStorage.removeItem("userRole");
+      sessionStorage.clear();
+      window.location.href = "log.html";
+    }
+
+    async function adminLogout() {
+      await supabaseClient.auth.signOut();
+      localStorage.removeItem("userRole");
+      sessionStorage.clear();
+      window.location.href = "log.html";
+    }
+  </script>
+
+  <script>
+    // ── Dropdown toggles ──────────────────────────────────────────────────────
+    document.addEventListener("DOMContentLoaded", () => {
+      const userBtn = document.getElementById("userBtn");
+      const userDropdown = document.getElementById("userDropdown");
+      const userArea = document.getElementById("userArea");
+      const adminBtn = document.getElementById("adminBtn");
+      const adminDropdown = document.getElementById("adminDropdown");
+      const adminArea = document.getElementById("adminArea");
+
       if (userBtn) {
         userBtn.addEventListener("click", (e) => {
           e.stopPropagation();
@@ -557,10 +482,6 @@
         });
       }
 
-      const adminBtn = document.getElementById("adminBtn");
-const adminDropdown = document.getElementById("adminDropdown");
-const adminArea = document.getElementById("adminArea");
-      // ===== TOGGLE ADMIN DROPDOWN =====
       if (adminBtn) {
         adminBtn.addEventListener("click", (e) => {
           e.stopPropagation();
@@ -569,54 +490,64 @@ const adminArea = document.getElementById("adminArea");
         });
       }
 
-      // ===== GLOBAL CLICK (CLOSE BOTH) =====
       document.addEventListener("click", (e) => {
-        if (userArea && !userArea.contains(e.target)) {
-          userDropdown.classList.add("hidden");
-        }
-        if (adminArea && !adminArea.contains(e.target)) {
-          adminDropdown.classList.add("hidden");
-        }
+        if (userArea && !userArea.contains(e.target)) userDropdown.classList.add("hidden");
+        if (adminArea && !adminArea.contains(e.target)) adminDropdown.classList.add("hidden");
       });
-
     });
-
-    async function logoutUser() {
-      await supabaseClient.auth.signOut();
-      localStorage.removeItem('userRole');
-      sessionStorage.clear();
-      window.location.href = "log.html";
-    }
-
-    function adminLogout() {
-      sessionStorage.clear();
-      window.location.href = "log.html";
-    }
-
-
   </script>
 
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ── Live tracking map (mini overlay) ─────────────────────────────────────
+    const showMap = localStorage.getItem("showTrackingMap");
+    if (showMap === "yes") document.getElementById("trackingSection").style.display = "block";
 
-<script>
-const supabaseClient = supabase.createClient(
-  "https://ecuvhnvpajodymdibuwt.supabase.co",
-     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+    const closeBtn = document.getElementById("closeTracking");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        document.getElementById("trackingSection").style.display = "none";
+      });
+    }
 
-);
-</script>
+    localStorage.removeItem("showTrackingMap");
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    let homeMap = null, homeCarMarker = null, homeRoute = null;
+
+    function initHomeMap() {
+      if (homeMap !== null) return;
+      homeMap = L.map("homeMap").setView([19.0760, 72.8777], 12);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(homeMap);
+      const homeCarIcon = L.icon({
+        iconUrl: "https://cdn-icons-png.flaticon.com/512/744/744465.png",
+        iconSize: [55, 55], iconAnchor: [27, 27]
+      });
+      homeCarMarker = L.marker([19.0760, 72.8777], { icon: homeCarIcon }).addTo(homeMap);
+      homeRoute = L.polyline([], { color: "blue", weight: 4 }).addTo(homeMap);
+    }
+
+    setInterval(() => {
+      if (document.getElementById("trackingSection").style.display === "none") return;
+      initHomeMap();
+      const lat = parseFloat(localStorage.getItem("liveCarLat"));
+      const lng = parseFloat(localStorage.getItem("liveCarLng"));
+      if (!lat || !lng) return;
+      homeCarMarker.setLatLng([lat, lng]);
+      homeMap.panTo([lat, lng]);
+      homeRoute.setLatLngs([[lat, lng], [19.0760, 72.8777]]);
+    }, 1000);
+  </script>
+
   <script id="dynamic-loader">
+    // ── Dynamic Offers ────────────────────────────────────────────────────────
     async function loadDynamicOffers() {
       const container = document.getElementById("dynamicOffersContainer");
       if (!container) return;
       try {
         const { data, error } = await supabaseClient
-          .from('offers')
-          .select('*')
-          .order('created_at', { ascending: false });
+          .from("offers")
+          .select("*")
+          .order("created_at", { ascending: false });
+
         if (error) throw error;
 
         if (!data || data.length === 0) {
@@ -624,115 +555,144 @@ const supabaseClient = supabase.createClient(
           return;
         }
 
-        let html = '';
-        data.forEach(offer => {
-          html += `
-<div onclick="openOffer('${offer.category}')"
-     class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 
-     transform transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl 
-     group cursor-pointer flex flex-col">
+        container.innerHTML = data.map(offer => `
+          <div onclick="openOffer('${offer.category}')"
+               class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100
+                      transform transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl
+                      group cursor-pointer flex flex-col">
+            <div class="relative w-full overflow-hidden" style="height:190px;">
+              <img src="${offer.image_url}" class="w-full h-full object-cover">
+              <div class="absolute top-4 left-4 bg-white px-3 py-1 rounded">
+                ${offer.discount || 10}% OFF
+              </div>
+            </div>
+            <div class="p-5">
+              <h3 class="text-xl font-bold">${offer.title}</h3>
+              <p class="text-gray-500">${offer.description}</p>
+            </div>
+          </div>`).join("");
 
-  <!-- Top Image -->
-  <div class="relative w-full overflow-hidden" style="height:190px;">
-    <img src="${offer.image_url}" class="w-full h-full object-cover">
-
-    <div class="absolute top-4 left-4 bg-white px-3 py-1 rounded">
-      ${offer.discount || 10}% OFF
-    </div>
-  </div>
-
-  <!-- Content -->
-  <div class="p-5">
-    <h3 class="text-xl font-bold">${offer.title}</h3>
-    <p class="text-gray-500">${offer.description}</p>
-  </div>
-
-</div>`;
-        });
-        container.innerHTML = html;
       } catch (err) {
         console.error("Error loading offers:", err);
         container.innerHTML = '<div class="col-span-3 text-red-500 py-10">Failed to load offers.</div>';
       }
     }
 
-
+    // ── Dynamic Fleet ─────────────────────────────────────────────────────────
     async function loadDynamicFleet() {
       const container = document.getElementById("dynamicFleetContainer");
       if (!container) return;
 
-      // Override grid template to exactly 3 cols
       container.className = "max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-6 text-left";
 
-      const html = `
-          <!-- Category 1: Economy -->
-          <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl group flex flex-col cursor-pointer" onclick="window.location.href='economy.html'">
-              <div class="relative w-full overflow-hidden bg-gray-100" style="height: 190px;">
-                  <img src="eco/ECONOMY1.jpg" alt="Economy Cars" class="w-full h-full object-cover transform transition-transform duration-[1.5s] ease-out group-hover:scale-110">
-                  <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-6 opacity-90 transition-opacity duration-500 group-hover:opacity-100">
-                      <h3 class="text-4xl font-bold drop-shadow-lg tracking-wide text-white transform transition-transform duration-500 group-hover:-translate-y-1" style="font-family:'Cinzel', serif;">Economy</h3>
-                      
-                  </div>
-              </div>
-              <div class="p-8 flex flex-col flex-grow bg-white relative z-10">
-                  <p class="text-gray-500 mb-8 text-[15px] flex-grow leading-relaxed">Affordable, reliable, and comfortable vehicles perfectly suited for daily commutes and budget-friendly road trips.</p>
-                  <a href="economy.html" class="w-full py-4 rounded-xl text-white font-bold text-center shadow-md transform transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl flex items-center justify-center gap-3" style="background-color: #293918;";">
-                      Book Economy <i class="fa-solid fa-arrow-right"></i>
-                  </a>
-              </div>
+      container.innerHTML = `
+        <!-- Economy -->
+        <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100
+                    transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl
+                    group flex flex-col cursor-pointer"
+             onclick="window.location.href='economy.html'">
+          <div class="relative w-full overflow-hidden bg-gray-100" style="height:190px;">
+            <img src="eco/ECONOMY1.jpg" alt="Economy Cars"
+                 class="w-full h-full object-cover transform transition-transform duration-[1.5s] ease-out group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent
+                        flex flex-col justify-end p-6 opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+              <h3 class="text-4xl font-bold drop-shadow-lg tracking-wide text-white
+                         transform transition-transform duration-500 group-hover:-translate-y-1"
+                  style="font-family:'Cinzel',serif;">Economy</h3>
+            </div>
           </div>
-
-          <!-- Category 2: Luxury -->
-          <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl group flex flex-col cursor-pointer" onclick="window.location.href='luxury.html'">
-              <div class="relative w-full overflow-hidden bg-gray-100" style="height: 190px;">
-                  <img src="lux/bmw3.jpeg" alt="Luxury Cars" class="w-full h-full object-cover transform transition-transform duration-[1.5s] ease-out group-hover:scale-110">
-                  <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-6 opacity-90 transition-opacity duration-500 group-hover:opacity-100">
-                      <h3 class="text-4xl font-bold drop-shadow-lg tracking-wide text-white transform transition-transform duration-500 group-hover:-translate-y-1" style="font-family:'Cinzel', serif;">Luxury</h3>
-                     
-                  </div>
-              </div>
-              <div class="p-8 flex flex-col flex-grow bg-white relative z-10">
-                  <p class="text-gray-500 mb-8 text-[15px] flex-grow leading-relaxed">Experience ultimate comfort and status with our hand-picked selection of high-end luxury vehicles and premium sedans.</p>
-                  <a href="luxury.html" class="w-full py-4 rounded-xl text-white font-bold text-center shadow-md transform transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl flex items-center justify-center gap-3" style="background-color: #293918;";">
-                      Book Luxury <i class="fa-solid fa-arrow-right"></i>
-                  </a>
-              </div>
+          <div class="p-8 flex flex-col flex-grow bg-white relative z-10">
+            <p class="text-gray-500 mb-8 text-[15px] flex-grow leading-relaxed">
+              Affordable, reliable, and comfortable vehicles perfectly suited for daily commutes and budget-friendly road trips.
+            </p>
+            <a href="economy.html"
+               class="w-full py-4 rounded-xl text-white font-bold text-center shadow-md
+                      transform transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl
+                      flex items-center justify-center gap-3"
+               style="background-color:#293918;">
+              Book Economy <i class="fa-solid fa-arrow-right"></i>
+            </a>
           </div>
+        </div>
 
-          <!-- Category 3: Electric -->
-          <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl group flex flex-col cursor-pointer" onclick="window.location.href='electric.html'">
-              <div class="relative w-full overflow-hidden bg-gray-100" style="height: 190px;">
-                  <img src="ecar/EV.jpg" alt="Electric Cars" class="w-full h-full object-cover transform transition-transform duration-[1.5s] ease-out group-hover:scale-110">
-                  <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-6 opacity-90 transition-opacity duration-500 group-hover:opacity-100">
-                      <h3 class="text-4xl font-bold drop-shadow-lg tracking-wide text-white transform transition-transform duration-500 group-hover:-translate-y-1" style="font-family:'Cinzel', serif;">Electric</h3>
-                     
-                  </div>
-              </div>
-              <div class="p-8 flex flex-col flex-grow bg-white relative z-10">
-                  <p class="text-gray-500 mb-8 text-[15px] flex-grow leading-relaxed">Embrace the future of driving with ultra-silent, incredibly fast, and zero-emission electric vehicles.</p>
-                  <a href="electric.html" class="w-full py-4 rounded-xl text-white font-bold text-center shadow-md transform transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl flex items-center justify-center gap-3" style="background-color: #293918;";">
-                      Book Electric <i class="fa-solid fa-arrow-right"></i>
-                  </a>
-              </div>
+        <!-- Luxury -->
+        <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100
+                    transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl
+                    group flex flex-col cursor-pointer"
+             onclick="window.location.href='luxury.html'">
+          <div class="relative w-full overflow-hidden bg-gray-100" style="height:190px;">
+            <img src="lux/bmw3.jpeg" alt="Luxury Cars"
+                 class="w-full h-full object-cover transform transition-transform duration-[1.5s] ease-out group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent
+                        flex flex-col justify-end p-6 opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+              <h3 class="text-4xl font-bold drop-shadow-lg tracking-wide text-white
+                         transform transition-transform duration-500 group-hover:-translate-y-1"
+                  style="font-family:'Cinzel',serif;">Luxury</h3>
+            </div>
           </div>
-      `;
+          <div class="p-8 flex flex-col flex-grow bg-white relative z-10">
+            <p class="text-gray-500 mb-8 text-[15px] flex-grow leading-relaxed">
+              Experience ultimate comfort and status with our hand-picked selection of high-end luxury vehicles and premium sedans.
+            </p>
+            <a href="luxury.html"
+               class="w-full py-4 rounded-xl text-white font-bold text-center shadow-md
+                      transform transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl
+                      flex items-center justify-center gap-3"
+               style="background-color:#293918;">
+              Book Luxury <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
 
-      container.innerHTML = html;
+        <!-- Electric -->
+        <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100
+                    transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl
+                    group flex flex-col cursor-pointer"
+             onclick="window.location.href='electric.html'">
+          <div class="relative w-full overflow-hidden bg-gray-100" style="height:190px;">
+            <img src="ecar/EV.jpg" alt="Electric Cars"
+                 class="w-full h-full object-cover transform transition-transform duration-[1.5s] ease-out group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent
+                        flex flex-col justify-end p-6 opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+              <h3 class="text-4xl font-bold drop-shadow-lg tracking-wide text-white
+                         transform transition-transform duration-500 group-hover:-translate-y-1"
+                  style="font-family:'Cinzel',serif;">Electric</h3>
+            </div>
+          </div>
+          <div class="p-8 flex flex-col flex-grow bg-white relative z-10">
+            <p class="text-gray-500 mb-8 text-[15px] flex-grow leading-relaxed">
+              Embrace the future of driving with ultra-silent, incredibly fast, and zero-emission electric vehicles.
+            </p>
+            <a href="electric.html"
+               class="w-full py-4 rounded-xl text-white font-bold text-center shadow-md
+                      transform transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl
+                      flex items-center justify-center gap-3"
+               style="background-color:#293918;">
+              Book Electric <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>`;
     }
+
+    function openOffer(category) {
+      localStorage.setItem("offerCategory", category);
+      window.location.href = "offer-cars.html";
+    }
+
+    // Fleet slider (if used elsewhere)
+    const fleetSlider = document.getElementById("fleetSlider");
+    const nextBtn = document.getElementById("next");
+    const prevBtn = document.getElementById("prev");
+    let sliderIndex = 0;
+    function updateSlider() {
+      if (fleetSlider) fleetSlider.style.transform = `translateX(-${sliderIndex * 100}%)`;
+    }
+    if (nextBtn) nextBtn.addEventListener("click", () => { sliderIndex = (sliderIndex + 1) % fleetSlider.children.length; updateSlider(); });
+    if (prevBtn) prevBtn.addEventListener("click", () => { sliderIndex = (sliderIndex - 1 + fleetSlider.children.length) % fleetSlider.children.length; updateSlider(); });
 
     loadDynamicOffers();
     loadDynamicFleet();
   </script>
-
-  <script>
-    // Speedometer animation removed.
-  </script>
-  <script>
-function openOffer(category){
-  localStorage.setItem("offerCategory", category);
-  window.location.href = "offer-cars.html";
-}
-</script>
 
 </body>
 
