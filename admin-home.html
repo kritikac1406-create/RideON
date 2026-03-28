@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
     :root {
       --bg: #b2bd14cf;
@@ -36,37 +37,40 @@
     h1,
     h2,
     h3 {
-      font-family: 'Cinzel', serif
+      font-family: 'Cinzel', serif;
     }
 
     a,
     nav a {
-      color: var(--contrast)
+      color: var(--contrast);
     }
 
     .muted {
-      color: var(--muted)
+      color: var(--muted);
     }
 
     nav {
-      backdrop-filter: blur(6px)
+      backdrop-filter: blur(6px);
     }
   </style>
 </head>
 
 <body>
 
+  <!-- ═══════════════════════ NAV ═══════════════════════ -->
   <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
     <div class="w-full grid grid-cols-3 items-center px-4 py-4">
 
+      <!-- Logo -->
       <div class="flex justify-start items-center">
         <div class="text-2xl font-bold" style="font-family:'Cinzel'">
-          Ride<span class="text-gray-600">ON</span> <span
-            class="text-xs text-red-600 ml-2 font-sans tracking-widest px-2 py-1 bg-red-100 rounded-md">ADMIN
+          Ride<span class="text-gray-600">ON</span>
+          <span class="text-xs text-red-600 ml-2 font-sans tracking-widest px-2 py-1 bg-red-100 rounded-md">ADMIN
             PANEL</span>
         </div>
       </div>
 
+      <!-- Links -->
       <div class="flex justify-center">
         <ul class="hidden md:flex items-center space-x-8 text-lg font-bold">
           <li><a href="offer.html" class="hover:text-[#114b72] transition">Offers</a></li>
@@ -76,23 +80,41 @@
         </ul>
       </div>
 
-      <div class="flex justify-end items-center gap-4">
-        <button onclick="adminLogout()" class="text-red-600 font-bold hover:underline bg-red-50 px-4 py-2 rounded-lg">
-          Logout <i class="fas fa-sign-out-alt ml-1"></i>
+      <!-- Admin dropdown -->
+      <div class="flex justify-end items-center gap-4 relative" id="adminArea">
+        <button id="adminBtn"
+          class="flex items-center gap-2 text-[#114b72] hover:text-black font-bold focus:outline-none">
+          <i class="fas fa-user-shield text-lg"></i>
+          <span id="adminNameDisplay" class="hidden md:inline">Admin</span>
+          <i class="fas fa-chevron-down text-xs"></i>
         </button>
+
+        <div id="adminDropdown"
+          class="hidden absolute right-0 top-10 mt-2 w-48 bg-white rounded-xl shadow-lg border z-50 overflow-hidden">
+          <button onclick="adminLogout()"
+            class="w-full text-left px-4 py-3 text-red-600 font-bold hover:bg-red-50 transition">
+            Logout <i class="fas fa-sign-out-alt float-right mt-1"></i>
+          </button>
+        </div>
       </div>
+
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="relative flex items-center justify-center text-center min-h-screen pt-20"
-    style="background-image:url('https://images.unsplash.com/photo-1605559424843-3a477d8e5f2b?auto=format&fit=crop&w=2000&q=80'); background-size:cover; background-position:center;">
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
+  <section class="relative flex items-center justify-center text-center min-h-screen pt-20" style="background-image:url('https://images.unsplash.com/photo-1605559424843-3a477d8e5f2b?auto=format&fit=crop&w=2000&q=80');
+           background-size:cover; background-position:center;">
+
     <div class="absolute inset-0"
-      style="background:linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255,255,255,0.9));"></div>
+      style="background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,255,255,0.9));"></div>
+
     <div class="relative z-10 max-w-3xl px-4 py-24">
-      <h1 class="text-4xl md:text-6xl font-bold mb-4" style="color:var(--contrast)">Welcome to Admin Portal</h1>
-      <p class="muted text-lg md:text-xl mb-6">Manage fleet inventory, bookings, users, and exclusive offers safely from
-        your control center.</p>
+      <h1 class="text-4xl md:text-6xl font-bold mb-4" style="color:var(--contrast)">
+        Welcome to Admin Portal
+      </h1>
+      <p class="muted text-lg md:text-xl mb-6">
+        Manage fleet inventory, bookings, users, and exclusive offers safely from your control center.
+      </p>
 
       <div class="flex gap-4 justify-center mt-8">
         <a href="admin-dashboard.html"
@@ -107,7 +129,7 @@
     </div>
   </section>
 
-  <!-- OFFERS DYNAMIC -->
+  <!-- ═══════════════════════ OFFERS ═══════════════════════ -->
   <section id="offers" class="py-16 bg-white text-center">
     <h2 class="text-3xl md:text-4xl mb-10">Exclusive Offers Management</h2>
     <div id="dynamicOffersContainer" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -115,14 +137,42 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
   <footer class="py-12 bg-gray-50 text-center border-t border-gray-200">
-    <p class="text-sm text-gray-400 font-semibold uppercase tracking-widest">&copy; 2025 RideON Admin Systems</p>
+    <p class="text-sm text-gray-400 font-semibold uppercase tracking-widest">
+      &copy; 2025 RideON Admin Systems
+    </p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const supabaseClient = supabase.createClient("https://ecuvhnvpajodymdibuwt.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g");
+  <!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
 
+  <!-- Supabase — loaded ONCE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    // ── Single Supabase client ────────────────────────────────────────────────
+    const supabaseClient = supabase.createClient(
+      "https://ecuvhnvpajodymdibuwt.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+    );
+
+    // ── Dropdown toggle ───────────────────────────────────────────────────────
+    document.addEventListener("DOMContentLoaded", () => {
+      const adminBtn = document.getElementById("adminBtn");
+      const adminDropdown = document.getElementById("adminDropdown");
+
+      if (adminBtn && adminDropdown) {
+        adminBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          adminDropdown.classList.toggle("hidden");
+        });
+        document.addEventListener("click", (e) => {
+          if (!adminBtn.contains(e.target)) adminDropdown.classList.add("hidden");
+        });
+      }
+    });
+
+    // ── Guard: only admins may view this page ─────────────────────────────────
     async function checkAdmin() {
       const { data: { user } } = await supabaseClient.auth.getUser();
 
@@ -139,20 +189,34 @@
         return;
       }
 
+      const adminNameDisplay = document.getElementById("adminNameDisplay");
+      if (adminNameDisplay) {
+        const displayName =
+          user.user_metadata?.name ||
+          user.user_metadata?.full_name ||
+          "Admin";
+        adminNameDisplay.innerText = "Hello, " + displayName.split(" ")[0];
+      }
+
       document.body.classList.add("ready");
     }
 
+    // ── Admin logout ──────────────────────────────────────────────────────────
     async function adminLogout() {
       await supabaseClient.auth.signOut();
-      localStorage.removeItem('userRole');
+      localStorage.removeItem("userRole");
       window.location.replace("log.html");
     }
 
+    // ── Dynamic Offers ────────────────────────────────────────────────────────
     async function loadDynamicOffers() {
       const container = document.getElementById("dynamicOffersContainer");
       if (!container) return;
 
-      const { data, error } = await supabaseClient.from("offers").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabaseClient
+        .from("offers")
+        .select("*")
+        .order("created_at", { ascending: false });
 
       if (error || !data || data.length === 0) {
         container.innerHTML = `<div class="col-span-3 text-center text-gray-500 py-10">No special offers available right now.</div>`;
@@ -167,27 +231,35 @@
         else if (offer.category === "electric") targetPage = "electric.html";
 
         container.innerHTML += `
-        <div class="relative w-full h-[420px] rounded-xl overflow-hidden shadow-2xl">
-            <img src="${offer.image_url}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400?text=No+Image'">
+          <div class="relative w-full h-[420px] rounded-xl overflow-hidden shadow-2xl">
+            <img src="${offer.image_url}" class="w-full h-full object-cover"
+                 onerror="this.src='https://via.placeholder.com/400?text=No+Image'">
             <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+
             <div class="absolute top-6 left-6 bg-transparent border-2 border-white px-4 py-3 rounded-xl text-left text-white">
-                <p class="text-xs">UP TO</p>
-                <p class="text-3xl font-extrabold">${offer.discount || 0}%</p>
-                <p class="text-xl font-bold">DISCOUNT</p>
+              <p class="text-xs">UP TO</p>
+              <p class="text-3xl font-extrabold">${offer.discount || 0}%</p>
+              <p class="text-xl font-bold">DISCOUNT</p>
             </div>
+
             <div class="absolute bottom-6 left-6 text-left text-white w-[80%]">
-                <h3 class="text-2xl font-bold">${offer.title}</h3>
-                <p class="text-sm text-gray-200 mb-3">${offer.description || ''}</p>
-                <a href="${targetPage}" class="px-5 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-300 transition inline-block">Explore Now</a>
+              <h3 class="text-2xl font-bold">${offer.title}</h3>
+              <p class="text-sm text-gray-200 mb-3">${offer.description || ""}</p>
+              <a href="${targetPage}"
+                 class="px-5 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-300 transition inline-block">
+                Explore Now
+              </a>
             </div>
-        </div>`;
+          </div>`;
       });
     }
 
+    // ── Boot ──────────────────────────────────────────────────────────────────
     checkAdmin().then(() => {
       loadDynamicOffers();
     });
   </script>
+
 </body>
 
 </html>
