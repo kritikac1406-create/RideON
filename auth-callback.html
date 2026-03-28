@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Signing you in… | RideON</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #F7F7E8;
+            font-family: 'Lato', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .brand {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #114b72;
+        }
+
+        .brand span {
+            color: #555;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #114b72;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        p {
+            color: #555;
+            font-size: 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .error-box {
+            display: none;
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #b91c1c;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            max-width: 320px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="brand">Ride<span>ON</span></div>
+    <div class="spinner"></div>
+    <p>Signing you in, please wait…</p>
+    <div class="error-box" id="errorBox"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ── Single Supabase client ────────────────────────────────────────────────
+        const supabaseClient = supabase.createClient(
+            "https://ecuvhnvpajodymdibuwt.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+        );
+
+        function showError(msg) {
+            const box = document.getElementById("errorBox");
+            box.textContent = msg + " Redirecting to login…";
+            box.style.display = "block";
+            setTimeout(() => window.location.replace("log.html"), 3000);
+        }
+
+        // ── Main callback handler ────────────────────────────────────────────────
+        // onAuthStateChange fires once Supabase parses the OAuth hash/token from
+        // the URL, so we don't need to manually parse anything.
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            // Only act on a fresh sign-in (SIGNED_IN or TOKEN_REFRESHED after OAuth)
+            if (!session) return;
+
+            const user = session.user;
+
+            // 1. Read the role the user chose BEFORE clicking "Continue with Google"
+            const pendingRole = localStorage.getItem("pendingGoogleRole") || "user";
+            localStorage.removeItem("pendingGoogleRole"); // consume immediately
+
+            // 2. Decide the effective role:
+            //    - If user already has a role in metadata, keep it (returning user).
+            //    - If this is a brand-new Google sign-up, apply pendingRole.
+            let role = user.user_metadata?.role;
+            const isNewGoogleUser = !role; // no role stored yet → first-time Google login
+
+            if (isNewGoogleUser) {
+                role = pendingRole;
+
+                try {
+                    // Persist role into Supabase auth metadata
+                    await supabaseClient.auth.updateUser({ data: { role } });
+
+                    // Mirror to public.users so the admin dashboard can see them
+                    const displayName =
+                        user.user_metadata?.full_name ||
+                        user.user_metadata?.name ||
+                        "Google User";
+
+                    const { error: upsertError } = await supabaseClient
+                        .from("users")
+                        .upsert(
+                            [{ id: user.id, name: displayName, email: user.email, role }],
+                            { onConflict: "id" }
+                        );
+
+                    if (upsertError) {
+                        console.error("public.users upsert failed:", upsertError);
+                        // Non-fatal — user is authenticated; just log it.
+                    }
+                } catch (err) {
+                    console.error("Post-OAuth setup error:", err);
+                    showError("Something went wrong setting up your account.");
+                    return;
+                }
+            }
+
+            // 3. Store role locally and redirect
+            localStorage.setItem("userRole", role);
+
+            window.location.replace(role === "admin" ? "admin-home.html" : "home.html");
+        });
+    </script>
+
+</body>
+
+</html>
