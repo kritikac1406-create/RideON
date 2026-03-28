@@ -1,240 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Login | RideON</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | RideON</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400&display=swap"
+        rel="stylesheet">
 
-<style>
-body{
-background:#F7F7E8;
-font-family:'Lato',sans-serif;
-opacity:0;
-transition:.25s;
-}
+    <style>
+        body {
+            background: #F7F7E8;
+            font-family: 'Lato', sans-serif;
+            opacity: 0;
+            transition: .25s;
+        }
 
-body.fonts-loaded{
-opacity:1;
-}
+        body.fonts-loaded {
+            opacity: 1;
+        }
 
-.brandFont{
-font-family:'Cinzel',serif;
-}
+        .brandFont {
+            font-family: 'Cinzel', serif;
+        }
 
-.btn-main{
-background:#114b72;
-color:white;
-padding:12px;
-border-radius:10px;
-font-weight:700;
-}
-</style>
+        .btn-main {
+            background: #114b72;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+    </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
 
-<!-- NAVBAR -->
-<header class="bg-white shadow px-6 py-4">
-<a href="javascript:void(0)" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'" class="text-2xl brandFont font-bold">Ride<span class="text-gray-600">ON</span></a>
-</header>
+    <!-- NAVBAR -->
+    <header class="bg-white shadow px-6 py-4">
+        <a href="javascript:void(0)"
+            onclick="window.location.href = localStorage.getItem('userRole') === 'admin' ? 'admin-home.html' : 'home.html'"
+            class="text-2xl brandFont font-bold">
+            Ride<span class="text-gray-600">ON</span>
+        </a>
+    </header>
 
-<!-- LOGIN CARD -->
-<div class="flex-grow flex items-center justify-center p-6 bg-gradient-to-br from-[#f7f7e8] to-[#e6ecf2]">
+    <!-- LOGIN CARD -->
+    <div class="flex-grow flex items-center justify-center p-6 bg-gradient-to-br from-[#f7f7e8] to-[#e6ecf2]">
 
-<div class="bg-white/80 backdrop-blur-lg w-full max-w-md p-8 rounded-3xl shadow-2xl">
+        <div class="bg-white/80 backdrop-blur-lg w-full max-w-md p-8 rounded-3xl shadow-2xl">
 
-<h2 class="text-3xl brandFont text-center mb-2">Welcome to RideON</h2>
-<p class="text-center text-gray-600 mb-6">Login or create your account</p>
+            <h2 class="text-3xl brandFont text-center mb-2">Welcome to RideON</h2>
+            <p class="text-center text-gray-600 mb-6">Login or create your account</p>
 
-<!-- ROLE -->
-<div class="flex justify-center mb-6">
-<div class="bg-gray-100 p-1 rounded-full flex gap-2">
-<button id="userModeBtn" class="px-5 py-2 rounded-full bg-[#114b72] text-white text-sm font-semibold">User</button>
-<button id="adminModeBtn" class="px-5 py-2 rounded-full text-gray-600 text-sm font-semibold">Admin</button>
-</div>
-</div>
+            <!-- ROLE -->
+            <div class="flex justify-center mb-6">
+                <div class="bg-gray-100 p-1 rounded-full flex gap-2">
+                    <button id="userModeBtn"
+                        class="px-5 py-2 rounded-full bg-[#114b72] text-white text-sm font-semibold">User</button>
+                    <button id="adminModeBtn"
+                        class="px-5 py-2 rounded-full text-gray-600 text-sm font-semibold">Admin</button>
+                </div>
+            </div>
 
-<!-- TABS -->
-<div class="flex justify-center gap-8 mb-6 text-sm font-semibold">
-<button id="tabLogin" class="border-b-2 border-[#114b72] pb-1">Login</button>
-<button id="tabRegister" class="text-gray-400 pb-1">Register</button>
-</div>
+            <!-- TABS -->
+            <div class="flex justify-center gap-8 mb-6 text-sm font-semibold">
+                <button id="tabLogin" class="border-b-2 border-[#114b72] pb-1">Login</button>
+                <button id="tabRegister" class="text-gray-400 pb-1">Register</button>
+            </div>
 
-<!-- LOGIN -->
-<div id="loginBox">
-<input id="loginEmail" type="email" placeholder="Email"
-class="w-full border p-3 rounded-lg mb-4 focus:ring-2 focus:ring-[#114b72] outline-none">
+            <!-- LOGIN -->
+            <div id="loginBox">
+                <input id="loginEmail" type="email" placeholder="Email"
+                    class="w-full border p-3 rounded-lg mb-4 focus:ring-2 focus:ring-[#114b72] outline-none">
 
-<div class="relative mb-4">
-<input id="loginPass" type="password" placeholder="Password"
-class="w-full border p-3 rounded-lg pr-10 focus:ring-2 focus:ring-[#114b72] outline-none">
-<span onclick="togglePass('loginPass')" class="absolute right-3 top-3 cursor-pointer">👁</span>
-</div>
+                <div class="relative mb-4">
+                    <input id="loginPass" type="password" placeholder="Password"
+                        class="w-full border p-3 rounded-lg pr-10 focus:ring-2 focus:ring-[#114b72] outline-none">
+                    <span onclick="togglePass('loginPass')" class="absolute right-3 top-3 cursor-pointer">👁</span>
+                </div>
 
-<button onclick="loginUser()" class="w-full btn-main hover:bg-[#0d3d5c]">
-Login
-</button>
+                <button onclick="loginUser()" class="w-full btn-main hover:bg-[#0d3d5c]">
+                    Login
+                </button>
 
-<div class="flex items-center my-6">
-<hr class="flex-grow">
-<span class="px-3 text-gray-400 text-sm">OR</span>
-<hr class="flex-grow">
-</div>
+                <div class="flex items-center my-6">
+                    <hr class="flex-grow">
+                    <span class="px-3 text-gray-400 text-sm">OR</span>
+                    <hr class="flex-grow">
+                </div>
 
-<button onclick="googleLogin()"
-class="w-full border flex items-center justify-center gap-3 p-3 rounded-lg hover:bg-gray-50">
-<img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5">
-Continue with Google
-</button>
+                <button onclick="googleLogin()"
+                    class="w-full border flex items-center justify-center gap-3 p-3 rounded-lg hover:bg-gray-50">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5">
+                    Continue with Google
+                </button>
+            </div>
 
-</div>
+            <!-- REGISTER -->
+            <div id="registerBox" class="hidden">
+                <input id="name" placeholder="Full Name"
+                    class="w-full border p-3 rounded-lg mb-3 focus:ring-2 focus:ring-[#114b72] outline-none">
 
-<!-- REGISTER -->
-<div id="registerBox" class="hidden">
-<input id="name" placeholder="Full Name"
-class="w-full border p-3 rounded-lg mb-3 focus:ring-2 focus:ring-[#114b72] outline-none">
+                <input id="email" type="email" placeholder="Email"
+                    class="w-full border p-3 rounded-lg mb-3 focus:ring-2 focus:ring-[#114b72] outline-none">
 
-<input id="email" type="email" placeholder="Email"
-class="w-full border p-3 rounded-lg mb-3 focus:ring-2 focus:ring-[#114b72] outline-none">
+                <input id="password" type="password" placeholder="Password"
+                    class="w-full border p-3 rounded-lg mb-4 focus:ring-2 focus:ring-[#114b72] outline-none">
 
-<input id="password" type="password" placeholder="Password"
-class="w-full border p-3 rounded-lg mb-4 focus:ring-2 focus:ring-[#114b72] outline-none">
+                <button onclick="registerUser()" class="w-full btn-main hover:bg-[#0d3d5c]">
+                    Create Account
+                </button>
+            </div>
 
-<button onclick="registerUser()" class="w-full btn-main hover:bg-[#0d3d5c]">
-Create Account
-</button>
-</div>
+        </div>
+    </div>
 
-</div>
-</div>
+    <script>
+        document.fonts.ready.then(() => document.body.classList.add("fonts-loaded"));
 
-<script>
-document.fonts.ready.then(()=>document.body.classList.add("fonts-loaded"))
+        // ── Single Supabase client ──────────────────────────────────────────────────
+        const supabaseClient = supabase.createClient(
+            "https://ecuvhnvpajodymdibuwt.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
+        );
 
-const supabaseClient = supabase.createClient(
-"https://ecuvhnvpajodymdibuwt.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdXZobnZwYWpvZHltZGlidXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MjA0ODcsImV4cCI6MjA4NTQ5NjQ4N30.qJclkXxnYjPu7vSZD4MGyJch6n4pCjcd9HiD8hdM31g"
-)
+        let loginMode = "user";
 
-let loginMode="user"
+        // ── Role switch ────────────────────────────────────────────────────────────
+        document.getElementById("userModeBtn").onclick = () => {
+            loginMode = "user";
+            document.getElementById("userModeBtn").classList.add("bg-[#114b72]", "text-white");
+            document.getElementById("adminModeBtn").classList.remove("bg-[#114b72]", "text-white");
+        };
 
-/* ROLE SWITCH */
-userModeBtn.onclick=()=>{
-loginMode="user"
-userModeBtn.classList.add("bg-[#114b72]","text-white")
-adminModeBtn.classList.remove("bg-[#114b72]","text-white")
-}
+        document.getElementById("adminModeBtn").onclick = () => {
+            loginMode = "admin";
+            document.getElementById("adminModeBtn").classList.add("bg-[#114b72]", "text-white");
+            document.getElementById("userModeBtn").classList.remove("bg-[#114b72]", "text-white");
+        };
 
-adminModeBtn.onclick=()=>{
-loginMode="admin"
-adminModeBtn.classList.add("bg-[#114b72]","text-white")
-userModeBtn.classList.remove("bg-[#114b72]","text-white")
-}
+        // ── Tab switch ─────────────────────────────────────────────────────────────
+        document.getElementById("tabLogin").onclick = () => {
+            document.getElementById("loginBox").classList.remove("hidden");
+            document.getElementById("registerBox").classList.add("hidden");
+            document.getElementById("tabLogin").classList.add("border-b-2", "border-[#114b72]");
+            document.getElementById("tabRegister").classList.remove("border-b-2");
+        };
 
-/* TAB SWITCH */
-tabLogin.onclick=()=>{
-loginBox.classList.remove("hidden")
-registerBox.classList.add("hidden")
-tabLogin.classList.add("border-b-2","border-[#114b72]")
-tabRegister.classList.remove("border-b-2")
-}
+        document.getElementById("tabRegister").onclick = () => {
+            document.getElementById("loginBox").classList.add("hidden");
+            document.getElementById("registerBox").classList.remove("hidden");
+            document.getElementById("tabRegister").classList.add("border-b-2", "border-[#114b72]");
+            document.getElementById("tabLogin").classList.remove("border-b-2");
+        };
 
-tabRegister.onclick=()=>{
-loginBox.classList.add("hidden")
-registerBox.classList.remove("hidden")
-tabRegister.classList.add("border-b-2","border-[#114b72]")
-tabLogin.classList.remove("border-b-2")
-}
+        // ── Password toggle ────────────────────────────────────────────────────────
+        function togglePass(id) {
+            const f = document.getElementById(id);
+            f.type = f.type === "password" ? "text" : "password";
+        }
 
-/* PASSWORD TOGGLE */
-function togglePass(id){
-const f=document.getElementById(id)
-f.type=f.type==="password"?"text":"password"
-}
+        // ── Register ───────────────────────────────────────────────────────────────
+        async function registerUser() {
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
 
-/* REGISTER */
-async function registerUser(){
+            if (!name || !email || !password) { alert("Fill all fields"); return; }
+            if (password.length < 6) { alert("Password must be at least 6 characters"); return; }
 
-const name=document.getElementById("name").value.trim()
-const email=document.getElementById("email").value.trim()
-const password=document.getElementById("password").value.trim()
+            const { data, error } = await supabaseClient.auth.signUp({
+                email,
+                password,
+                options: { data: { name, role: loginMode } }
+            });
 
-if(!name||!email||!password){
-alert("Fill all fields")
-return
-}
+            if (error) { alert(error.message); return; }
 
-if(password.length<6){
-alert("Password must be at least 6 characters")
-return
-}
+            // Mirror to public.users table
+            if (data && data.user) {
+                const { error: insertError } = await supabaseClient.from("users").insert([{
+                    id: data.user.id,
+                    name: name,
+                    email: email,
+                    role: loginMode
+                }]);
 
-const {error}=await supabaseClient.auth.signUp({
-email,
-password,
-options:{data:{name,role:loginMode}}
-})
+                if (insertError) {
+                    console.error("Mirror to public.users failed:", insertError);
+                    alert("Registration succeeded (Auth), but failed to sync to Admin dashboard. Please check your public.users RLS policies.");
+                    return;
+                }
+            }
 
-if(error){alert(error.message);return}
+            alert("Registration successful! You can now log in.");
+            document.getElementById("tabLogin").click();
+        }
 
-// Mirror the new user to the public.users table so Admins can see them!
-if (data && data.user) {
-    const { error: insertError } = await supabaseClient.from("users").insert([{
-        id: data.user.id,
-        name: name,
-        email: email,
-        role: loginMode
-    }]);
-    
-    if(insertError) {
-        console.error("Mirror to public.users failed: ", insertError);
-        alert("Registration succeeded (Auth), but failed to sync to Admin dashboard (SQL table). Please double check your public.users table RLS policies.");
-        return;
-    }
-}
+        // ── Email / Password Login ─────────────────────────────────────────────────
+        async function loginUser() {
+            const email = document.getElementById("loginEmail").value.trim();
+            const password = document.getElementById("loginPass").value.trim();
 
-alert("Registration successful! They will now appear on the Admin Dashboard.")
-}
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
-/* LOGIN */
-async function loginUser(){
+            if (error) { alert(error.message); return; }
 
-const email=document.getElementById("loginEmail").value.trim()
-const password=document.getElementById("loginPass").value.trim()
+            const role = data.user.user_metadata?.role || "user";
+            localStorage.setItem("userRole", role);
 
-const {data,error}=await supabaseClient.auth.signInWithPassword({
-email,password
-})
+            window.location.href = role === "admin" ? "admin-home.html" : "home.html";
+        }
 
-if(error){alert(error.message);return}
+        // ── Google Login ───────────────────────────────────────────────────────────
+        // FIX: redirect to auth-callback.html (neutral page) instead of home.html
+        // so that admin Google logins are routed correctly.
+        async function googleLogin() {
+            localStorage.setItem("pendingGoogleRole", loginMode);
 
-const role=data.user.user_metadata.role||"user"
-localStorage.setItem('userRole', role)
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                    redirectTo: new URL("auth-callback.html", window.location.href).href
+                }
+            });
 
-if(role==="admin"){
-window.location.href="admin-home.html"
-}else{
-window.location.href="home.html"
-}
-}
-
-/* GOOGLE LOGIN */
-async function googleLogin(){
-const {error}=await supabaseClient.auth.signInWithOAuth({
-provider:"google",
-options:{redirectTo:window.location.origin+"/home.html"}
-})
-if(error) alert(error.message)
-}
-
-</script>
+            if (error) alert(error.message);
+        }
+    </script>
 
 </body>
+
 </html>
